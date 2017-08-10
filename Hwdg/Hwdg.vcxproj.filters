@@ -9,9 +9,90 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="App">
+      <UniqueIdentifier>{901cb962-bfda-4525-9326-42234676ef76}</UniqueIdentifier>
     </Filter>
+    <Filter Include="App\Common">
+      <UniqueIdentifier>{68966954-ab72-4f02-9f4e-c007f06376fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Drivers">
+      <UniqueIdentifier>{d1e234da-252e-4596-add4-d5a2606ed3f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Drivers\Clock">
+      <UniqueIdentifier>{0ec811b8-0d7a-4d2a-a4ae-18eb8c10009b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Drivers\BaseTimer">
+      <UniqueIdentifier>{d87c1657-06d8-43de-82d3-e453560d8f0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\CommandManager">
+      <UniqueIdentifier>{efa1b259-dbbc-4f0d-a62c-1182d6a9ebee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Drivers\Uart">
+      <UniqueIdentifier>{ae72c0a5-78f1-4344-8d37-6cd2cc432bf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\ResetController">
+      <UniqueIdentifier>{353172a7-66ea-4cef-8949-7ffe1155008d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\GpioRebooter">
+      <UniqueIdentifier>{73fb09fb-073b-4bfb-840e-a7d768f134c5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Clock.cpp">
+      <Filter>Drivers\Clock</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseTimer.cpp">
+      <Filter>Drivers\BaseTimer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CommandManager.cpp">
+      <Filter>App\CommandManager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Uart.cpp">
+      <Filter>Drivers\Uart</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ResetController.cpp">
+      <Filter>App\ResetController</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GpioRebooter.cpp">
+      <Filter>App\GpioRebooter</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ResetTimer.cpp">
+      <Filter>Drivers</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Clock.h">
+      <Filter>Drivers\Clock</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BaseTimer.h">
+      <Filter>Drivers\BaseTimer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CommandManager.h">
+      <Filter>App\CommandManager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IRebooter.h">
+      <Filter>App\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IResetController.h">
+      <Filter>App\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ISubscriber.h">
+      <Filter>App\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Uart.h">
+      <Filter>Drivers\Uart</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ResetController.h">
+      <Filter>App\ResetController</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GpioRebooter.h">
+      <Filter>App\GpioRebooter</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ResetTimer.h">
+      <Filter>Drivers</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
