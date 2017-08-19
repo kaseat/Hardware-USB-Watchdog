@@ -56,11 +56,11 @@
     <ClCompile Include="src\GpioRebooter.cpp">
       <Filter>App\GpioRebooter</Filter>
     </ClCompile>
-    <ClCompile Include="src\ResetTimer.cpp">
-      <Filter>Drivers</Filter>
-    </ClCompile>
     <ClCompile Include="src\Timer.cpp">
       <Filter>Drivers\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="GpioDriver.cpp">
+      <Filter>App\GpioRebooter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -88,11 +88,11 @@
     <ClInclude Include="src\GpioRebooter.h">
       <Filter>App\GpioRebooter</Filter>
     </ClInclude>
-    <ClInclude Include="src\ResetTimer.h">
-      <Filter>Drivers</Filter>
-    </ClInclude>
     <ClInclude Include="src\Timer.h">
       <Filter>Drivers\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="GpioDriver.h">
+      <Filter>App\GpioRebooter</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

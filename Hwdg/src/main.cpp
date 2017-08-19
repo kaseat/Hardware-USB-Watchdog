@@ -12,7 +12,8 @@ int main()
 	Uart::SendByte(0x33);
 
 	// Create reset controller with GPIO rebooter.
-	GpioRebooter rebooter;
+	GpioDriver drw = {};
+	GpioRebooter rebooter(drw);
 	ResetController controller(rebooter);
 	CommandManager mgr(controller);
 

@@ -1,76 +1,65 @@
 #include "GpioRebooter.h"
-#include "ResetTimer.h"
+#include "Timer.h"
 
-#define FR_TIMEOUT 0x10U
-#define RST_TIM 0x20U
-#define HR_LO_TIM 0xC00U
-#define HR_HI_TIM 0x600U
 
-GpioRebooter::GpioRebooter()
+#define RST_TIM 0xC8U
+#define HR_LO_TIM 0x1770U
+#define HR_HI_TIM 0x7D0U
+
+GpioRebooter::GpioRebooter(GpioDriver driver) :driver(driver), state(0), counter(0)
 {
-
-	firstRun = true;
-	srMarker = false;
-	hrMarker = false;
-	ResetTimer::SubscribeOnElapse(*this);
-	ResetTimer::Run(FR_TIMEOUT);
+	Timer::SubscribeOnElapse(*this);
 }
 
 GpioRebooter::~GpioRebooter()
 {
-	ResetTimer::UnsubscribeOnElapse();
+	Timer::UnsubscribeOnElapse(*this);
 }
 
 void GpioRebooter::HardReset()
 {
-
-	srMarker = false;
-	hrMarker = true;
-	ResetTimer::Run(HR_LO_TIM);
+	if (state & 0x10) return;
+	driver.DrivePowerLow();
+	state = 0x12;
 }
 
 void GpioRebooter::SoftReset()
 {
-
-	srMarker = false;
-	hrMarker = false;
-	ResetTimer::Run(RST_TIM);
+	if (state & 0x10) return;
+	driver.DriveResetLow();
+	state = 0x11;
 }
 
 void GpioRebooter::Callback(uint8_t data)
 {
-	// This only need for the first timer run, as timer
-	// incorrect behaviour during first run is observed.
-	if (firstRun)
+	if (state & 0x01U)
 	{
-		firstRun = false;
-		srMarker = false;
-		hrMarker = false;
-		ResetTimer::Stop();
-		return;
+		if (++counter > RST_TIM)
+		{
+			if (state & 0x08U) driver.DrivePowerHigh();
+			else driver.DriveResetHigh();
+			state = 0;
+			counter = 0;
+		}
 	}
 
-	ResetTimer::Stop();
-
-	// usually we reach this point after pin been pulled down
-	// so we have to bring pin in floating input mode
-
-
-	// finally make soft reset on PWR pin
-	if (srMarker)
+	if (state & 0x02U)
 	{
-
-		ResetTimer::Run(RST_TIM);
-		srMarker = false;
-		hrMarker = false;
+		if (++counter > HR_LO_TIM)
+		{
+			driver.DrivePowerHigh();
+			state = 0x14;
+			counter = 0;
+		}
 	}
 
-	// if we have hard reset we should wait couple of
-	// seconds and make soft reset on PWR pin (see above)
-	if (hrMarker)
+	if (state & 0x04U)
 	{
-		ResetTimer::Run(HR_HI_TIM);
-		hrMarker = false;
-		srMarker = true;
+		if (++counter > HR_HI_TIM)
+		{
+			driver.DrivePowerLow();
+			state = 0x19;
+			counter = 0;
+		}
 	}
 }

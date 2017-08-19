@@ -42,13 +42,13 @@ public:
 	virtual void SetHardResetTimeout(uint8_t timeout) = 0;
 
 	/**
-	 * \brief Set soft reset attempts count.
+	 * \brief Set soft reset attempts count + 1.
 	 * \param attempts Attempts count.
 	 */
 	virtual void SetSoftResetAttempts(uint8_t attempts) = 0;
         
 	/**
-	 * \brief Set hard reset attempts count.
+	 * \brief Set hard reset attempts count + 1.
 	 * \param attempts Attempts count.
 	 */
 	virtual void SetHardResetAttempts(uint8_t attempts) = 0;
