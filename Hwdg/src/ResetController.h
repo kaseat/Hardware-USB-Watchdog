@@ -4,6 +4,9 @@
 #include "IResetController.h"
 #include "IRebooter.h"
 
+/**
+ * \brief Reset controller assumes Callback() calls every 1 ms.
+ */
 class ResetController : public ISubscriber, public IResetController
 {
 public:

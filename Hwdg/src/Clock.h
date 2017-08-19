@@ -1,5 +1,4 @@
 #pragma once
-#include <stdint.h>
 
 enum  CpuFreq
 {
@@ -16,11 +15,14 @@ public:
 	 * \brief Get current CPU frequency.
 	 * \return Returns current CPU freqency.
 	 */
-	static CpuFreq GetCpuFreq(void);
+	static CpuFreq GetCpuFreq();
 
 	/**
 	 * \brief Set CPU frequency.
 	 * \param freq Freqency we wanna set.
 	 */
 	static void SetCpuFreq(CpuFreq freq);
+
+private:
+	static CpuFreq currentFrq;
 };

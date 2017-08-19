@@ -21,9 +21,6 @@
     <Filter Include="Drivers\Clock">
       <UniqueIdentifier>{0ec811b8-0d7a-4d2a-a4ae-18eb8c10009b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Drivers\BaseTimer">
-      <UniqueIdentifier>{d87c1657-06d8-43de-82d3-e453560d8f0e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="App\CommandManager">
       <UniqueIdentifier>{efa1b259-dbbc-4f0d-a62c-1182d6a9ebee}</UniqueIdentifier>
     </Filter>
@@ -36,6 +33,9 @@
     <Filter Include="App\GpioRebooter">
       <UniqueIdentifier>{73fb09fb-073b-4bfb-840e-a7d768f134c5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Drivers\Timer">
+      <UniqueIdentifier>{d87c1657-06d8-43de-82d3-e453560d8f0e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -43,9 +43,6 @@
     </ClCompile>
     <ClCompile Include="src\Clock.cpp">
       <Filter>Drivers\Clock</Filter>
-    </ClCompile>
-    <ClCompile Include="src\BaseTimer.cpp">
-      <Filter>Drivers\BaseTimer</Filter>
     </ClCompile>
     <ClCompile Include="src\CommandManager.cpp">
       <Filter>App\CommandManager</Filter>
@@ -62,13 +59,13 @@
     <ClCompile Include="src\ResetTimer.cpp">
       <Filter>Drivers</Filter>
     </ClCompile>
+    <ClCompile Include="src\Timer.cpp">
+      <Filter>Drivers\Timer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Clock.h">
       <Filter>Drivers\Clock</Filter>
-    </ClInclude>
-    <ClInclude Include="src\BaseTimer.h">
-      <Filter>Drivers\BaseTimer</Filter>
     </ClInclude>
     <ClInclude Include="src\CommandManager.h">
       <Filter>App\CommandManager</Filter>
@@ -93,6 +90,9 @@
     </ClInclude>
     <ClInclude Include="src\ResetTimer.h">
       <Filter>Drivers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Timer.h">
+      <Filter>Drivers\Timer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

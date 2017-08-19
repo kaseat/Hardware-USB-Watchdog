@@ -1,8 +1,13 @@
 #pragma once
-
 #include "ISubscriber.h"
-#define MAX_SUBSCRIBERS 3
 
+#ifndef MAX_SUBSCRIBERS
+#define MAX_SUBSCRIBERS 2
+#endif
+
+/**
+ * \brief Represents timer class.
+ */
 class Timer
 {
 public:
@@ -29,6 +34,6 @@ public:
 	static void UnsubscribeOnElapse(ISubscriber& sbcr);
 
 private:
-	static ISubscriber* subscriber[MAX_SUBSCRIBERS];
+	static ISubscriber* subscribers[MAX_SUBSCRIBERS];
 	static void OnElapse();
 };

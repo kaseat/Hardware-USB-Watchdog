@@ -35,12 +35,7 @@ public:
 	*/
 	static void SendData(uint8_t * data, uint8_t len);
 
-protected:
-	/**
-	 * \brief Fires on UART byte received.
-	 */
-	static void OnByteRecivied();
-
 private:
+	static void OnByteRecivied();
 	static ISubscriber* subscriber;
 };

@@ -1,28 +1,34 @@
 #include "stdafx.h"
 #include "fakeit.hpp"
 #include "CppUnitTest.h"
+
+#define private public
 #include "../Hwdg/src/Uart.h"
+#include "../Hwdg/src/Uart.cpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace HwdgTests
 {		
-	TEST_CLASS(UartTest), Uart
+	TEST_CLASS(UartTest)
 	{
 	public:
 		
 		TEST_METHOD(VerifyCallbackFiredOnByteRecivied)
 		{
+			// Arrange
 			fakeit::Mock<ISubscriber> subscriber;
-			fakeit::When(Method(subscriber, Callback)).Return();
+			fakeit::When(Method(subscriber, Callback)).AlwaysReturn();
 			auto& sb = subscriber.get();
-
-			Uart::Init(9600);
 			Uart::SubscribeOnByteRecivied(sb);
+
+			// Act
+			Uart::OnByteRecivied();
 			Uart::OnByteRecivied();
 
-			fakeit::Verify(Method(subscriber, Callback));
+			// Assert
+			fakeit::Verify(Method(subscriber, Callback)).Twice();
+			Uart::UnsubscribeOnByteRecivied();
 		}
-
 	};
 }

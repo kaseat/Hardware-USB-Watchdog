@@ -4,8 +4,6 @@
 #include "ResetController.h"
 #include "CommandManager.h"
 
-
-
 int main()
 {
 	// Hardware init.

@@ -1,5 +1,5 @@
 #include "ResetController.h"
-#include "BaseTimer.h"
+#include "Timer.h"
 
 #define SR_DEF_TIMEOUT 10000U
 #define SR_TIMEBASE 1000U
@@ -86,12 +86,12 @@ void ResetController::SetHardResetTimeout(uint8_t timeout)
 
 void ResetController::SetSoftResetAttempts(uint8_t attempts)
 {
-	sAttemptDef = (attempts & ATTEMPTS_MASK) + 1;
+	sAttempt = sAttemptDef = (attempts & ATTEMPTS_MASK) + 1;
 }
 
 void ResetController::SetHardResetAttempts(uint8_t attempts)
 {
-	hAttemptDef = (attempts & ATTEMPTS_MASK) + 1;
+	hAttempt = hAttemptDef = (attempts & ATTEMPTS_MASK) + 1;
 }
 
 void ResetController::Callback(uint8_t data)

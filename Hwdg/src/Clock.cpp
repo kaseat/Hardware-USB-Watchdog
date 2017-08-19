@@ -1,12 +1,15 @@
 #include "Clock.h"
-CpuFreq curentFreq = Freq2Mhz;
+#include <stdint.h>
+
+CpuFreq Clock::currentFrq = Freq2Mhz;
 
 CpuFreq Clock::GetCpuFreq()
 {
-  return curentFreq;
+  return currentFrq;
 }
 
 void Clock::SetCpuFreq(CpuFreq freq)
 {
-
+	currentFrq = freq;
+	// Set CPU freq logic
 }

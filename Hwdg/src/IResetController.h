@@ -15,12 +15,12 @@ public:
 	virtual void DisableSoftReset() = 0;
 
 	/**
-	* \brief Allow watchdog restart computer via reset button.
+	* \brief Allow watchdog restart computer via power button.
 	*/
 	virtual void EnableHardReset() = 0;
 
 	/**
-	* \brief Disable watchdog restart computer via reset button.
+	* \brief Disable watchdog restart computer via power button.
 	*/
 	virtual void DisableHardReset() = 0;
 
