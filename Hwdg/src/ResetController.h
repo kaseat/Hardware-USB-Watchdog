@@ -1,13 +1,13 @@
 #pragma once
 #include <stdint.h>
 #include "ISubscriber.h"
-#include "IResetController.h"
-#include "IRebooter.h"
+#include "Rebooter.h"
+#include "Timer.h"
 
 /**
  * \brief Reset controller assumes Callback() calls every 1 ms.
  */
-class ResetController : public ISubscriber, public IResetController
+class ResetController : ISubscriber
 {
 public:
 
@@ -15,7 +15,7 @@ public:
 	 * \brief Create istnce of Reset controller.
 	 * \param rb Rebooter reference.
 	 */
-	ResetController(IRebooter & rb);
+	ResetController(Timer & timer, Rebooter & rb);
 
 	/**
 	 * \brief Dispose reset controller.
@@ -25,55 +25,55 @@ public:
 	/**
 	 * \brief Allow watchdog restart computer via reset button.
 	 */
-	void EnableSoftReset();
+	virtual void EnableSoftReset();
 
 	/**
 	 * \brief Disable watchdog restart computer via reset button.
 	 */
-	void DisableSoftReset();
+	virtual void DisableSoftReset();
 
 	/**
 	* \brief Allow watchdog restart computer via reset button.
 	*/
-	void EnableHardReset();
+	virtual void EnableHardReset();
 
 	/**
 	* \brief Disable watchdog restart computer via reset button.
 	*/
-	void DisableHardReset();
+	virtual void DisableHardReset();
 
 	/**
 	 * \brief Ping watchdog.
 	 */
-	void Ping();
+	virtual void Ping();
 
 	/**
-	 * \brief Set soft reset timeout.
-	 * \param timeout Timeout (1-63).
+	 * \brief Set response timeout.
+	 * \param timeout Timeout (0-63).
 	 */
-	void SetSoftResetTimeout(uint8_t timeout);
+	virtual void SetResponseTimeout(uint8_t timeout);
         
 	 /**
-	 * \brief Set hard reset timeout.
-	 * \param timeout Timeout(1-127).
+	 * \brief Set reset timeout.
+	 * \param timeout Timeout(0-127).
 	 */
-	void SetHardResetTimeout(uint8_t timeout);
+	virtual void SetResetTimeout(uint8_t timeout);
 
 	/**
 	 * \brief Set soft reset attempts count.
 	 * \param attempts Attempts count.
 	 */
-	void SetSoftResetAttempts(uint8_t attempts);
+	virtual void SetSoftResetAttempts(uint8_t attempts);
 
 	/**
 	 * \brief Set hard reset attempts count.
 	 * \param attempts Attempts count.
 	 */
-	void SetHardResetAttempts(uint8_t attempts);
+	virtual void SetHardResetAttempts(uint8_t attempts);
 private:
 	void Callback(uint8_t data);
-
-	IRebooter& rebooter;
+	Timer & timer;
+	Rebooter& rebooter;
 	uint32_t counter;
 	uint32_t softResetTimeout;
 	uint32_t hardResetTimeout;

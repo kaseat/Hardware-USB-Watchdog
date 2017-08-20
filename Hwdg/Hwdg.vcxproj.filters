@@ -30,14 +30,14 @@
     <Filter Include="App\ResetController">
       <UniqueIdentifier>{353172a7-66ea-4cef-8949-7ffe1155008d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="App\GpioRebooter">
-      <UniqueIdentifier>{73fb09fb-073b-4bfb-840e-a7d768f134c5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Drivers\Timer">
       <UniqueIdentifier>{d87c1657-06d8-43de-82d3-e453560d8f0e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Drivers\Gpio">
       <UniqueIdentifier>{cba975d4-39ca-4cc9-a06d-c4cf1a9f2c5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Rebooter">
+      <UniqueIdentifier>{73fb09fb-073b-4bfb-840e-a7d768f134c5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -57,7 +57,7 @@
       <Filter>Drivers\Timer</Filter>
     </ClCompile>
     <ClCompile Include="src\Rebooter.cpp">
-      <Filter>App\GpioRebooter</Filter>
+      <Filter>App\Rebooter</Filter>
     </ClCompile>
     <ClCompile Include="src\GpioDriver.cpp">
       <Filter>Drivers\Gpio</Filter>
@@ -73,12 +73,6 @@
     <ClInclude Include="src\CommandManager.h">
       <Filter>App\CommandManager</Filter>
     </ClInclude>
-    <ClInclude Include="src\IRebooter.h">
-      <Filter>App\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\IResetController.h">
-      <Filter>App\Common</Filter>
-    </ClInclude>
     <ClInclude Include="src\ISubscriber.h">
       <Filter>App\Common</Filter>
     </ClInclude>
@@ -92,7 +86,7 @@
       <Filter>Drivers\Timer</Filter>
     </ClInclude>
     <ClInclude Include="src\Rebooter.h">
-      <Filter>App\GpioRebooter</Filter>
+      <Filter>App\Rebooter</Filter>
     </ClInclude>
     <ClInclude Include="src\GpioDriver.h">
       <Filter>Drivers\Gpio</Filter>

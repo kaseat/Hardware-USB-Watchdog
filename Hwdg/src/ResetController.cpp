@@ -16,8 +16,9 @@
 
 #define CNTR_RST 0
 
-ResetController::ResetController(IRebooter& rb)
-	: rebooter(rb)
+ResetController::ResetController(Timer & time, Rebooter& rb)
+	: timer(time)
+	, rebooter(rb)
 	, counter(CNTR_RST)
 	, softResetTimeout(SR_DEF_TIMEOUT)
 	, hardResetTimeout(HR_DEF_TIMEOUT)
@@ -29,14 +30,12 @@ ResetController::ResetController(IRebooter& rb)
 	, sAttemptDef(SR_ATTEMPTS)
 	, hAttemptDef(HR_ATTEMPTS)
 {
-	Timer::Run();
-	Timer::SubscribeOnElapse(*this);
+	timer.SubscribeOnElapse(*this);
 }
 
 ResetController::~ResetController()
 {
-	Timer::UnsubscribeOnElapse(*this);
-	Timer::Stop();
+	timer.UnsubscribeOnElapse(*this);
 }
 
 void ResetController::EnableSoftReset()
@@ -72,13 +71,13 @@ void ResetController::Ping()
 	softRebootOccured = false;
 }
 
-void ResetController::SetSoftResetTimeout(uint8_t timeout)
+void ResetController::SetResponseTimeout(uint8_t timeout)
 {
 	counter = CNTR_RST;
 	softResetTimeout = ((timeout & SR_MASK) + 1) * SR_TIMEBASE;
 }
 
-void ResetController::SetHardResetTimeout(uint8_t timeout)
+void ResetController::SetResetTimeout(uint8_t timeout)
 {
 	counter = CNTR_RST;
 	hardResetTimeout = HR_MIN_TIMEOUT + (timeout & HR_MASK) * HR_TIMEBASE;

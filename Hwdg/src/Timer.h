@@ -1,8 +1,8 @@
 #pragma once
 #include "ISubscriber.h"
 
-#ifndef MAX_SUBSCRIBERS
-#define MAX_SUBSCRIBERS 2
+#ifndef MAX_TIMER_SUBSCRIBERS
+#define MAX_TIMER_SUBSCRIBERS 3
 #endif
 
 /**
@@ -11,29 +11,45 @@
 class Timer
 {
 public:
+
+	/**
+	 * \brief Create Timer instance.
+	 */
+	Timer();
+
+	/**
+	 * \brief Dispose Timer.
+	 */
+	virtual ~Timer() = default;
+
 	/**
 	* \brief Run timer as 1 ms timebase.
 	*/
-	static void Run();
+	virtual void Run();
 
 	/**
 	* \brief Stop timer.
 	*/
-	static void Stop();
+	virtual void Stop();
 
 	/**
 	* \brief Add handler on timer elapse.
 	* \param sbcr Subscriber.
 	*/
-	static void SubscribeOnElapse(ISubscriber& sbcr);
+	virtual void SubscribeOnElapse(ISubscriber& sbcr);
 
 	/**
 	* \brief Remove handler on timer elapse.
 	* \param sbcr Subscriber.
 	*/
-	static void UnsubscribeOnElapse(ISubscriber& sbcr);
+	virtual void UnsubscribeOnElapse(ISubscriber& sbcr);
 
+	/**
+	 * \brief Occures on timer elapse.
+	 */
+	void OnElapse();
 private:
-	static ISubscriber* subscribers[MAX_SUBSCRIBERS];
-	static void OnElapse();
+
+	ISubscriber* subscribers[MAX_TIMER_SUBSCRIBERS];
+	bool disposed;
 };

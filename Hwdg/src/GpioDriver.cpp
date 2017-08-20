@@ -14,3 +14,11 @@ void GpioDriver::DrivePowerLow()
 void GpioDriver::DrivePowerHigh()
 {
 }
+
+void GpioDriver::DriveLedLow()
+{
+}
+
+void GpioDriver::DriveLedHigh()
+{
+}

@@ -1,8 +1,8 @@
 #pragma once
-
 #include <stdint.h>
 #include "ISubscriber.h"
-#include "IResetController.h"
+#include  "ResetController.h"
+#include "Uart.h"
 
 class CommandManager :ISubscriber
 {
@@ -11,7 +11,7 @@ public:
 	 * \brief Create instance of command manager.
 	 * \param rctr Reset controller.
 	 */
-	CommandManager(IResetController& rctr);
+	CommandManager(Uart& uart, ResetController& rctr);
 
 	/**
 	 * \brief Dispose Reset controller.
@@ -19,6 +19,7 @@ public:
 	virtual ~CommandManager();
 
 private:
-	IResetController& resetController;
+	Uart& uart;
+	ResetController& resetController;
 	void Callback(uint8_t data);
 };

@@ -8,6 +8,9 @@ enum  CpuFreq
 	Freq16Mhz = 16000000U
 };
 
+/**
+ * \brief Represents clock control driver.
+ */
 class Clock
 {
 public:

@@ -1,19 +1,39 @@
 #pragma once
-
 #include <stdint.h>
-#include "IRebooter.h"
 #include "ISubscriber.h"
 #include "GpioDriver.h"
+#include "Timer.h"
 
-class Rebooter : public ISubscriber, public IRebooter
+/**
+ * \brief Implements reboot logic
+ */
+class Rebooter : ISubscriber
 {
 public:
-	Rebooter(GpioDriver& driver);
+	/**
+	 * \brief Create Rebooter instance.
+	 * \param timer Time base source.
+	 * \param driver GPIO pin driver.
+	 */
+	Rebooter(Timer& timer, GpioDriver& driver);
+
+	/**
+	 * \brief Dispose Rebooter.
+	 */
 	~Rebooter();
-	void HardReset();
-	void SoftReset();
+
+	/**
+	 * \brief Satrt hard reset sequence.
+	 */
+	virtual void HardReset();
+
+	/**
+	 * \brief Start soft reset sequence.
+	 */
+	virtual void SoftReset();
 
 private:
+	Timer& timer;
 	GpioDriver& driver;
 	uint_least8_t state;
 	uint_fast16_t counter;

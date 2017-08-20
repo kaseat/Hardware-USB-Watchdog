@@ -9,14 +9,16 @@ int main()
 {
 	// Hardware init.
 	Clock::SetCpuFreq(Freq16Mhz);
-	Uart::Init(9600);
-	Uart::SendByte(0x33);
-
+	Uart uart = {};
+	uart.Init(9600);
+	uart.SendByte(0x33);
+	Timer timer = {};
+	timer.Run();
 	// Create reset controller with GPIO rebooter.
 	GpioDriver drw = {};
-	Rebooter rebooter(drw);
-	ResetController controller(rebooter);
-	CommandManager mgr(controller);
+	Rebooter rebooter(timer,drw);
+	ResetController controller(timer, rebooter);
+	CommandManager mgr(uart,controller);
 
 	for (;;)
 		;

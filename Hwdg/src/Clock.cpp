@@ -1,5 +1,4 @@
 #include "Clock.h"
-#include <stdint.h>
 
 CpuFreq Clock::currentFrq = Freq2Mhz;
 

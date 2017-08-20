@@ -13,22 +13,26 @@ namespace HwdgTests
 	TEST_CLASS(UartTest)
 	{
 	public:
-		
-		TEST_METHOD(VerifyCallbackFiredOnByteRecivied)
+
+		/**
+		* \brief ID:
+		*/
+		TEST_METHOD(VerifyCallbackFiredOnByteReceived)
 		{
 			// Arrange
 			fakeit::Mock<ISubscriber> subscriber;
 			fakeit::When(Method(subscriber, Callback)).AlwaysReturn();
 			auto& sb = subscriber.get();
-			Uart::SubscribeOnByteRecivied(sb);
+			Uart uart = {};
 
 			// Act
-			Uart::OnByteRecivied();
-			Uart::OnByteRecivied();
+			uart.SubscribeOnByteReceived(sb);
+			uart.OnByteReceived();
+			uart.OnByteReceived();
 
 			// Assert
 			fakeit::Verify(Method(subscriber, Callback)).Twice();
-			Uart::UnsubscribeOnByteRecivied();
+			uart.UnsubscribeOnByteReceived();
 		}
 	};
 }

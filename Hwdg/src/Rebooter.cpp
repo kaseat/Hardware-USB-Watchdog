@@ -1,19 +1,18 @@
 #include "Rebooter.h"
 #include "Timer.h"
 
-
 #define RST_TIM 200U
 #define HR_LO_TIM 6000U
 #define HR_HI_TIM 2000U
 
-Rebooter::Rebooter(GpioDriver& driver) :driver(driver), state(0), counter(0)
+Rebooter::Rebooter(Timer& tmr, GpioDriver& driver) :timer(tmr), driver(driver), state(0), counter(0)
 {
-	Timer::SubscribeOnElapse(*this);
+	timer.SubscribeOnElapse(*this);
 }
 
 Rebooter::~Rebooter()
 {
-	Timer::UnsubscribeOnElapse(*this);
+	timer.UnsubscribeOnElapse(*this);
 }
 
 void Rebooter::HardReset()
