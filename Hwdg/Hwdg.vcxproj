@@ -74,7 +74,11 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -110,21 +114,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="GpioDriver.cpp" />
+    <ClCompile Include="src\GpioDriver.cpp" />
     <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\Clock.cpp" />
     <ClCompile Include="src\CommandManager.cpp" />
-    <ClCompile Include="src\GpioRebooter.cpp" />
+    <ClCompile Include="src\Rebooter.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ResetController.cpp" />
     <ClCompile Include="src\Uart.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GpioDriver.h" />
+    <ClInclude Include="src\GpioDriver.h" />
     <ClInclude Include="src\Timer.h" />
     <ClInclude Include="src\Clock.h" />
     <ClInclude Include="src\CommandManager.h" />
-    <ClInclude Include="src\GpioRebooter.h" />
+    <ClInclude Include="src\Rebooter.h" />
     <ClInclude Include="src\IRebooter.h" />
     <ClInclude Include="src\IResetController.h" />
     <ClInclude Include="src\ISubscriber.h" />

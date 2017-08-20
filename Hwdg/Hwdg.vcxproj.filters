@@ -36,11 +36,11 @@
     <Filter Include="Drivers\Timer">
       <UniqueIdentifier>{d87c1657-06d8-43de-82d3-e453560d8f0e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Drivers\Gpio">
+      <UniqueIdentifier>{cba975d4-39ca-4cc9-a06d-c4cf1a9f2c5a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Clock.cpp">
       <Filter>Drivers\Clock</Filter>
     </ClCompile>
@@ -53,14 +53,17 @@
     <ClCompile Include="src\ResetController.cpp">
       <Filter>App\ResetController</Filter>
     </ClCompile>
-    <ClCompile Include="src\GpioRebooter.cpp">
-      <Filter>App\GpioRebooter</Filter>
-    </ClCompile>
     <ClCompile Include="src\Timer.cpp">
       <Filter>Drivers\Timer</Filter>
     </ClCompile>
-    <ClCompile Include="GpioDriver.cpp">
+    <ClCompile Include="src\Rebooter.cpp">
       <Filter>App\GpioRebooter</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GpioDriver.cpp">
+      <Filter>Drivers\Gpio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>App</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -85,14 +88,14 @@
     <ClInclude Include="src\ResetController.h">
       <Filter>App\ResetController</Filter>
     </ClInclude>
-    <ClInclude Include="src\GpioRebooter.h">
-      <Filter>App\GpioRebooter</Filter>
-    </ClInclude>
     <ClInclude Include="src\Timer.h">
       <Filter>Drivers\Timer</Filter>
     </ClInclude>
-    <ClInclude Include="GpioDriver.h">
+    <ClInclude Include="src\Rebooter.h">
       <Filter>App\GpioRebooter</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GpioDriver.h">
+      <Filter>Drivers\Gpio</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,8 +1,9 @@
 #include "Uart.h"
 #include "Clock.h"
-#include "GpioRebooter.h"
+#include "Rebooter.h"
 #include "ResetController.h"
 #include "CommandManager.h"
+#include "GpioDriver.h"
 
 int main()
 {
@@ -13,7 +14,7 @@ int main()
 
 	// Create reset controller with GPIO rebooter.
 	GpioDriver drw = {};
-	GpioRebooter rebooter(drw);
+	Rebooter rebooter(drw);
 	ResetController controller(rebooter);
 	CommandManager mgr(controller);
 

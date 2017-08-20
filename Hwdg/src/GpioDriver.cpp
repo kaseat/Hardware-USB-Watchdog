@@ -1,5 +1,4 @@
 #include "GpioDriver.h"
-
 void GpioDriver::DriveResetLow()
 {
 }

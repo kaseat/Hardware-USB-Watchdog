@@ -3,13 +3,13 @@
 #include <stdint.h>
 #include "IRebooter.h"
 #include "ISubscriber.h"
-#include "../GpioDriver.h"
+#include "GpioDriver.h"
 
-class GpioRebooter : public ISubscriber, public IRebooter
+class Rebooter : public ISubscriber, public IRebooter
 {
 public:
-	GpioRebooter(GpioDriver driver);
-	~GpioRebooter();
+	Rebooter(GpioDriver& driver);
+	~Rebooter();
 	void HardReset();
 	void SoftReset();
 
