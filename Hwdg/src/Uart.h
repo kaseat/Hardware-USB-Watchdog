@@ -5,13 +5,11 @@
 class Uart
 {
 public:
-
-	Uart();
 	/**
 	* \brief Initialize UART with specified baud rate and cpu frequency.
 	* \param baudrate Target baud rate.
 	*/
-	void Init(uint32_t baudrate);
+	Uart(uint32_t baudrate);
         
 	/**
 	* \brief Add handler on byte recivied.
@@ -38,6 +36,6 @@ public:
 	void SendData(uint8_t * data, uint8_t len);
 
 private:
-	void OnByteReceived();
-	ISubscriber* subscriber;
+	static void OnByteReceived();
+	static ISubscriber* subscriber;
 };

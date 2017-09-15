@@ -1,14 +1,28 @@
 #include "Clock.h"
-
-CpuFreq Clock::currentFrq = Freq2Mhz;
+#include "STM8S003F3.h"
+CpuFreq curentFreq = Freq2Mhz;
 
 CpuFreq Clock::GetCpuFreq()
 {
-  return currentFrq;
+	return curentFreq;
 }
 
 void Clock::SetCpuFreq(CpuFreq freq)
 {
-	currentFrq = freq;
-	// Set CPU freq logic
+	curentFreq = freq;
+	switch (freq)
+	{
+	case Freq2Mhz:
+		CLK->CKDIVR = 3;
+		break;
+	case Freq4Mhz:
+		CLK->CKDIVR = 2;
+		break;
+	case Freq8Mhz:
+		CLK->CKDIVR = 1;
+		break;
+	case Freq16Mhz:
+		CLK->CKDIVR = 0;
+		break;
+	}
 }

@@ -13,14 +13,9 @@ class Timer
 public:
 
 	/**
-	 * \brief Create Timer instance.
-	 */
-	Timer();
-
-	/**
 	 * \brief Dispose Timer.
 	 */
-	virtual ~Timer() = default;
+	virtual ~Timer() {}
 
 	/**
 	* \brief Run timer as 1 ms timebase.
@@ -47,9 +42,8 @@ public:
 	/**
 	 * \brief Occures on timer elapse.
 	 */
-	void OnElapse();
+	static void OnElapse();
 private:
 
-	ISubscriber* subscribers[MAX_TIMER_SUBSCRIBERS];
-	bool disposed;
+	static ISubscriber* subscribers[MAX_TIMER_SUBSCRIBERS];
 };

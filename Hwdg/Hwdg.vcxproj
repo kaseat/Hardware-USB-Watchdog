@@ -115,6 +115,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\GpioDriver.cpp" />
+    <ClCompile Include="src\LedController.cpp" />
     <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\Clock.cpp" />
     <ClCompile Include="src\CommandManager.cpp" />
@@ -125,6 +126,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\GpioDriver.h" />
+    <ClInclude Include="src\LedController.h" />
+    <ClInclude Include="src\STM8S003F3.h" />
     <ClInclude Include="src\Timer.h" />
     <ClInclude Include="src\Clock.h" />
     <ClInclude Include="src\CommandManager.h" />

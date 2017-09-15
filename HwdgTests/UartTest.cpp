@@ -23,7 +23,7 @@ namespace HwdgTests
 			fakeit::Mock<ISubscriber> subscriber;
 			fakeit::When(Method(subscriber, Callback)).AlwaysReturn();
 			auto& sb = subscriber.get();
-			Uart uart = {};
+			Uart uart(9600);
 
 			// Act
 			uart.SubscribeOnByteReceived(sb);

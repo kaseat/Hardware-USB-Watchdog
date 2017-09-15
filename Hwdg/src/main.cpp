@@ -5,12 +5,12 @@
 #include "CommandManager.h"
 #include "GpioDriver.h"
 
+Uart uart(9600);
+
 int main()
 {
 	// Hardware init.
 	Clock::SetCpuFreq(Freq16Mhz);
-	Uart uart = {};
-	uart.Init(9600);
 	uart.SendByte(0x33);
 	Timer timer = {};
 	timer.Run();

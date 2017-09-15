@@ -6,6 +6,11 @@
 class GpioDriver
 {
 public:
+
+	/**
+	 * \brief Create instance of GPIO driver.
+	 */
+	GpioDriver();
 	/**
 	 * \brief Dispose GPIO driver.
 	 */
