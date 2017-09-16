@@ -14,7 +14,7 @@ public:
 	/**
 	 * \brief Dispose GPIO driver.
 	 */
-	virtual ~GpioDriver() {};
+	virtual ~GpioDriver() = default;
 	/**
 	 * \brief Drive reset pin low.
 	 */

@@ -12,10 +12,10 @@ int main()
 	// Hardware init.
 	Clock::SetCpuFreq(Freq16Mhz);
 	uart.SendByte(0x33);
-	Timer timer;
+	Timer timer = {};
 	timer.Run();
 	// Create reset controller with GPIO rebooter.
-	GpioDriver drw;
+	GpioDriver drw = {};
 	Rebooter rebooter(timer,drw);
 	ResetController controller(timer, rebooter);
 	CommandManager mgr(uart,controller);

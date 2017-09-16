@@ -37,9 +37,8 @@ void Rebooter::Callback(uint8_t data)
 	{
 		if (++counter >= RST_TIM)
 		{
-			state & 0x08U
-				? driver.DrivePowerHigh()
-				: driver.DriveResetHigh();
+			if (state & 0x08U) driver.DrivePowerHigh();
+			else driver.DriveResetHigh();
 			state = 0;
 			counter = 0;
 			return;

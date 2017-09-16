@@ -81,7 +81,7 @@ __interrupt void Timer::OnElapse()
 {
 TIM4->SR &= ~TIM4_SR_UIF;
 #else
-__interrupt void Timer::OnElapse()
+void Timer::OnElapse()
 {
 #endif
 	for (uint_fast8_t i = 0; i < MAX_TIMER_SUBSCRIBERS; i++)

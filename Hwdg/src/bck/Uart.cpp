@@ -2,7 +2,8 @@
 
 #ifdef __IAR_SYSTEMS_ICC__
 #include "Clock.h"
-#define UART_REGISTER (UART1->DR);
+#include "STM8S003F3.h"
+#define UART_REGISTER UART1->DR;
 #else
 #define UART_REGISTER 5
 #endif
@@ -63,8 +64,10 @@ void Uart::SendData(uint8_t* data, uint8_t len)
 
 #ifdef __IAR_SYSTEMS_ICC__
 #pragma vector=UART1_R_RXNE_ISR
-#endif
 __interrupt void Uart::OnByteReceived()
+#else
+void Uart::OnByteReceived()
+#endif
 {
 	if (subscriber == nullptr) return;
 	subscriber->Callback(UART_REGISTER);

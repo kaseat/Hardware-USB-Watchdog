@@ -17,6 +17,9 @@ namespace HwdgTests
 	{
 	public:		
 
+		/**
+		* \brief ID: 550001
+		*/
 		TEST_METHOD(VerifyLedControllerOffAndOffMode)
 		{
 			// Arrange
@@ -38,6 +41,9 @@ namespace HwdgTests
 			Verify(Method(driver, DriveLedHigh)).Never();			
 		}
 
+		/**
+		* \brief ID: 550002
+		*/
 		TEST_METHOD(VerifyLedControllerOffAndGlowMode)
 		{
 			// Arrange
@@ -59,6 +65,9 @@ namespace HwdgTests
 			Verify(Method(driver, DriveLedHigh)).Once();
 		}
 
+		/**
+		* \brief ID: 550003
+		*/
 		TEST_METHOD(VerifyLedControllerOffAndBlinkSlowMode)
 		{
 			// Arrange
@@ -83,6 +92,9 @@ namespace HwdgTests
 			Verify(Method(driver, DriveLedHigh)).Once();
 		}
 
+		/**
+		* \brief ID: 550004
+		*/
 		TEST_METHOD(VerifyLedControllerOffAndBlinkFastMode)
 		{
 			// Arrange
@@ -107,6 +119,9 @@ namespace HwdgTests
 			Verify(Method(driver, DriveLedHigh)).Once();
 		}
 
+		/**
+		* \brief ID: 550005
+		*/
 		TEST_METHOD(VerifyLedControllerGlowAndOffMode)
 		{
 			// Arrange
@@ -131,6 +146,9 @@ namespace HwdgTests
 			Verify(Method(driver, DriveLedHigh)).Once();
 		}
 
+		/**
+		* \brief ID: 550006
+		*/
 		TEST_METHOD(VerifyLedControllerGlowAndGlowMode)
 		{
 			// Arrange
@@ -155,6 +173,9 @@ namespace HwdgTests
 			Verify(Method(driver, DriveLedHigh)).Twice();
 		}
 
+		/**
+		* \brief ID: 550007
+		*/
 		TEST_METHOD(VerifyLedControllerGlowAndBlinkSlowMode)
 		{
 			// Arrange
@@ -179,6 +200,9 @@ namespace HwdgTests
 			Verify(Method(driver, DriveLedHigh)).Twice();
 		}
 
+		/**
+		* \brief ID: 550008
+		*/
 		TEST_METHOD(VerifyLedControllerGlowAndBlinkFastMode)
 		{
 			// Arrange
@@ -204,6 +228,9 @@ namespace HwdgTests
 			Verify(Method(driver, DriveLedHigh)).Exactly(3);
 		}
 
+		/**
+		* \brief ID: 550009
+		*/
 		TEST_METHOD(VerifyLedControllerBlinkSlowAndOffMode)
 		{
 			// Arrange
@@ -229,6 +256,9 @@ namespace HwdgTests
 			Verify(Method(driver, DriveLedHigh)).Once();
 		}
 
+		/**
+		* \brief ID: 550010
+		*/
 		TEST_METHOD(VerifyLedControllerBlinkSlowAndGlowMode)
 		{
 			// Arrange
@@ -260,6 +290,9 @@ namespace HwdgTests
 			Verify(Method(driver, DriveLedHigh)).Once();
 		}
 
+		/**
+		* \brief ID: 550011
+		*/
 		TEST_METHOD(VerifyLedControllerBlinkSlowAndBlinkSlowMode)
 		{
 			// Arrange
@@ -285,6 +318,9 @@ namespace HwdgTests
 			Verify(Method(driver, DriveLedHigh)).Twice();
 		}
 
+		/**
+		* \brief ID: 550012
+		*/
 		TEST_METHOD(VerifyLedControllerBlinkSlowAndBlinkFastMode)
 		{
 			// Arrange
@@ -310,6 +346,9 @@ namespace HwdgTests
 			Verify(Method(driver, DriveLedHigh)).Twice();
 		}
 
+		/**
+		* \brief ID: 550013
+		*/
 		TEST_METHOD(VerifyLedControllerBlinkFastAndOffMode)
 		{
 			// Arrange
@@ -335,6 +374,9 @@ namespace HwdgTests
 			Verify(Method(driver, DriveLedHigh)).Once();
 		}
 
+		/**
+		* \brief ID: 550014
+		*/
 		TEST_METHOD(VerifyLedControllerBlinkFastAndGlowMode)
 		{
 			// Arrange
@@ -360,6 +402,9 @@ namespace HwdgTests
 			Verify(Method(driver, DriveLedHigh)).Exactly(3);
 		}
 
+		/**
+		* \brief ID: 550015
+		*/
 		TEST_METHOD(VerifyLedControllerBlinkFastAndBlinkSlowMode)
 		{
 			// Arrange
@@ -385,6 +430,9 @@ namespace HwdgTests
 			Verify(Method(driver, DriveLedHigh)).Exactly(4);
 		}
 
+		/**
+		* \brief ID: 550016
+		*/
 		TEST_METHOD(VerifyLedControllerBlinkFastAndBlinkFastMode)
 		{
 			// Arrange

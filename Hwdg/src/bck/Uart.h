@@ -1,7 +1,6 @@
 #pragma once
 #include <stdint.h>
 #include "ISubscriber.h"
-#include "STM8S003F3.h"
 
 class Uart
 {
@@ -37,6 +36,6 @@ public:
 	void SendData(uint8_t * data, uint8_t len);
 
 private:
-	__interrupt static void OnByteReceived();
+	static void OnByteReceived();
 	static ISubscriber* subscriber;
 };

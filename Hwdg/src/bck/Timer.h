@@ -1,6 +1,5 @@
 #pragma once
 #include "ISubscriber.h"
-#include "STM8S003F3.h"
 
 #ifndef MAX_TIMER_SUBSCRIBERS
 #define MAX_TIMER_SUBSCRIBERS 3
@@ -43,7 +42,7 @@ public:
 	/**
 	 * \brief Occures on timer elapse.
 	 */
-	__interrupt static void OnElapse();
+	static void OnElapse();
 private:
 
 	static ISubscriber* subscribers[MAX_TIMER_SUBSCRIBERS];
