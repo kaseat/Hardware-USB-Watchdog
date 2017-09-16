@@ -1,5 +1,4 @@
 #pragma once
-#include <stdint.h>
 #include "ISubscriber.h"
 #include "GpioDriver.h"
 #include "Timer.h"

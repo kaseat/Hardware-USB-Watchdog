@@ -2,12 +2,14 @@
 #include "fakeit.hpp"
 #include "CppUnitTest.h"
 
+#define RST_TIM 10U
+#define HR_LO_TIM 60U
+#define HR_HI_TIM 20U
+#define INFINITE 10000U
 #include "../Hwdg/src/Timer.h"
 #include "../Hwdg/src/Rebooter.h"
+#include "../Hwdg/src/Rebooter.cpp"
 
-#define RST_TIM 200U
-#define HR_LO_TIM 6000U
-#define HR_HI_TIM 2000U
 
 
 
@@ -58,6 +60,28 @@ namespace HwdgTests
 
 			// Act
 			rebooter.SoftReset();
+			for (auto i = 0; i < INFINITE; i++)
+				timer.OnElapse();
+
+			// Assert
+			Verify(Method(driver, DriveResetLow) + Method(driver, DriveResetHigh)).Once();
+		}
+
+		/**
+		* \brief ID:
+		*/
+		TEST_METHOD(VerifyGpioDriverDriveSoftResetTiming)
+		{
+			// Arrange
+			Mock<GpioDriver> driver;
+			When(Method(driver, DriveResetLow)).AlwaysReturn();
+			When(Method(driver, DriveResetHigh)).AlwaysReturn();
+
+			auto& dr = driver.get();
+			Rebooter rebooter(timer, dr);
+
+			// Act
+			rebooter.SoftReset();
 			for (auto i = 0; i < RST_TIM; i++)
 				timer.OnElapse();
 
@@ -80,10 +104,50 @@ namespace HwdgTests
 
 			// Act
 			rebooter.HardReset();
-			for (auto i = 0; i < HR_LO_TIM + HR_HI_TIM + RST_TIM; i++)
+			for (auto i = 0; i < INFINITE; i++)
 				timer.OnElapse();
 
 			// Assert
+			Verify(Method(driver, DrivePowerLow) +
+				Method(driver, DrivePowerHigh) +
+				Method(driver, DrivePowerLow) +
+				Method(driver, DrivePowerHigh)).Once();
+		}
+
+		/**
+		* \brief ID:
+		*/
+		TEST_METHOD(VerifyGpioDriverDriveHardResetTiming)
+		{
+			// Arrange
+			Mock<GpioDriver> driver;
+			When(Method(driver, DrivePowerLow)).AlwaysReturn();
+			When(Method(driver, DrivePowerHigh)).AlwaysReturn();
+
+			auto& dr = driver.get();
+			Rebooter rebooter(timer, dr);
+
+			// Act & Assert
+			rebooter.HardReset();
+			Verify(Method(driver, DrivePowerLow)).Once();
+			Verify(Method(driver, DrivePowerHigh)).Never();
+
+			for (auto i = 0; i < HR_LO_TIM; i++)
+				timer.OnElapse();
+
+			Verify(Method(driver, DrivePowerLow) +
+				Method(driver, DrivePowerHigh)).Once();
+
+			for (auto i = 0; i < HR_HI_TIM; i++)
+				timer.OnElapse();
+
+			Verify(Method(driver, DrivePowerLow) +
+				Method(driver, DrivePowerHigh) +
+				Method(driver, DrivePowerLow)).Once();
+
+			for (auto i = 0; i < RST_TIM; i++)
+				timer.OnElapse();
+
 			Verify(Method(driver, DrivePowerLow) +
 				Method(driver, DrivePowerHigh) +
 				Method(driver, DrivePowerLow) +

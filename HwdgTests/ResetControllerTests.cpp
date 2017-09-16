@@ -8,12 +8,12 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace fakeit;
 
+
 namespace HwdgTests
 {
 	TEST_CLASS(ResetControllerTests)
 	{
 	public:
-
 		/**
 		* \brief ID:500001 Verify no soft and hard reset without Start and HRon commands
 		*/
@@ -24,8 +24,16 @@ namespace HwdgTests
 			When(Method(rebooter, SoftReset)).AlwaysReturn();
 			When(Method(rebooter, HardReset)).AlwaysReturn();
 			auto& rb = rebooter.get();
+
+			Mock<LedController> ledController;
+			When(Method(ledController, Off)).AlwaysReturn();
+			When(Method(ledController, Glow)).AlwaysReturn();
+			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkSlow)).AlwaysReturn();
+
+			auto& rs = ledController.get();
 			Timer timer = {};
-			ResetController rc(timer,rb);
+			ResetController rc(timer,rb, rs);
 
 			// Act
 			for (auto i = 0; i < 100000; i++)
@@ -46,8 +54,16 @@ namespace HwdgTests
 			When(Method(rebooter, SoftReset)).AlwaysReturn();
 			When(Method(rebooter, HardReset)).AlwaysReturn();
 			auto& rb = rebooter.get();
+
+			Mock<LedController> ledController;
+			When(Method(ledController, Off)).AlwaysReturn();
+			When(Method(ledController, Glow)).AlwaysReturn();
+			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkSlow)).AlwaysReturn();
+
+			auto& rs = ledController.get();
 			Timer timer = {};
-			ResetController rc(timer,rb);
+			ResetController rc(timer, rb, rs);
 
 			// Act
 			rc.SetHardResetAttempts(5);
@@ -72,8 +88,16 @@ namespace HwdgTests
 			When(Method(rebooter, SoftReset)).AlwaysReturn();
 			When(Method(rebooter, HardReset)).AlwaysReturn();
 			auto& rb = rebooter.get();
+
+			Mock<LedController> ledController;
+			When(Method(ledController, Off)).AlwaysReturn();
+			When(Method(ledController, Glow)).AlwaysReturn();
+			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkSlow)).AlwaysReturn();
+
+			auto& rs = ledController.get();
 			Timer timer = {};
-			ResetController rc(timer, rb);
+			ResetController rc(timer, rb, rs);
 
 			// Act
 			rc.EnableSoftReset();
@@ -95,8 +119,16 @@ namespace HwdgTests
 			When(Method(rebooter, SoftReset)).AlwaysReturn();
 			When(Method(rebooter, HardReset)).AlwaysReturn();
 			auto& rb = rebooter.get();
+
+			Mock<LedController> ledController;
+			When(Method(ledController, Off)).AlwaysReturn();
+			When(Method(ledController, Glow)).AlwaysReturn();
+			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkSlow)).AlwaysReturn();
+
+			auto& rs = ledController.get();
 			Timer timer = {};
-			ResetController rc(timer, rb);
+			ResetController rc(timer, rb, rs);
 
 			// Act
 			rc.SetResponseTimeout(0);
@@ -119,8 +151,16 @@ namespace HwdgTests
 			When(Method(rebooter, SoftReset)).AlwaysReturn();
 			When(Method(rebooter, HardReset)).AlwaysReturn();
 			auto& rb = rebooter.get();
+
+			Mock<LedController> ledController;
+			When(Method(ledController, Off)).AlwaysReturn();
+			When(Method(ledController, Glow)).AlwaysReturn();
+			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkSlow)).AlwaysReturn();
+
+			auto& rs = ledController.get();
 			Timer timer = {};
-			ResetController rc(timer, rb);
+			ResetController rc(timer, rb, rs);
 
 			// Act
 			rc.SetResponseTimeout(127);
@@ -143,8 +183,16 @@ namespace HwdgTests
 			When(Method(rebooter, SoftReset)).AlwaysReturn();
 			When(Method(rebooter, HardReset)).AlwaysReturn();
 			auto& rb = rebooter.get();
+
+			Mock<LedController> ledController;
+			When(Method(ledController, Off)).AlwaysReturn();
+			When(Method(ledController, Glow)).AlwaysReturn();
+			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkSlow)).AlwaysReturn();
+
+			auto& rs = ledController.get();
 			Timer timer = {};
-			ResetController rc(timer, rb);
+			ResetController rc(timer, rb, rs);
 
 			// Act
 			rc.SetResponseTimeout(22);
@@ -167,8 +215,16 @@ namespace HwdgTests
 			When(Method(rebooter, SoftReset)).AlwaysReturn();
 			When(Method(rebooter, HardReset)).AlwaysReturn();
 			auto& rb = rebooter.get();
+
+			Mock<LedController> ledController;
+			When(Method(ledController, Off)).AlwaysReturn();
+			When(Method(ledController, Glow)).AlwaysReturn();
+			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkSlow)).AlwaysReturn();
+
+			auto& rs = ledController.get();
 			Timer timer = {};
-			ResetController rc(timer, rb);
+			ResetController rc(timer, rb, rs);
 
 			// Act
 			rc.EnableSoftReset();
@@ -191,8 +247,16 @@ namespace HwdgTests
 			When(Method(rebooter, SoftReset)).AlwaysReturn();
 			When(Method(rebooter, HardReset)).AlwaysReturn();
 			auto& rb = rebooter.get();
+
+			Mock<LedController> ledController;
+			When(Method(ledController, Off)).AlwaysReturn();
+			When(Method(ledController, Glow)).AlwaysReturn();
+			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkSlow)).AlwaysReturn();
+
+			auto& rs = ledController.get();
 			Timer timer = {};
-			ResetController rc(timer, rb);
+			ResetController rc(timer, rb, rs);
 
 			// Act
 			rc.EnableSoftReset();
@@ -215,8 +279,16 @@ namespace HwdgTests
 			When(Method(rebooter, SoftReset)).AlwaysReturn();
 			When(Method(rebooter, HardReset)).AlwaysReturn();
 			auto& rb = rebooter.get();
+
+			Mock<LedController> ledController;
+			When(Method(ledController, Off)).AlwaysReturn();
+			When(Method(ledController, Glow)).AlwaysReturn();
+			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkSlow)).AlwaysReturn();
+
+			auto& rs = ledController.get();
 			Timer timer = {};
-			ResetController rc(timer, rb);
+			ResetController rc(timer, rb, rs);
 
 			// Act
 			rc.EnableSoftReset();
@@ -239,8 +311,16 @@ namespace HwdgTests
 			When(Method(rebooter, SoftReset)).AlwaysReturn();
 			When(Method(rebooter, HardReset)).AlwaysReturn();
 			auto& rb = rebooter.get();
+
+			Mock<LedController> ledController;
+			When(Method(ledController, Off)).AlwaysReturn();
+			When(Method(ledController, Glow)).AlwaysReturn();
+			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkSlow)).AlwaysReturn();
+
+			auto& rs = ledController.get();
 			Timer timer = {};
-			ResetController rc(timer, rb);
+			ResetController rc(timer, rb, rs);
 
 			// Act
 			rc.EnableSoftReset();
@@ -263,8 +343,16 @@ namespace HwdgTests
 			When(Method(rebooter, SoftReset)).AlwaysReturn();
 			When(Method(rebooter, HardReset)).AlwaysReturn();
 			auto& rb = rebooter.get();
+
+			Mock<LedController> ledController;
+			When(Method(ledController, Off)).AlwaysReturn();
+			When(Method(ledController, Glow)).AlwaysReturn();
+			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkSlow)).AlwaysReturn();
+
+			auto& rs = ledController.get();
 			Timer timer = {};
-			ResetController rc(timer, rb);
+			ResetController rc(timer, rb, rs);
 
 			// Act
 			rc.EnableSoftReset();
@@ -289,8 +377,16 @@ namespace HwdgTests
 			When(Method(rebooter, SoftReset)).AlwaysReturn();
 			When(Method(rebooter, HardReset)).AlwaysReturn();
 			auto& rb = rebooter.get();
+
+			Mock<LedController> ledController;
+			When(Method(ledController, Off)).AlwaysReturn();
+			When(Method(ledController, Glow)).AlwaysReturn();
+			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkSlow)).AlwaysReturn();
+
+			auto& rs = ledController.get();
 			Timer timer = {};
-			ResetController rc(timer, rb);
+			ResetController rc(timer, rb, rs);
 
 			// Act
 			rc.EnableSoftReset();
@@ -316,8 +412,16 @@ namespace HwdgTests
 			When(Method(rebooter, SoftReset)).AlwaysReturn();
 			When(Method(rebooter, HardReset)).AlwaysReturn();
 			auto& rb = rebooter.get();
+
+			Mock<LedController> ledController;
+			When(Method(ledController, Off)).AlwaysReturn();
+			When(Method(ledController, Glow)).AlwaysReturn();
+			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkSlow)).AlwaysReturn();
+
+			auto& rs = ledController.get();
 			Timer timer = {};
-			ResetController rc(timer,rb);
+			ResetController rc(timer,rb, rs);
 
 			// Act
 			rc.EnableSoftReset();

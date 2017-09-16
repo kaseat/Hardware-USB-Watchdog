@@ -8,8 +8,12 @@
 #define FAST_BLINK_TIMEOUT 250U
 #endif
 
+#define INITIAL 0x00U
+#define FAST_BLINK 0x01U
+#define SLOW_BLINK 0x02U
+#define IS_LED_HIGH 0x04U
 
-LedController::LedController(Timer& timer, GpioDriver& driver): timer(timer), driver(driver), state(0), counter(0)
+LedController::LedController(Timer& timer, GpioDriver& driver): timer(timer), driver(driver), state(INITIAL), counter(INITIAL)
 {
 	timer.SubscribeOnElapse(*this);
 }
@@ -21,25 +25,25 @@ LedController::~LedController()
 
 void LedController::Off()
 {
-	state = 0x00U;
+	state = INITIAL;
 	driver.DriveLedLow();
 }
 
 void LedController::Glow()
 {
-	state = 0x00U;
+	state = INITIAL;
 	driver.DriveLedHigh();
 }
 
 void LedController::BlinkFast()
 {
-	state = 0x01U;
+	state = FAST_BLINK;
 	driver.DriveLedLow();
 }
 
 void LedController::BlinkSlow()
 {
-	state = 0x02U;
+	state = SLOW_BLINK;
 	driver.DriveLedLow();
 }
 
@@ -47,16 +51,16 @@ void LedController::Callback(uint8_t data)
 {
 	if (!state) return;
 
-	state & 0x01U ? Blink(FAST_BLINK_TIMEOUT) : Blink(SLOW_BLINK_TIMEOUT);
+	state & FAST_BLINK ? Blink(FAST_BLINK_TIMEOUT) : Blink(SLOW_BLINK_TIMEOUT);
 }
 
 void LedController::Blink(uint32_t timeout)
 {
 	if (++counter >= timeout)
 	{
-		(state ^= 0x04U) & 0x04U
+		(state ^= IS_LED_HIGH) & IS_LED_HIGH
 			? driver.DriveLedHigh()
 			: driver.DriveLedLow();
-		counter = 0x00U;
+		counter = INITIAL;
 	}
 }

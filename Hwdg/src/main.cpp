@@ -16,8 +16,11 @@ int main()
 	timer.Run();
 	// Create reset controller with GPIO rebooter.
 	GpioDriver drw;
+	LedController ldCtr(timer, drw);
+	ldCtr.Glow();
+
 	Rebooter rebooter(timer,drw);
-	ResetController controller(timer, rebooter);
+	ResetController controller(timer, rebooter, ldCtr);
 	CommandManager mgr(uart,controller);
 
 	for (;;)

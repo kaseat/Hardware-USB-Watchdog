@@ -3,6 +3,7 @@
 #include "ISubscriber.h"
 #include "Rebooter.h"
 #include "Timer.h"
+#include "LedController.h"
 
 /**
  * \brief Reset controller assumes Callback() calls every 1 ms.
@@ -15,7 +16,7 @@ public:
 	 * \brief Create istnce of Reset controller.
 	 * \param rb Rebooter reference.
 	 */
-	ResetController(Timer & timer, Rebooter & rb);
+	ResetController(Timer & timer, Rebooter & rb, LedController & ledController);
 
 	/**
 	 * \brief Dispose reset controller.
@@ -74,6 +75,7 @@ private:
 	void Callback(uint8_t data);
 	Timer & timer;
 	Rebooter& rebooter;
+	LedController& ledController;
 	uint32_t counter;
 	uint32_t softResetTimeout;
 	uint32_t hardResetTimeout;

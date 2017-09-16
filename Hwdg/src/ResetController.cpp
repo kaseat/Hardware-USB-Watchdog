@@ -16,9 +16,10 @@
 
 #define CNTR_RST 0
 
-ResetController::ResetController(Timer & time, Rebooter& rb)
+ResetController::ResetController(Timer & time, Rebooter & rb, LedController & ledController)
 	: timer(time)
 	, rebooter(rb)
+	, ledController(ledController)
 	, counter(CNTR_RST)
 	, softResetTimeout(SR_DEF_TIMEOUT)
 	, hardResetTimeout(HR_DEF_TIMEOUT)
@@ -40,6 +41,7 @@ ResetController::~ResetController()
 
 void ResetController::EnableSoftReset()
 {
+	ledController.BlinkSlow();
 	counter = CNTR_RST;
 	sAttempt = sAttemptDef;
 	hAttempt = hAttemptDef;
@@ -49,6 +51,7 @@ void ResetController::EnableSoftReset()
 
 void ResetController::DisableSoftReset()
 {
+	ledController.Off();
 	softRebootEnabled = false;
 	softRebootOccured = false;
 }
@@ -95,17 +98,18 @@ void ResetController::SetHardResetAttempts(uint8_t attempts)
 
 void ResetController::Callback(uint8_t data)
 {
-	if (softRebootEnabled && !softRebootOccured && ++counter == softResetTimeout)
+	if (softRebootEnabled && !softRebootOccured && ++counter >= softResetTimeout)
 	{
 		counter = CNTR_RST;
 		rebooter.SoftReset();
+		ledController.BlinkFast();
 		sAttempt--;
 		softRebootOccured = true;
 	}
-	if (softRebootOccured && ++counter == hardResetTimeout)
+	if (softRebootOccured && ++counter >= hardResetTimeout)
 	{
 		counter = CNTR_RST;
-		if (hardRebootEnabled && sAttempt == 0 && hAttempt > 0)
+		if (hardRebootEnabled && sAttempt >= 0 && hAttempt > 0)
 		{
 			hAttempt--;
 			rebooter.HardReset();
