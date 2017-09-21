@@ -16,7 +16,7 @@ public:
 	/**
 	 * \brief Dispose Reset controller.
 	 */
-	virtual ~CommandManager();
+	 ~CommandManager();
 
 private:
 	Uart& uart;

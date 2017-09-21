@@ -5,12 +5,13 @@
 #include "CommandManager.h"
 #include "GpioDriver.h"
 
-Uart uart(9600);
+
 
 int main()
 {
 	// Hardware init.
 	Clock::SetCpuFreq(Freq16Mhz);
+	Uart uart(9600);
 	uart.SendByte(0x33);
 	Timer timer;
 	timer.Run();
@@ -22,6 +23,10 @@ int main()
 	Rebooter rebooter(timer,drw);
 	ResetController controller(timer, rebooter, ldCtr);
 	CommandManager mgr(uart,controller);
+#ifdef __IAR_SYSTEMS_ICC__
+	asm("RIM");
+#endif
+
 
 	for (;;)
 		;

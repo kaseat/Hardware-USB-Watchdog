@@ -6,6 +6,12 @@
 #define MAX_TIMER_SUBSCRIBERS 3
 #endif
 
+#ifdef __IAR_SYSTEMS_ICC__
+#define _virtual
+#else
+#define _virtual virtual
+#endif
+
 /**
  * \brief Represents timer class.
  */
@@ -16,29 +22,29 @@ public:
 	/**
 	 * \brief Dispose Timer.
 	 */
-	virtual ~Timer() {}
+	_virtual ~Timer() {}
 
 	/**
 	* \brief Run timer as 1 ms timebase.
 	*/
-	virtual void Run();
+	_virtual void Run();
 
 	/**
 	* \brief Stop timer.
 	*/
-	virtual void Stop();
+	_virtual void Stop();
 
 	/**
 	* \brief Add handler on timer elapse.
 	* \param sbcr Subscriber.
 	*/
-	virtual void SubscribeOnElapse(ISubscriber& sbcr);
+	_virtual void SubscribeOnElapse(ISubscriber& sbcr);
 
 	/**
 	* \brief Remove handler on timer elapse.
 	* \param sbcr Subscriber.
 	*/
-	virtual void UnsubscribeOnElapse(ISubscriber& sbcr);
+	_virtual void UnsubscribeOnElapse(ISubscriber& sbcr);
 
 	/**
 	 * \brief Occures on timer elapse.

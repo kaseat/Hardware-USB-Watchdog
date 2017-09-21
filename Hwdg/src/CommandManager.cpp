@@ -16,7 +16,7 @@ void CommandManager::Callback(uint8_t data)
 	// Check if we have timeout change command.
 	if (data >> 7 == 1)
 	{
-		resetController.SetResetTimeout(data);
+		resetController.SetRebootTimeout(data);
 		uart.SendByte(0x20);
 	}
 	else if (data >> 6 == 1)
@@ -39,11 +39,11 @@ void CommandManager::Callback(uint8_t data)
 		switch (data)
 		{
 		case 0x01:
-			resetController.EnableSoftReset();
+			resetController.Start();
 			uart.SendByte(0x24);
 			break;
 		case 0x02:
-			resetController.DisableSoftReset();
+			resetController.Stop();
 			uart.SendByte(0x25);
 			break;
 		case 0x03:

@@ -1,35 +1,65 @@
 #include "ResetController.h"
 #include "Timer.h"
 
-#define SR_DEF_TIMEOUT 10000U
+#ifndef RESPONSE_DEF_TIMEOUT
+// Default response timeout, ms
+#define RESPONSE_DEF_TIMEOUT 10000U
+#endif
+#ifndef REBOOT_DEF_TIMEOUT
+// Default reboot timeout, ms
+#define REBOOT_DEF_TIMEOUT 150000U
+#endif
+#ifndef REBOOT_MIN_TIMEOUT
+// Least reboot timeout value, ms
+#define REBOOT_MIN_TIMEOUT 10000U
+#endif
+
+#ifndef SR_TIMEBASE
+// Soft reset time base, ms
 #define SR_TIMEBASE 1000U
-#define SR_MASK 0x3FU
-#define SR_ATTEMPTS 3
-
-#define HR_DEF_TIMEOUT 150000U
+#endif
+#ifndef HR_TIMEBASE
+// Hard reset time base, ms
 #define HR_TIMEBASE 5000U
-#define HR_MASK 0x7FU
-#define HR_MIN_TIMEOUT 10000U
-#define HR_ATTEMPTS 3
+#endif
 
+#ifndef SR_ATTEMPTS
+// Default soft reset attempts count
+#define SR_ATTEMPTS 3U
+#endif
+#ifndef HR_ATTEMPTS
+// Default hard reset attempts count
+#define HR_ATTEMPTS 3U
+#endif
+
+// RSM enabled
+#define ENABLED (1U << 0U)
+// Hard reset enabled
+#define HR_ENABLED (1U << 1U)
+// Response timeout elapsed
+#define RESPONSE_ELAPSED (1U << 2U)
+
+// Mask applied to extract attempts value
 #define ATTEMPTS_MASK 0x07U
-
-#define CNTR_RST 0
+// Mask applied to extract reboot timeout value
+#define REBOOT_MASK 0x7FU
+// Mask applied to extract response timeout value
+#define RESPONSE_MASK 0x3FU
+// Reset value
+#define INITIAL 0x00U
 
 ResetController::ResetController(Timer & time, Rebooter & rb, LedController & ledController)
 	: timer(time)
 	, rebooter(rb)
 	, ledController(ledController)
-	, counter(CNTR_RST)
-	, softResetTimeout(SR_DEF_TIMEOUT)
-	, hardResetTimeout(HR_DEF_TIMEOUT)
-	, softRebootEnabled(false)
-	, hardRebootEnabled(false)
-	, softRebootOccured(false)
+	, counter(INITIAL)
+	, state(INITIAL)
+	, responseTimeout(RESPONSE_DEF_TIMEOUT)
+	, rebootTimeout(REBOOT_DEF_TIMEOUT)
 	, sAttempt(SR_ATTEMPTS)
 	, hAttempt(HR_ATTEMPTS)
-	, sAttemptDef(SR_ATTEMPTS)
-	, hAttemptDef(HR_ATTEMPTS)
+	, sAttemptCurr(SR_ATTEMPTS)
+	, hAttemptCurr(HR_ATTEMPTS)
 {
 	timer.SubscribeOnElapse(*this);
 }
@@ -39,85 +69,96 @@ ResetController::~ResetController()
 	timer.UnsubscribeOnElapse(*this);
 }
 
-void ResetController::EnableSoftReset()
+void ResetController::Start()
 {
+	if (state & ENABLED) return;
+	counter = INITIAL;
+	state |= ENABLED;
+	sAttempt = sAttemptCurr;
+	hAttempt = hAttemptCurr;
 	ledController.BlinkSlow();
-	counter = CNTR_RST;
-	sAttempt = sAttemptDef;
-	hAttempt = hAttemptDef;
-	softRebootEnabled = true;
-	softRebootOccured = false;
 }
 
-void ResetController::DisableSoftReset()
+void ResetController::Stop()
 {
-	ledController.Off();
-	softRebootEnabled = false;
-	softRebootOccured = false;
+	ledController.Glow();
+	state &= ~ENABLED;
 }
 
 void ResetController::EnableHardReset()
 {
-	counter = CNTR_RST;
-	hAttempt = hAttemptDef;
-	hardRebootEnabled = true;
+	if (state & ENABLED) return;
+	state |= HR_ENABLED;
 }
 
 void ResetController::DisableHardReset()
 {
-	hardRebootEnabled = false;
+	if (state & ENABLED) return;
+	state &= ~(HR_ENABLED);
 }
 
 void ResetController::Ping()
 {
-	counter = CNTR_RST;
-	softRebootOccured = false;
+	if (!(state & ENABLED)) return;
+	counter = INITIAL;
+	state &= ~(RESPONSE_ELAPSED);
 }
 
 void ResetController::SetResponseTimeout(uint8_t timeout)
 {
-	counter = CNTR_RST;
-	softResetTimeout = ((timeout & SR_MASK) + 1) * SR_TIMEBASE;
+	if (state & ENABLED) return;
+	responseTimeout = ((timeout & RESPONSE_MASK) + 1) * SR_TIMEBASE;
 }
 
-void ResetController::SetResetTimeout(uint8_t timeout)
+void ResetController::SetRebootTimeout(uint8_t timeout)
 {
-	counter = CNTR_RST;
-	hardResetTimeout = HR_MIN_TIMEOUT + (timeout & HR_MASK) * HR_TIMEBASE;
+	if (state & ENABLED) return;
+	rebootTimeout = REBOOT_MIN_TIMEOUT + (timeout & REBOOT_MASK) * HR_TIMEBASE;
 }
 
 void ResetController::SetSoftResetAttempts(uint8_t attempts)
 {
-	sAttempt = sAttemptDef = (attempts & ATTEMPTS_MASK) + 1;
+	if (state & ENABLED) return;
+	sAttemptCurr = (attempts & ATTEMPTS_MASK) + 1;
 }
 
 void ResetController::SetHardResetAttempts(uint8_t attempts)
 {
-	hAttempt = hAttemptDef = (attempts & ATTEMPTS_MASK) + 1;
+	if (state & ENABLED) return;
+	hAttemptCurr = (attempts & ATTEMPTS_MASK) + 1;
 }
 
 void ResetController::Callback(uint8_t data)
 {
-	if (softRebootEnabled && !softRebootOccured && ++counter >= softResetTimeout)
+	if (!(state & ENABLED)) return;
+
+	counter++;
+
+	if (!(state & RESPONSE_ELAPSED) && counter >= responseTimeout)
 	{
-		counter = CNTR_RST;
+		sAttempt--;
+		counter = INITIAL;
 		rebooter.SoftReset();
 		ledController.BlinkFast();
-		sAttempt--;
-		softRebootOccured = true;
+		state |= RESPONSE_ELAPSED;
 	}
-	if (softRebootOccured && ++counter >= hardResetTimeout)
+
+	else if (counter >= rebootTimeout)
 	{
-		counter = CNTR_RST;
-		if (hardRebootEnabled && sAttempt >= 0 && hAttempt > 0)
-		{
-			hAttempt--;
-			rebooter.HardReset();
-		}
-		else if (sAttempt > 0)
+		counter = INITIAL;
+		if (sAttempt > 0)
 		{
 			sAttempt--;
 			rebooter.SoftReset();
+		}
+		else if (state & HR_ENABLED && hAttempt > 0)
+		{
+			rebooter.HardReset();
+			if (!--hAttempt)
+			{
+				ledController.Glow();
+				state &= ~(ENABLED | RESPONSE_ELAPSED);
+			}
 		}
 	}
 }

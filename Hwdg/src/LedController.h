@@ -3,6 +3,14 @@
 #include "GpioDriver.h"
 #include "Timer.h"
 
+#ifdef __IAR_SYSTEMS_ICC__
+#define _virtual
+#define _override
+#else
+#define _virtual virtual
+#define _override override
+#endif
+
 /**
  * \brief Represents LED controller (assumes callback called once per ms).
  */
@@ -24,27 +32,27 @@ public:
 	/**
 	 * \brief Turn LED off.
 	 */
-	virtual void Off();
+	_virtual void Off();
 
 	/**
 	 * \brief Turn LED on.
 	 */
-	virtual void Glow();
+	_virtual void Glow();
 
 	/**
 	 * \brief Start fast LED blink.
 	 */
-	virtual void BlinkFast();
+	_virtual void BlinkFast();
 
 	/**
 	* \brief Start slow LED blink.
 	*/
-	virtual void BlinkSlow();
+	_virtual void BlinkSlow();
 private:
 	Timer& timer;
 	GpioDriver& driver;
 	uint_least8_t state;
 	uint_fast16_t counter;
-	void Callback(uint8_t data);
+	void Callback(uint8_t data) _override;
 	void Blink(uint32_t timeout);
 };

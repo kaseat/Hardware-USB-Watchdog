@@ -3,6 +3,12 @@
 #include "GpioDriver.h"
 #include "Timer.h"
 
+#ifdef __IAR_SYSTEMS_ICC__
+#define _override
+#else
+#define _override override
+#endif
+
 /**
  * \brief Implements reboot logic
  */
@@ -36,5 +42,5 @@ private:
 	GpioDriver& driver;
 	uint_least8_t state;
 	uint_fast16_t counter;
-	void Callback(uint8_t data);
+	void Callback(uint8_t data) _override;
 };

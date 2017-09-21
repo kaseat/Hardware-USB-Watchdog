@@ -2,11 +2,9 @@
 
 #ifdef __IAR_SYSTEMS_ICC__
 #include "Clock.h"
-#define UART_REGISTER (UART1->DR);
-#else
-#define UART_REGISTER 5
 #endif
 
+#define UART_REGISTER 5
 ISubscriber* Uart::subscriber = nullptr;
 
 Uart::Uart(uint32_t baudrate)
@@ -52,7 +50,8 @@ void Uart::SendByte(uint8_t data)
 {
 #ifdef __IAR_SYSTEMS_ICC__
 	while (!(UART1->SR & UART_SR_TXE))
-		UART1->DR = data;
+		;
+	UART1->DR = data;
 #endif
 }
 
@@ -67,5 +66,10 @@ void Uart::SendData(uint8_t* data, uint8_t len)
 __interrupt void Uart::OnByteReceived()
 {
 	if (subscriber == nullptr) return;
+#ifdef __IAR_SYSTEMS_ICC__
+	subscriber->Callback(UART1->DR);
+#else
 	subscriber->Callback(UART_REGISTER);
+#endif
+	
 }

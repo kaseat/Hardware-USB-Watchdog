@@ -6,6 +6,7 @@
 #define HR_LO_TIM 60U
 #define HR_HI_TIM 20U
 #define INFINITE 10000U
+
 #include "../Hwdg/src/Timer.h"
 #include "../Hwdg/src/Rebooter.h"
 #include "../Hwdg/src/Rebooter.cpp"

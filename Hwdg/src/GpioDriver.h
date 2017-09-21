@@ -1,12 +1,17 @@
 #pragma once
 
+#ifdef __IAR_SYSTEMS_ICC__
+#define _virtual
+#else
+#define _virtual virtual
+#endif
+
 /**
  * \brief Represents Low level GPIO driver.
  */
 class GpioDriver
 {
 public:
-
 	/**
 	 * \brief Create instance of GPIO driver.
 	 */
@@ -14,29 +19,29 @@ public:
 	/**
 	 * \brief Dispose GPIO driver.
 	 */
-	virtual ~GpioDriver() {};
+	_virtual ~GpioDriver();
 	/**
 	 * \brief Drive reset pin low.
 	 */
-	virtual void DriveResetLow();
+	_virtual void DriveResetLow();
 	/**
 	 * \brief Release reset pin.
 	 */
-	virtual void DriveResetHigh();
+	_virtual void DriveResetHigh();
 	/**
 	 * \brief Drive power pin low.
 	 */
-	virtual void DrivePowerLow();
+	_virtual void DrivePowerLow();
 	/**
 	 * \brief Releare power pin.
 	 */
-	virtual void DrivePowerHigh();
+	_virtual void DrivePowerHigh();
 	/**
 	 * \brief Drive LED pin low.
 	 */
-	virtual void DriveLedLow();
+	_virtual void DriveLedLow();
 	/**
 	 * \brief Drive LED pin high.
 	 */
-	virtual void DriveLedHigh();
+	_virtual void DriveLedHigh();
 };

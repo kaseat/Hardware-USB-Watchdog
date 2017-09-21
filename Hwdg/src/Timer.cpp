@@ -77,12 +77,11 @@ void Timer::UnsubscribeOnElapse(ISubscriber& sbcr)
 
 #ifdef __IAR_SYSTEMS_ICC__
 #pragma vector=TIM4_OVR_UIF_ISR
+#endif
 __interrupt void Timer::OnElapse()
 {
-TIM4->SR &= ~TIM4_SR_UIF;
-#else
-__interrupt void Timer::OnElapse()
-{
+#ifdef __IAR_SYSTEMS_ICC__
+	TIM4->SR &= ~TIM4_SR_UIF;
 #endif
 	for (uint_fast8_t i = 0; i < MAX_TIMER_SUBSCRIBERS; i++)
 		if (subscribers[i] != nullptr) subscribers[i]->Callback(0);

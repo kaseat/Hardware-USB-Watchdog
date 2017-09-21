@@ -5,6 +5,18 @@
 #include "Timer.h"
 #include "LedController.h"
 
+#ifdef __IAR_SYSTEMS_ICC__
+#define _virtual
+#define _override
+#else
+#define _virtual virtual
+#define _override override
+#endif
+typedef enum 
+{
+	Ok,
+	No
+}Response;
 /**
  * \brief Reset controller assumes Callback() calls every 1 ms.
  */
@@ -26,64 +38,62 @@ public:
 	/**
 	 * \brief Allow watchdog restart computer via reset button.
 	 */
-	virtual void EnableSoftReset();
+	_virtual void Start();
 
 	/**
 	 * \brief Disable watchdog restart computer via reset button.
 	 */
-	virtual void DisableSoftReset();
+	_virtual void Stop();
 
 	/**
 	* \brief Allow watchdog restart computer via reset button.
 	*/
-	virtual void EnableHardReset();
+	_virtual void EnableHardReset();
 
 	/**
 	* \brief Disable watchdog restart computer via reset button.
 	*/
-	virtual void DisableHardReset();
+	_virtual void DisableHardReset();
 
 	/**
 	 * \brief Ping watchdog.
 	 */
-	virtual void Ping();
+	_virtual void Ping();
 
 	/**
 	 * \brief Set response timeout.
 	 * \param timeout Timeout (0-63).
 	 */
-	virtual void SetResponseTimeout(uint8_t timeout);
+	_virtual void SetResponseTimeout(uint8_t timeout);
         
 	 /**
 	 * \brief Set reset timeout.
 	 * \param timeout Timeout(0-127).
 	 */
-	virtual void SetResetTimeout(uint8_t timeout);
+	_virtual void SetRebootTimeout(uint8_t timeout);
 
 	/**
 	 * \brief Set soft reset attempts count.
 	 * \param attempts Attempts count.
 	 */
-	virtual void SetSoftResetAttempts(uint8_t attempts);
+	_virtual void SetSoftResetAttempts(uint8_t attempts);
 
 	/**
 	 * \brief Set hard reset attempts count.
 	 * \param attempts Attempts count.
 	 */
-	virtual void SetHardResetAttempts(uint8_t attempts);
+	_virtual void SetHardResetAttempts(uint8_t attempts);
 private:
-	void Callback(uint8_t data);
+	void Callback(uint8_t data) _override;
 	Timer & timer;
-	Rebooter& rebooter;
-	LedController& ledController;
+	Rebooter & rebooter;
+	LedController & ledController;
 	uint32_t counter;
-	uint32_t softResetTimeout;
-	uint32_t hardResetTimeout;
-	bool softRebootEnabled;
-	bool hardRebootEnabled;
-	bool softRebootOccured;
+	uint_least8_t state;
+	uint32_t responseTimeout;
+	uint32_t rebootTimeout;
 	uint8_t sAttempt;
 	uint8_t hAttempt;
-	uint8_t sAttemptDef;
-	uint8_t hAttemptDef;
+	uint8_t sAttemptCurr;
+	uint8_t hAttemptCurr;
 };
