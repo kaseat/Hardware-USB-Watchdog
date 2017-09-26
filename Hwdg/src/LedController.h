@@ -32,22 +32,27 @@ public:
 	/**
 	 * \brief Turn LED off.
 	 */
-	_virtual void Off();
+	_virtual inline void Off();
 
 	/**
 	 * \brief Turn LED on.
 	 */
-	_virtual void Glow();
+	_virtual inline void Glow();
 
 	/**
 	 * \brief Start fast LED blink.
 	 */
-	_virtual void BlinkFast();
+	_virtual inline void BlinkFast();
+
+	/**
+	* \brief Start medium LED blink.
+	*/
+	_virtual inline void BlinkMid();
 
 	/**
 	* \brief Start slow LED blink.
 	*/
-	_virtual void BlinkSlow();
+	_virtual inline void BlinkSlow();
 private:
 	Timer& timer;
 	GpioDriver& driver;

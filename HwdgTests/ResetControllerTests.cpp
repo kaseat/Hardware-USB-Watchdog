@@ -4,7 +4,6 @@
 
 #include "../Hwdg/src/Timer.h"
 #include "../Hwdg/src/ResetController.h"
-//#include "../Hwdg/src/ResetController.cpp"
 
 #define RESPONSE_DEF_TIMEOUT 10000U
 #define REBOOT_DEF_TIMEOUT 150000U
@@ -39,6 +38,7 @@ namespace HwdgTests
 			When(Method(ledController, Off)).AlwaysReturn();
 			When(Method(ledController, Glow)).AlwaysReturn();
 			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
 			ResetController rc(timer, rebooter.get(), ledController.get());
@@ -65,6 +65,7 @@ namespace HwdgTests
 			When(Method(ledController, Off)).AlwaysReturn();
 			When(Method(ledController, Glow)).AlwaysReturn();
 			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
 			ResetController rc(timer, rebooter.get(), ledController.get());
@@ -95,6 +96,7 @@ namespace HwdgTests
 			When(Method(ledController, Off)).AlwaysReturn();
 			When(Method(ledController, Glow)).AlwaysReturn();
 			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
 			ResetController rc(timer, rebooter.get(), ledController.get());
@@ -141,6 +143,7 @@ namespace HwdgTests
 			When(Method(ledController, Off)).AlwaysReturn();
 			When(Method(ledController, Glow)).AlwaysReturn();
 			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
 			ResetController rc(timer, rebooter.get(), ledController.get());
@@ -195,6 +198,7 @@ namespace HwdgTests
 			When(Method(ledController, Off)).AlwaysReturn();
 			When(Method(ledController, Glow)).AlwaysReturn();
 			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
 			ResetController rc(timer, rebooter.get(), ledController.get());
@@ -235,6 +239,7 @@ namespace HwdgTests
 			When(Method(ledController, Off)).AlwaysReturn();
 			When(Method(ledController, Glow)).AlwaysReturn();
 			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
 			ResetController rc(timer, rebooter.get(), ledController.get());
@@ -277,6 +282,7 @@ namespace HwdgTests
 			When(Method(ledController, Off)).AlwaysReturn();
 			When(Method(ledController, Glow)).AlwaysReturn();
 			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
 			ResetController rc(timer, rebooter.get(), ledController.get());
@@ -319,6 +325,7 @@ namespace HwdgTests
 			When(Method(ledController, Off)).AlwaysReturn();
 			When(Method(ledController, Glow)).AlwaysReturn();
 			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
 			ResetController rc(timer, rebooter.get(), ledController.get());
@@ -361,6 +368,7 @@ namespace HwdgTests
 			When(Method(ledController, Off)).AlwaysReturn();
 			When(Method(ledController, Glow)).AlwaysReturn();
 			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
 			ResetController rc(timer, rebooter.get(), ledController.get());
@@ -407,6 +415,7 @@ namespace HwdgTests
 			When(Method(ledController, Off)).AlwaysReturn();
 			When(Method(ledController, Glow)).AlwaysReturn();
 			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
 			ResetController rc(timer, rebooter.get(), ledController.get());
@@ -448,6 +457,7 @@ namespace HwdgTests
 			When(Method(ledController, Off)).AlwaysReturn();
 			When(Method(ledController, Glow)).AlwaysReturn();
 			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
 			ResetController rc(timer, rebooter.get(), ledController.get());
@@ -495,6 +505,7 @@ namespace HwdgTests
 			When(Method(ledController, Off)).AlwaysReturn();
 			When(Method(ledController, Glow)).AlwaysReturn();
 			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
 			ResetController rc(timer, rebooter.get(), ledController.get());
@@ -542,6 +553,7 @@ namespace HwdgTests
 			When(Method(ledController, Off)).AlwaysReturn();
 			When(Method(ledController, Glow)).AlwaysReturn();
 			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
 			ResetController rc(timer, rebooter.get(), ledController.get());
@@ -596,6 +608,7 @@ namespace HwdgTests
 			When(Method(ledController, Off)).AlwaysReturn();
 			When(Method(ledController, Glow)).AlwaysReturn();
 			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
 			ResetController rc(timer, rebooter.get(), ledController.get());
@@ -651,6 +664,7 @@ namespace HwdgTests
 			When(Method(ledController, Off)).AlwaysReturn();
 			When(Method(ledController, Glow)).AlwaysReturn();
 			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
 			ResetController rc(timer, rebooter.get(), ledController.get());
@@ -706,6 +720,7 @@ namespace HwdgTests
 			When(Method(ledController, Off)).AlwaysReturn();
 			When(Method(ledController, Glow)).AlwaysReturn();
 			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
 			ResetController rc(timer, rebooter.get(), ledController.get());
@@ -747,6 +762,237 @@ namespace HwdgTests
 			VerifyNoOtherInvocations(rebooter);
 		}
 
+		/**
+		* \brief ID:500017 Verify options modification avaliable after reboot sequence.
+		*/
+		TEST_METHOD(VerifyResetControllerResetSequenceAfterReboot)
+		{
+			// Arrange
+			Mock<Rebooter> rebooter;
+			When(Method(rebooter, SoftReset)).AlwaysReturn();
+			When(Method(rebooter, HardReset)).AlwaysReturn();
+
+			Mock<LedController> ledController;
+			When(Method(ledController, Off)).AlwaysReturn();
+			When(Method(ledController, Glow)).AlwaysReturn();
+			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkMid)).AlwaysReturn();
+			When(Method(ledController, BlinkSlow)).AlwaysReturn();
+
+			ResetController rc(timer, rebooter.get(), ledController.get());
+
+			// Act
+			rc.EnableHardReset();
+			rc.SetHardResetAttempts(1);
+			rc.SetSoftResetAttempts(3);
+			rc.SetResponseTimeout(15);
+			rc.SetRebootTimeout(36);
+			rc.Start();
+
+			for (auto i = 0; i < 6; i++)
+			{
+				// Act
+				if (i == 0)  Wait(80000 - 1);
+				else Wait(190000 - 1);
+
+				// Assert
+				VerifyNoOtherInvocations(rebooter);
+
+				// Act
+				Wait(1);
+
+				// Assert
+				if (i < 4)
+				{
+					Verify(Method(rebooter, SoftReset)).Exactly(i + 1);
+					Verify(Method(rebooter, HardReset)).Never();
+				}
+				else
+				{
+					Verify(Method(rebooter, SoftReset)).Exactly(4);
+					Verify(Method(rebooter, HardReset)).Exactly(i - 3);
+				}
+			}
+
+			// Act
+			Wait(INFINITE);
+
+			// Assert
+			VerifyNoOtherInvocations(rebooter);
+
+			// Arrange
+			rebooter.Reset();
+			When(Method(rebooter, SoftReset)).AlwaysReturn();
+			When(Method(rebooter, HardReset)).AlwaysReturn();
+
+			// Act
+			Assert::IsTrue(rc.DisableHardReset() == Response::DisableHardResetOk);
+			Assert::IsTrue(rc.SetSoftResetAttempts(5) == Response::SetSoftResetAttemptsOk);
+			Assert::IsTrue(rc.SetRebootTimeout(10) == Response::SetRebootTimeoutOk);
+			Assert::IsTrue(rc.Start() == Response::StartOk);
+
+			for (auto i = 0; i < 6; i++)
+			{
+				// Act
+				if (i == 0)  Wait(80000 - 1);
+				else Wait(60000 - 1);
+
+				// Assert
+				VerifyNoOtherInvocations(rebooter);
+
+				// Act
+				Wait(1);
+
+				// Assert
+				Verify(Method(rebooter, SoftReset)).Exactly(i + 1);
+				Verify(Method(rebooter, HardReset)).Never();
+			}
+
+			// Act
+			Wait(INFINITE);
+
+			// Assert
+			VerifyNoOtherInvocations(rebooter);
+		}
+
+		/**
+		* \brief ID:500018 Verify LED blink sequence correct during soft reset.
+		*/
+		TEST_METHOD(VerifyResetControllerLedSoftResetSequenceCorrect)
+		{
+			// Arrange
+			Mock<Rebooter> rebooter;
+			When(Method(rebooter, SoftReset)).AlwaysReturn();
+			When(Method(rebooter, HardReset)).AlwaysReturn();
+
+			Mock<LedController> ledController;
+			When(Method(ledController, Off)).AlwaysReturn();
+			When(Method(ledController, Glow)).AlwaysReturn();
+			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkMid)).AlwaysReturn();
+			When(Method(ledController, BlinkSlow)).AlwaysReturn();
+
+			ResetController rc(timer, rebooter.get(), ledController.get());
+
+			// Act
+			rc.Start();
+			Verify(Method(ledController, BlinkSlow)).Once();
+			Verify(Method(ledController, Off)).Never();
+			Verify(Method(ledController, Glow)).Never();
+			Verify(Method(ledController, BlinkFast)).Never();
+			Verify(Method(ledController, BlinkMid)).Never();
+
+			for (auto i = 0; i < 4; i++)
+			{
+				// Act
+				if (i == 0)  Wait(RESPONSE_DEF_TIMEOUT - 1);
+				else Wait(REBOOT_DEF_TIMEOUT - 1);
+
+				// Assert
+				VerifyNoOtherInvocations(ledController);
+
+				// Act
+				Wait(1);
+				if (i < 3)
+				{
+					Verify(Method(ledController, BlinkSlow)).Once();
+					Verify(Method(ledController, Off)).Never();
+					Verify(Method(ledController, Glow)).Never();
+					Verify(Method(ledController, BlinkFast)).Never();
+					Verify(Method(ledController, BlinkMid)).Once();
+				}
+				else
+				{
+					Verify(Method(ledController, BlinkSlow)).Once();
+					Verify(Method(ledController, Off)).Never();
+					Verify(Method(ledController, Glow)).Once();
+					Verify(Method(ledController, BlinkFast)).Never();
+					Verify(Method(ledController, BlinkMid)).Once();
+				}
+			}
+
+			// Act
+			Wait(INFINITE);
+
+			// Assert
+			VerifyNoOtherInvocations(ledController);
+		}
+
+		/**
+		* \brief ID:500019 Verify LED blink sequence correct during hard reset.
+		*/
+		TEST_METHOD(VerifyResetControllerLedHardResetSequenceCorrect)
+		{
+			// Arrange
+			Mock<Rebooter> rebooter;
+			When(Method(rebooter, SoftReset)).AlwaysReturn();
+			When(Method(rebooter, HardReset)).AlwaysReturn();
+
+			Mock<LedController> ledController;
+			When(Method(ledController, Off)).AlwaysReturn();
+			When(Method(ledController, Glow)).AlwaysReturn();
+			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkMid)).AlwaysReturn();
+			When(Method(ledController, BlinkSlow)).AlwaysReturn();
+
+			ResetController rc(timer, rebooter.get(), ledController.get());
+
+			// Act
+			rc.EnableHardReset();
+			rc.Start();
+			Verify(Method(ledController, BlinkSlow)).Once();
+			Verify(Method(ledController, Off)).Never();
+			Verify(Method(ledController, Glow)).Never();
+			Verify(Method(ledController, BlinkFast)).Never();
+			Verify(Method(ledController, BlinkMid)).Never();
+
+			for (auto i = 0; i < 7; i++)
+			{
+				// Act
+				if (i == 0)  Wait(RESPONSE_DEF_TIMEOUT - 1);
+				else Wait(REBOOT_DEF_TIMEOUT - 1);
+
+				// Assert
+				VerifyNoOtherInvocations(ledController);
+
+				// Act
+				Wait(1);
+
+				if (i < 3)
+				{
+					Verify(Method(ledController, BlinkSlow)).Once();
+					Verify(Method(ledController, Off)).Never();
+					Verify(Method(ledController, Glow)).Never();
+					Verify(Method(ledController, BlinkFast)).Never();
+					Verify(Method(ledController, BlinkMid)).Once();
+				}
+				else if (i < 6)
+				{
+					Verify(Method(ledController, BlinkSlow)).Once();
+					Verify(Method(ledController, Off)).Never();
+					Verify(Method(ledController, Glow)).Never();
+					Verify(Method(ledController, BlinkFast)).Once();
+					Verify(Method(ledController, BlinkMid)).Once();
+				}
+				else
+				{
+					Verify(Method(ledController, BlinkSlow)).Once();
+					Verify(Method(ledController, Off)).Never();
+					Verify(Method(ledController, Glow)).Once();
+					Verify(Method(ledController, BlinkFast)).Once();
+					Verify(Method(ledController, BlinkMid)).Once();
+				}
+
+			}
+
+			// Act
+			Wait(INFINITE);
+
+			// Assert
+			VerifyNoOtherInvocations(ledController);
+		}
+
+
 
 
 
@@ -764,6 +1010,7 @@ namespace HwdgTests
 			When(Method(ledController, Off)).AlwaysReturn();
 			When(Method(ledController, Glow)).AlwaysReturn();
 			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 			ResetController rc(timer, rebooter.get(), ledController.get());
 
@@ -812,103 +1059,6 @@ namespace HwdgTests
 //							VerifyNoOtherInvocations(rebooter);
 //							rebooter.Reset();
 //						}
-		}
-
-		/**
-		* \brief ID:500022 Verify soft reset (5 attempts) + hard reset (1 attempt)
-		*/
-		TEST_METHOD(VerifyResetControllerRestartsWithSpecifiedAttempts5SoftAnd1Hard)
-		{
-			// Arrange
-			Mock<Rebooter> rebooter;
-			When(Method(rebooter, SoftReset)).AlwaysReturn();
-			When(Method(rebooter, HardReset)).AlwaysReturn();
-
-			Mock<LedController> ledController;
-			When(Method(ledController, Off)).AlwaysReturn();
-			When(Method(ledController, Glow)).AlwaysReturn();
-			When(Method(ledController, BlinkFast)).AlwaysReturn();
-			When(Method(ledController, BlinkSlow)).AlwaysReturn();
-
-			ResetController rc(timer, rebooter.get(), ledController.get());
-
-			// Act
-			rc.EnableHardReset();
-			rc.SetSoftResetAttempts(5);			
-			rc.SetHardResetAttempts(1);
-			rc.Start();
-			for (auto i = 0; i < 10000000; i++)
-				timer.OnElapse();
-
-			// Assert
-			Verify(Method(rebooter, SoftReset)).Exactly(6);
-			Verify(Method(rebooter, HardReset)).Exactly(2);
-		}
-
-		/**
-		* \brief ID:500026 Verify no soft/hard reset after Start + Stop command with default soft reset + no counter if possible
-		*/
-		TEST_METHOD(VerifyResetControllerNoSoftResetWhenSoftDisabled)
-		{
-			// Arrange
-			Mock<Rebooter> rebooter;
-			When(Method(rebooter, SoftReset)).AlwaysReturn();
-			When(Method(rebooter, HardReset)).AlwaysReturn();
-
-			Mock<LedController> ledController;
-			When(Method(ledController, Off)).AlwaysReturn();
-			When(Method(ledController, Glow)).AlwaysReturn();
-			When(Method(ledController, BlinkFast)).AlwaysReturn();
-			When(Method(ledController, BlinkSlow)).AlwaysReturn();
-
-			ResetController rc(timer, rebooter.get(), ledController.get());
-
-			// Act
-			rc.Start();
-			for (auto i = 0; i < 500; i++)
-				timer.OnElapse();
-
-			rc.Stop();
-			for (auto i = 0; i < 50000; i++)
-				timer.OnElapse();
-
-			// Assert
-			Verify(Method(rebooter, SoftReset)).Never();
-			Verify(Method(rebooter, HardReset)).Never();
-		}
-
-		/**
-		* \brief ID:500027 Verify no soft/hard reset after Start + HRon + Stop commands with default hard reset
-		*/
-		TEST_METHOD(VerifyResetControllerNoHardResetWhenHardDisabled)
-		{
-			// Arrange
-			Mock<Rebooter> rebooter;
-			When(Method(rebooter, SoftReset)).AlwaysReturn();
-			When(Method(rebooter, HardReset)).AlwaysReturn();
-
-			Mock<LedController> ledController;
-			When(Method(ledController, Off)).AlwaysReturn();
-			When(Method(ledController, Glow)).AlwaysReturn();
-			When(Method(ledController, BlinkFast)).AlwaysReturn();
-			When(Method(ledController, BlinkSlow)).AlwaysReturn();
-
-			ResetController rc(timer, rebooter.get(), ledController.get());
-
-			// Act
-			rc.Start();
-			rc.EnableHardReset();
-
-			for (auto i = 0; i < 5000; i++)
-				timer.OnElapse();
-
-			rc.DisableHardReset();
-			for (auto i = 0; i < 2000000; i++)
-				timer.OnElapse();
-
-			// Assert
-			Verify(Method(rebooter, SoftReset)).Exactly(3);
-			Verify(Method(rebooter, HardReset)).Never();
 		}
 	};
 }

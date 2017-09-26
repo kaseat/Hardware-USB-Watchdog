@@ -38,6 +38,8 @@
 #define HR_ENABLED (1U << 1U)
 // Response timeout elapsed
 #define RESPONSE_ELAPSED (1U << 2U)
+// Response timeout elapsed
+#define LED_STARDED (1U << 3U)
 
 // Mask applied to extract attempts value
 #define ATTEMPTS_MASK 0x07U
@@ -148,7 +150,7 @@ void ResetController::Callback(uint8_t data)
 		counter = INITIAL;
 		sAttempt--;
 		rebooter.SoftReset();
-		ledController.BlinkFast();
+		ledController.BlinkMid();
 		state |= RESPONSE_ELAPSED;
 	}
 	else if (state & RESPONSE_ELAPSED && counter >= rebootTimeout)
@@ -162,12 +164,17 @@ void ResetController::Callback(uint8_t data)
 		else if (state & HR_ENABLED && hAttempt > 0)
 		{
 			hAttempt--;
+			if (!(state & LED_STARDED))
+			{
+				state |= LED_STARDED;
+				ledController.BlinkFast();
+			}
 			rebooter.HardReset();
 		}
 		else
 		{
 			ledController.Glow();
-			state &= ~(ENABLED | RESPONSE_ELAPSED);
+			state &= ~(ENABLED | RESPONSE_ELAPSED | LED_STARDED);
 		}
 	}
 }

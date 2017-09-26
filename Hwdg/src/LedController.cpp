@@ -1,7 +1,11 @@
 #include "LedController.h"
 
 #ifndef SLOW_BLINK_TIMEOUT
-#define SLOW_BLINK_TIMEOUT 500U
+#define SLOW_BLINK_TIMEOUT 1000U
+#endif
+
+#ifndef MID_BLINK_TIMEOUT
+#define MID_BLINK_TIMEOUT 500U
 #endif
 
 #ifndef FAST_BLINK_TIMEOUT
@@ -10,8 +14,9 @@
 
 #define INITIAL 0x00U
 #define FAST_BLINK 0x01U
-#define SLOW_BLINK 0x02U
-#define IS_LED_HIGH 0x04U
+#define MID_BLINK 0x02U
+#define SLOW_BLINK 0x04U
+#define IS_LED_HIGH 0x08U
 
 LedController::LedController(Timer& timer, GpioDriver& driver): timer(timer), driver(driver), state(INITIAL), counter(INITIAL)
 {
@@ -23,25 +28,31 @@ LedController::~LedController()
 	timer.UnsubscribeOnElapse(*this);
 }
 
-void LedController::Off()
+void inline LedController::Off()
 {
 	state = INITIAL;
 	driver.DriveLedLow();
 }
 
-void LedController::Glow()
+void inline LedController::Glow()
 {
 	state = INITIAL;
 	driver.DriveLedHigh();
 }
 
-void LedController::BlinkFast()
+void inline LedController::BlinkFast()
 {
 	state = FAST_BLINK;
 	driver.DriveLedLow();
 }
 
-void LedController::BlinkSlow()
+void inline LedController::BlinkMid()
+{
+	state = MID_BLINK;
+	driver.DriveLedLow();
+}
+
+void inline LedController::BlinkSlow()
 {
 	state = SLOW_BLINK;
 	driver.DriveLedLow();
@@ -51,7 +62,11 @@ void LedController::Callback(uint8_t data)
 {
 	if (!state) return;
 
-	state & FAST_BLINK ? Blink(FAST_BLINK_TIMEOUT) : Blink(SLOW_BLINK_TIMEOUT);
+	state & FAST_BLINK
+		? Blink(FAST_BLINK_TIMEOUT)
+		: state & MID_BLINK
+			? Blink(MID_BLINK_TIMEOUT)
+			: Blink(SLOW_BLINK_TIMEOUT);
 }
 
 void LedController::Blink(uint32_t timeout)
