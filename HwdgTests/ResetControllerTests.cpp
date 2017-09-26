@@ -6,10 +6,12 @@
 #include "../Hwdg/src/ResetController.h"
 //#include "../Hwdg/src/ResetController.cpp"
 
+#define RESPONSE_DEF_TIMEOUT 10000U
+#define REBOOT_DEF_TIMEOUT 150000U
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace fakeit;
 
-#define INFINITE 100000U
+#define INFINITE 1000000U
 
 namespace HwdgTests
 {
@@ -24,9 +26,9 @@ namespace HwdgTests
 
 	public:
 		/**
-		* \brief ID:500001 Verify neither soft nor hard reset occurs before Start command received.
+		* \brief ID:11001 Verify neither soft nor hard reset occurs before Start command received.
 		*/
-		TEST_METHOD(VerifyResetControllerNeverResetAfterPowerOn)
+		TEST_METHOD(VerifyResetControllerNeverRebootsAfterPowerOn)
 		{
 			// Arrange
 			Mock<Rebooter> rebooter;
@@ -50,9 +52,9 @@ namespace HwdgTests
 		}
 
 		/**
-		* \brief ID:500002 Verify neither soft nor hard reset occurs when we configure ResetController.
+		* \brief ID:11002 Verify neither soft nor hard reset occurs after configuring ResetController.
 		*/
-		TEST_METHOD(VerifyResetControllerNeverResetAfterPowerOnWithSettings)
+		TEST_METHOD(VerifyResetControllerNeverRebootsAfterPowerOnWithSettings)
 		{
 			// Arrange
 			Mock<Rebooter> rebooter;
@@ -80,9 +82,9 @@ namespace HwdgTests
 		}
 
 		/**
-		* \brief ID:500003 Verify default response timeout (10 seconds) + no hard reset
+		* \brief ID:11003 Verify default ResetController behaviour after Start command received (10s+150s+150s).
 		*/
-		TEST_METHOD(VerifyResetControllerDefaultResponseTimeout)
+		TEST_METHOD(VerifyResetControllerStartDefaultSequence)
 		{
 			// Arrange
 			Mock<Rebooter> rebooter;
@@ -99,7 +101,113 @@ namespace HwdgTests
 
 			// Act
 			rc.Start();
-			Wait(10000);
+
+			for (auto i = 0; i < 3; i++)
+			{
+				// Act
+				if (i == 0)  Wait(RESPONSE_DEF_TIMEOUT - 1);
+				else Wait(REBOOT_DEF_TIMEOUT - 1);
+
+				// Assert
+				VerifyNoOtherInvocations(rebooter);
+
+				// Act
+				Wait(1);
+
+				// Assert
+				Verify(Method(rebooter, SoftReset)).Exactly(i + 1);
+				Verify(Method(rebooter, HardReset)).Never();
+			}
+
+			// Act
+			Wait(INFINITE);
+
+			// Assert
+			VerifyNoOtherInvocations(rebooter);
+		}
+
+		/**
+		* \brief ID:11004 Verify default ResetController behaviour after enabling HardReset
+		* and sending Start command received. SoftReset (10s+150s+150s) + HardReset (150s+150s+150s).
+		*/
+		TEST_METHOD(VerifyResetControllerHrdResetDefaultSequence)
+		{
+			// Arrange
+			Mock<Rebooter> rebooter;
+			When(Method(rebooter, SoftReset)).AlwaysReturn();
+			When(Method(rebooter, HardReset)).AlwaysReturn();
+
+			Mock<LedController> ledController;
+			When(Method(ledController, Off)).AlwaysReturn();
+			When(Method(ledController, Glow)).AlwaysReturn();
+			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkSlow)).AlwaysReturn();
+
+			ResetController rc(timer, rebooter.get(), ledController.get());
+
+			// Act
+			rc.EnableHardReset();
+			rc.Start();
+
+			for (auto i = 0; i < 6; i++)
+			{
+				// Act
+				if (i == 0)  Wait(RESPONSE_DEF_TIMEOUT - 1);
+				else Wait(REBOOT_DEF_TIMEOUT - 1);
+
+				// Assert
+				VerifyNoOtherInvocations(rebooter);
+
+				// Act
+				Wait(1);
+
+				// Assert
+				if (i < 3)
+				{
+					Verify(Method(rebooter, SoftReset)).Exactly(i + 1);
+					Verify(Method(rebooter, HardReset)).Never();
+				}
+				else
+				{
+					Verify(Method(rebooter, SoftReset)).Exactly(3);
+					Verify(Method(rebooter, HardReset)).Exactly(i - 2);
+				}
+			}
+
+			// Act
+			Wait(INFINITE);
+
+			// Assert
+			VerifyNoOtherInvocations(rebooter);
+		}
+
+		/**
+		* \brief ID:500005 Verify default response timeout + no hard reset
+		*/
+		TEST_METHOD(VerifyResetControllerDefaultResetTimeout)
+		{
+			// Arrange
+			Mock<Rebooter> rebooter;
+			When(Method(rebooter, SoftReset)).AlwaysReturn();
+			When(Method(rebooter, HardReset)).AlwaysReturn();
+
+			Mock<LedController> ledController;
+			When(Method(ledController, Off)).AlwaysReturn();
+			When(Method(ledController, Glow)).AlwaysReturn();
+			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkSlow)).AlwaysReturn();
+
+			ResetController rc(timer, rebooter.get(), ledController.get());
+
+			// Act
+			rc.Start();
+			Wait(RESPONSE_DEF_TIMEOUT - 1);
+
+			// Assert
+			VerifyNoOtherInvocations(rebooter);
+
+			// Act
+			Wait(1);
 
 			// Assert
 			Verify(Method(rebooter, SoftReset)).Once();
@@ -107,11 +215,14 @@ namespace HwdgTests
 
 			// Act
 			Wait(INFINITE);
-			VerifyNoOtherInvocations(rebooter);
+
+			// Assert
+			Verify(Method(rebooter, SoftReset)).Exactly(3);
+			Verify(Method(rebooter, HardReset)).Never();
 		}
 
 		/**
-		* \brief ID:500004 Verify min response timeout (1 second) + no hard reset
+		* \brief ID:500006 Verify min response timeout (1 second) + no hard reset
 		*/
 		TEST_METHOD(VerifyResetControllerMinResponseTimeout)
 		{
@@ -131,16 +242,29 @@ namespace HwdgTests
 			// Act
 			rc.SetResponseTimeout(0);
 			rc.Start();
-			for (auto i = 0; i < 1000; i++)
-				timer.OnElapse();
+
+			Wait(5000 - 1);
+
+			// Assert
+			VerifyNoOtherInvocations(rebooter);
+
+			// Act
+			Wait(1);
 
 			// Assert
 			Verify(Method(rebooter, SoftReset)).Once();
 			Verify(Method(rebooter, HardReset)).Never();
+
+			// Act
+			Wait(INFINITE);
+
+			// Assert
+			Verify(Method(rebooter, SoftReset)).Exactly(3);
+			Verify(Method(rebooter, HardReset)).Never();
 		}
 
 		/**
-		* \brief ID:500005 Verify max response timeout (64 seconds) + no hard reset
+		* \brief ID:500007 Verify max response timeout (320 seconds) + no hard reset
 		*/
 		TEST_METHOD(VerifyResetControllerMaxResponseTimeout)
 		{
@@ -158,20 +282,33 @@ namespace HwdgTests
 			ResetController rc(timer, rebooter.get(), ledController.get());
 
 			// Act
-			rc.SetResponseTimeout(127);
+			rc.SetResponseTimeout(63);
 			rc.Start();
-			for (auto i = 0; i < 64000; i++)
-				timer.OnElapse();
+
+			Wait(320000 - 1);
+
+			// Assert
+			VerifyNoOtherInvocations(rebooter);
+
+			// Act
+			Wait(1);
 
 			// Assert
 			Verify(Method(rebooter, SoftReset)).Once();
 			Verify(Method(rebooter, HardReset)).Never();
+
+			// Act
+			Wait(INFINITE);
+
+			// Assert
+			Verify(Method(rebooter, SoftReset)).Exactly(3);
+			Verify(Method(rebooter, HardReset)).Never();
 		}
 
 		/**
-		* \brief ID:500006 Verify any specified response timeout (23 seconds) + no hard reset
+		* \brief ID:500008 Verify any specified response timeout (110 seconds) + no hard reset
 		*/
-		TEST_METHOD(VerifyResetControllerRestartsIn23Seconds)
+		TEST_METHOD(VerifyResetControllerRestartsIn110Seconds)
 		{
 			// Arrange
 			Mock<Rebooter> rebooter;
@@ -187,20 +324,214 @@ namespace HwdgTests
 			ResetController rc(timer, rebooter.get(), ledController.get());
 
 			// Act
-			rc.SetResponseTimeout(22);
+			rc.SetResponseTimeout(21);
 			rc.Start();
-			for (auto i = 0; i < 23000; i++)
-				timer.OnElapse();
+
+			Wait(110000 - 1);
+
+			// Assert
+			VerifyNoOtherInvocations(rebooter);
+
+			// Act
+			Wait(1);
 
 			// Assert
 			Verify(Method(rebooter, SoftReset)).Once();
 			Verify(Method(rebooter, HardReset)).Never();
+
+			// Act
+			Wait(INFINITE);
+
+			// Assert
+			Verify(Method(rebooter, SoftReset)).Exactly(3);
+			Verify(Method(rebooter, HardReset)).Never();
 		}
 
 		/**
-		* \brief ID:500007 Verify default reset timeout + default soft reset
+		* \brief ID:500009 Verify default soft reset count (3 times) + no hard reset
 		*/
-		TEST_METHOD(VerifyResetControllerDefaultResetTimeout)
+		TEST_METHOD(VerifyResetControllerSetSoftResetAttemptsDefaultCorrect)
+		{
+			// Arrange
+			Mock<Rebooter> rebooter;
+			When(Method(rebooter, SoftReset)).AlwaysReturn();
+			When(Method(rebooter, HardReset)).AlwaysReturn();
+
+			Mock<LedController> ledController;
+			When(Method(ledController, Off)).AlwaysReturn();
+			When(Method(ledController, Glow)).AlwaysReturn();
+			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkSlow)).AlwaysReturn();
+
+			ResetController rc(timer, rebooter.get(), ledController.get());
+
+			// Act
+			rc.Start();
+
+			for (auto i = 0; i < 3; i++)
+			{
+				// Act
+				if (i == 0)  Wait(RESPONSE_DEF_TIMEOUT - 1);
+				else Wait(REBOOT_DEF_TIMEOUT - 1);
+
+				// Assert
+				VerifyNoOtherInvocations(rebooter);
+
+				// Act
+				Wait(1);
+
+				// Assert
+
+				Verify(Method(rebooter, SoftReset)).Exactly(i + 1);
+				Verify(Method(rebooter, HardReset)).Never();
+			}
+
+			// Act
+			Wait(INFINITE);
+
+			// Assert
+			VerifyNoOtherInvocations(rebooter);
+		}
+
+		/**
+		* \brief ID:500010 Verify min soft reset count (1 time) + no hard reset
+		*/
+		TEST_METHOD(VerifyResetControllerSetSoftResetAttemptsMinCorrect)
+		{
+			// Arrange
+			Mock<Rebooter> rebooter;
+			When(Method(rebooter, SoftReset)).AlwaysReturn();
+			When(Method(rebooter, HardReset)).AlwaysReturn();
+
+			Mock<LedController> ledController;
+			When(Method(ledController, Off)).AlwaysReturn();
+			When(Method(ledController, Glow)).AlwaysReturn();
+			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkSlow)).AlwaysReturn();
+
+			ResetController rc(timer, rebooter.get(), ledController.get());
+
+			// Act
+			rc.SetSoftResetAttempts(0);
+			rc.Start();
+
+			Wait(RESPONSE_DEF_TIMEOUT - 1);
+
+			// Assert
+			VerifyNoOtherInvocations(rebooter);
+
+			// Act
+			Wait(1);
+
+			// Assert
+			Verify(Method(rebooter, SoftReset)).Once();
+			Verify(Method(rebooter, HardReset)).Never();
+
+			// Act
+			Wait(INFINITE);
+
+			// Assert
+			VerifyNoOtherInvocations(rebooter);
+		}
+
+		/**
+		* \brief ID:500011 Verify max soft reset count (8 times) + no hard reset
+		*/
+		TEST_METHOD(VerifyResetControllerSetSoftResetAttemptsMaxCorrect)
+		{
+			// Arrange
+			Mock<Rebooter> rebooter;
+			When(Method(rebooter, SoftReset)).AlwaysReturn();
+			When(Method(rebooter, HardReset)).AlwaysReturn();
+
+			Mock<LedController> ledController;
+			When(Method(ledController, Off)).AlwaysReturn();
+			When(Method(ledController, Glow)).AlwaysReturn();
+			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkSlow)).AlwaysReturn();
+
+			ResetController rc(timer, rebooter.get(), ledController.get());
+
+			// Act
+			rc.SetSoftResetAttempts(7);
+			rc.Start();
+
+			for (auto i = 0; i < 8; i++)
+			{
+				// Act
+				if (i == 0)  Wait(RESPONSE_DEF_TIMEOUT - 1);
+				else Wait(REBOOT_DEF_TIMEOUT - 1);
+
+				// Assert
+				VerifyNoOtherInvocations(rebooter);
+
+				// Act
+				Wait(1);
+
+				// Assert
+
+				Verify(Method(rebooter, SoftReset)).Exactly(i + 1);
+				Verify(Method(rebooter, HardReset)).Never();
+			}
+
+			// Act
+			Wait(INFINITE);
+
+			// Assert
+			VerifyNoOtherInvocations(rebooter);
+		}
+
+		/**
+		* \brief ID:500012 Verify any specified soft reset count (6 times) + no hard reset
+		*/
+		TEST_METHOD(VerifyResetControllerSetSoftResetAttemptsAnyCorrect)
+		{
+			// Arrange
+			Mock<Rebooter> rebooter;
+			When(Method(rebooter, SoftReset)).AlwaysReturn();
+			When(Method(rebooter, HardReset)).AlwaysReturn();
+
+			Mock<LedController> ledController;
+			When(Method(ledController, Off)).AlwaysReturn();
+			When(Method(ledController, Glow)).AlwaysReturn();
+			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkSlow)).AlwaysReturn();
+
+			ResetController rc(timer, rebooter.get(), ledController.get());
+
+			// Act
+			rc.SetSoftResetAttempts(5);
+			rc.Start();
+
+			for (auto i = 0; i < 6; i++)
+			{
+				// Act
+				if (i == 0)  Wait(RESPONSE_DEF_TIMEOUT - 1);
+				else Wait(REBOOT_DEF_TIMEOUT - 1);
+
+				// Assert
+				VerifyNoOtherInvocations(rebooter);
+
+				// Act
+				Wait(1);
+
+				// Assert
+
+				Verify(Method(rebooter, SoftReset)).Exactly(i + 1);
+				Verify(Method(rebooter, HardReset)).Never();
+			}
+
+			// Act
+			Wait(INFINITE);
+
+			// Assert
+			VerifyNoOtherInvocations(rebooter);
+		}
+
+		/**
+		* \brief ID:500013 Verify default hard reset count (3 times)
+		*/
+		TEST_METHOD(VerifyResetControllerSetHardResetAttemptsDefaultCorrect)
 		{
 			// Arrange
 			Mock<Rebooter> rebooter;
@@ -219,47 +550,42 @@ namespace HwdgTests
 			rc.EnableHardReset();
 			rc.Start();
 
-			for (auto i = 0; i < 1000000; i++)
-				timer.OnElapse();
+			for (auto i = 0; i < 6; i++)
+			{
+				// Act
+				if (i == 0)  Wait(RESPONSE_DEF_TIMEOUT - 1);
+				else Wait(REBOOT_DEF_TIMEOUT - 1);
 
-			// Assert
-			Verify(Method(rebooter, SoftReset)).Exactly(3);
-			Verify(Method(rebooter, HardReset)).Exactly(3);
-		}
+				// Assert
+				VerifyNoOtherInvocations(rebooter);
 
-		/**
-		* \brief ID:500011 Verify default soft reset attempts (3 attempts) + no hard reset
-		*/
-		TEST_METHOD(VerifyResetControllerRestarts3Times)
-		{
-			// Arrange
-			Mock<Rebooter> rebooter;
-			When(Method(rebooter, SoftReset)).AlwaysReturn();
-			When(Method(rebooter, HardReset)).AlwaysReturn();
+				// Act
+				Wait(1);
 
-			Mock<LedController> ledController;
-			When(Method(ledController, Off)).AlwaysReturn();
-			When(Method(ledController, Glow)).AlwaysReturn();
-			When(Method(ledController, BlinkFast)).AlwaysReturn();
-			When(Method(ledController, BlinkSlow)).AlwaysReturn();
-
-			ResetController rc(timer, rebooter.get(), ledController.get());
+				// Assert
+				if (i < 3)
+				{
+					Verify(Method(rebooter, SoftReset)).Exactly(i + 1);
+					Verify(Method(rebooter, HardReset)).Never();
+				}
+				else
+				{
+					Verify(Method(rebooter, SoftReset)).Exactly(3);
+					Verify(Method(rebooter, HardReset)).Exactly(i - 2);
+				}
+			}
 
 			// Act
-			rc.Start();
-			for (auto i = 0; i < 10000000; i++)
-				timer.OnElapse();
+			Wait(INFINITE);
 
 			// Assert
-			Verify(Method(rebooter, SoftReset)).Exactly(3);
-			Verify(Method(rebooter, HardReset)).Never();
+			VerifyNoOtherInvocations(rebooter);
 		}
 
 		/**
-		* \brief ID:500019 Verify default soft reset (3 attempts/10 seconds) + default hard reset (3 attempts/120 seconds)
-		* todo: update description!
+		* \brief ID:500014 Verify min hard reset count (1 time)
 		*/
-		TEST_METHOD(VerifyResetControllerRestarts3TimesSoftAnd3TimesHard)
+		TEST_METHOD(VerifyResetControllerSetHardResetAttemptsMinCorrect)
 		{
 			// Arrange
 			Mock<Rebooter> rebooter;
@@ -276,15 +602,155 @@ namespace HwdgTests
 
 			// Act
 			rc.EnableHardReset();
+			rc.SetHardResetAttempts(0);
 			rc.Start();
 
-			for (auto i = 0; i < 10000000; i++)
-				timer.OnElapse();
+			for (auto i = 0; i < 4; i++)
+			{
+				// Act
+				if (i == 0)  Wait(RESPONSE_DEF_TIMEOUT - 1);
+				else Wait(REBOOT_DEF_TIMEOUT - 1);
+
+				// Assert
+				VerifyNoOtherInvocations(rebooter);
+
+				// Act
+				Wait(1);
+
+				// Assert
+				if (i < 3)
+				{
+					Verify(Method(rebooter, SoftReset)).Exactly(i + 1);
+					Verify(Method(rebooter, HardReset)).Never();
+				}
+				else
+				{
+					Verify(Method(rebooter, SoftReset)).Exactly(3);
+					Verify(Method(rebooter, HardReset)).Exactly(i - 2);
+				}
+			}
+
+			// Act
+			Wait(INFINITE);
 
 			// Assert
-			Verify(Method(rebooter, SoftReset)).Exactly(3);
-			Verify(Method(rebooter, HardReset)).Exactly(3);
+			VerifyNoOtherInvocations(rebooter);
 		}
+
+		/**
+		* \brief ID:500015 Verify max hard reset count (8 times)
+		*/
+		TEST_METHOD(VerifyResetControllerSetHardResetAttemptsMaxCorrect)
+		{
+			// Arrange
+			Mock<Rebooter> rebooter;
+			When(Method(rebooter, SoftReset)).AlwaysReturn();
+			When(Method(rebooter, HardReset)).AlwaysReturn();
+
+			Mock<LedController> ledController;
+			When(Method(ledController, Off)).AlwaysReturn();
+			When(Method(ledController, Glow)).AlwaysReturn();
+			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkSlow)).AlwaysReturn();
+
+			ResetController rc(timer, rebooter.get(), ledController.get());
+
+			// Act
+			rc.EnableHardReset();
+			rc.SetHardResetAttempts(0);
+			rc.Start();
+
+			for (auto i = 0; i < 4; i++)
+			{
+				// Act
+				if (i == 0)  Wait(RESPONSE_DEF_TIMEOUT - 1);
+				else Wait(REBOOT_DEF_TIMEOUT - 1);
+
+				// Assert
+				VerifyNoOtherInvocations(rebooter);
+
+				// Act
+				Wait(1);
+
+				// Assert
+				if (i < 3)
+				{
+					Verify(Method(rebooter, SoftReset)).Exactly(i + 1);
+					Verify(Method(rebooter, HardReset)).Never();
+				}
+				else
+				{
+					Verify(Method(rebooter, SoftReset)).Exactly(3);
+					Verify(Method(rebooter, HardReset)).Exactly(i - 2);
+				}
+			}
+
+			// Act
+			Wait(INFINITE);
+
+			// Assert
+			VerifyNoOtherInvocations(rebooter);
+		}
+
+		/**
+		* \brief ID:500016 Verify any specified hard reset count (5 times)
+		*/
+		TEST_METHOD(VerifyResetControllerSetHardResetAttemptsAnyCorrect)
+		{
+			// Arrange
+			Mock<Rebooter> rebooter;
+			When(Method(rebooter, SoftReset)).AlwaysReturn();
+			When(Method(rebooter, HardReset)).AlwaysReturn();
+
+			Mock<LedController> ledController;
+			When(Method(ledController, Off)).AlwaysReturn();
+			When(Method(ledController, Glow)).AlwaysReturn();
+			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkSlow)).AlwaysReturn();
+
+			ResetController rc(timer, rebooter.get(), ledController.get());
+
+			// Act
+			rc.EnableHardReset();
+			rc.SetHardResetAttempts(4);
+			rc.Start();
+
+			for (auto i = 0; i < 8; i++)
+			{
+				// Act
+				if (i == 0)  Wait(RESPONSE_DEF_TIMEOUT - 1);
+				else Wait(REBOOT_DEF_TIMEOUT - 1);
+
+				// Assert
+				VerifyNoOtherInvocations(rebooter);
+
+				// Act
+				Wait(1);
+
+				// Assert
+				if (i < 3)
+				{
+					Verify(Method(rebooter, SoftReset)).Exactly(i + 1);
+					Verify(Method(rebooter, HardReset)).Never();
+				}
+				else
+				{
+					Verify(Method(rebooter, SoftReset)).Exactly(3);
+					Verify(Method(rebooter, HardReset)).Exactly(i - 2);
+				}
+			}
+
+			// Act
+			Wait(INFINITE);
+
+			// Assert
+			VerifyNoOtherInvocations(rebooter);
+		}
+
+
+
+
+
 
 		/**
 		* \brief ID:500014 Verify any specified soft reset attempts + no hard reset
@@ -293,26 +759,59 @@ namespace HwdgTests
 		{
 			// Arrange
 			Mock<Rebooter> rebooter;
-			When(Method(rebooter, SoftReset)).AlwaysReturn();
-			When(Method(rebooter, HardReset)).AlwaysReturn();
 
 			Mock<LedController> ledController;
 			When(Method(ledController, Off)).AlwaysReturn();
 			When(Method(ledController, Glow)).AlwaysReturn();
 			When(Method(ledController, BlinkFast)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
-
 			ResetController rc(timer, rebooter.get(), ledController.get());
 
-			// Act
-			rc.Start();
-			rc.SetSoftResetAttempts(2);
-			for (auto i = 0; i < 200000; i++)
-				timer.OnElapse();
-
-			// Assert
-			Verify(Method(rebooter, SoftReset)).Exactly(2);
-			Verify(Method(rebooter, HardReset)).Never();
+//#pragma omp parallel for
+//			for (auto rebootTimeout = 0; rebootTimeout < 3; rebootTimeout++)
+//				for (auto responseTimeout = 0; responseTimeout < 3; responseTimeout++)
+//					for (auto softResetAttemps = 0; softResetAttemps < 8; softResetAttemps++)
+//						for (auto hardResetAttempts = 0; hardResetAttempts < 8; hardResetAttempts++)
+//						{
+//							When(Method(rebooter, SoftReset)).AlwaysReturn();
+//							When(Method(rebooter, HardReset)).AlwaysReturn();
+//							rc.SetHardResetAttempts(hardResetAttempts);
+//							rc.SetSoftResetAttempts(softResetAttemps);
+//							rc.SetResponseTimeout(responseTimeout);
+//							rc.SetRebootTimeout(rebootTimeout);
+//							rc.EnableHardReset();
+//							rc.Start();
+//							for (auto i = 0; i < softResetAttemps + hardResetAttempts + 2; i++)
+//							{
+//								// Act
+//								if (i == 0)  Wait((responseTimeout + 1) * 5000 - 1);
+//								else Wait(10000 + rebootTimeout * 5000 - 1);
+//
+//								// Assert
+//								VerifyNoOtherInvocations(rebooter);
+//
+//								// Act
+//								Wait(1);
+//
+//								// Assert
+//								if (i < softResetAttemps + 1)
+//								{
+//									Verify(Method(rebooter, SoftReset)).Exactly(i + 1);
+//									Verify(Method(rebooter, HardReset)).Never();
+//								}
+//								else
+//								{
+//									Verify(Method(rebooter, SoftReset)).Exactly(softResetAttemps + 1);
+//									Verify(Method(rebooter, HardReset)).Exactly(i - softResetAttemps);
+//								}
+//							}
+//							// Act
+//							Wait(INFINITE);
+//
+//							// Assert
+//							VerifyNoOtherInvocations(rebooter);
+//							rebooter.Reset();
+//						}
 		}
 
 		/**
