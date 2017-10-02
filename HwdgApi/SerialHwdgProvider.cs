@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO.Ports;
+using System.Threading.Tasks;
+using HwdgApi.Helpers;
 
 namespace HwdgApi
 {
@@ -10,54 +12,70 @@ namespace HwdgApi
         {
             this.serial = serial;
         }
-        public Response SetRebootTimeout(Int32 ms)
+        public async Task<Response> SetRebootTimeout(Int32 ms)
         {
-            throw new NotImplementedException();
+            if (ms > 645000) ms = 645000;
+            if (ms < 10000) ms = 10000;
+            var trbi = (ms - 10000) / 5000;
+            var cmd = (Byte)(trbi | 0x80);
+            return await serial.SendHwdgCommandAsync(cmd);
         }
 
-        public Response SetResponseTimeout(Int32 ms)
+        public async Task<Response> SetResponseTimeout(Int32 ms)
         {
-            throw new NotImplementedException();
+            if (ms > 320000) ms = 320000;
+            if (ms < 5000) ms = 5000;
+            var trsi = ms / 5000 - 1;
+            var cmd = (Byte)(trsi | 0x40);
+            return await serial.SendHwdgCommandAsync(cmd);
         }
 
-        public Response SetSoftResetAttempts(Byte count)
+        public async Task<Response> SetSoftResetAttempts(Byte count)
         {
-            throw new NotImplementedException();
+            if (count > 8) count = 8;
+            if (count < 1) count = 1;
+            var nsi = count  - 1;
+            var cmd = (Byte)(nsi | 0x10);
+            return await serial.SendHwdgCommandAsync(cmd);
         }
 
-        public Response SetHardResetAttempts(Byte count)
+        public async Task<Response> SetHardResetAttempts(Byte count)
         {
-            throw new NotImplementedException();
+            if (count > 8) count = 8;
+            if (count < 1) count = 1;
+            var nhi = count - 1;
+            var cmd = (Byte)(nhi | 0x18);
+            return await serial.SendHwdgCommandAsync(cmd);
         }
 
-        public Response EnableHardReset()
+        public async Task<Response> EnableHardReset()
         {
-            throw new NotImplementedException();
+            return await serial.SendHwdgCommandAsync(0x03);
         }
 
-        public Response DisableHardReset()
+        public async Task<Response> DisableHardReset()
         {
-            throw new NotImplementedException();
+            return await serial.SendHwdgCommandAsync(0x04);
         }
 
-        public Response Start()
+        public async Task<Response> Start()
         {
-            throw new NotImplementedException();
+            return await serial.SendHwdgCommandAsync(0x01);
         }
 
-        public Response Stop()
+        public async Task<Response> Stop()
         {
-            throw new NotImplementedException();
+            return await serial.SendHwdgCommandAsync(0x02);
         }
 
-        public Response Ping()
+        public async Task<Response> Ping()
         {
-            throw new NotImplementedException();
+            return await serial.SendHwdgCommandAsync(0x05);
         }
 
-        public Status GetStatus()
+        public async Task<Status> GetStatus()
         {
-            throw new NotImplementedException();
+            return await serial.GetHwdgStatusAsync();
         }
     }
 }

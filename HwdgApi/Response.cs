@@ -14,6 +14,6 @@ namespace HwdgApi
         StopOk = 0x28,
         PingOk = 0x29,
         Busy = 0x2A,
-        Ok = 0x2B,
+        Error = 0x2B,
     }
 }

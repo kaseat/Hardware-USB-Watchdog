@@ -79,8 +79,8 @@ uint32_t ResetController::GetStatus()
 	uint32_t result = 0;
 	uint8_t* rs = reinterpret_cast<uint8_t*>(&result);
 	rs[0] = (rebootTimeout - REBOOT_MIN_TIMEOUT) / HR_TIMEBASE | OUTPUT_BIT;
-	rs[1] = responseTimeout / SR_TIMEBASE - 1 << 2 | state & 0x03;
-	rs[2] = sAttemptCurr - 1 << 5 | hAttemptCurr - 1 << 2 | (state & 0x04) >> 1;
+	rs[1] = (responseTimeout / SR_TIMEBASE - 1) << 2 | state & 0x03;
+	rs[2] = (sAttemptCurr - 1) << 5 | (hAttemptCurr - 1) << 2 | (state & 0x04) >> 1;
 	return result;
 }
 
