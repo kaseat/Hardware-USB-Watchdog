@@ -42,6 +42,12 @@
     <Filter Include="App\LedController">
       <UniqueIdentifier>{06d8c104-8db8-49d7-8f29-6295817b8fde}</UniqueIdentifier>
     </Filter>
+    <Filter Include="IAR">
+      <UniqueIdentifier>{38431b78-62f6-480d-9106-18431b323de5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Crc">
+      <UniqueIdentifier>{98928fb6-f295-462a-bc24-f31ab5866119}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Clock.cpp">
@@ -70,6 +76,9 @@
     </ClCompile>
     <ClCompile Include="src\LedController.cpp">
       <Filter>App\LedController</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Crc.cpp">
+      <Filter>App\Crc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -103,5 +112,54 @@
     <ClInclude Include="src\LedController.h">
       <Filter>App\LedController</Filter>
     </ClInclude>
+    <ClInclude Include="src\Crc.h">
+      <Filter>App\Crc</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDependency.dgml" />
+    <None Include="FileDependency.dgml" />
+    <None Include="src\settings\Wdg.Debug.cspy.bat">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="src\settings\Wdg.dbgdt">
+      <Filter>IAR</Filter>
+    </None>
+    <None Include="src\settings\Wdg.Debug.cspy.ps1">
+      <Filter>IAR</Filter>
+    </None>
+    <None Include="src\settings\Wdg.Debug.driver.xcl">
+      <Filter>IAR</Filter>
+    </None>
+    <None Include="src\settings\Wdg.Debug.general.xcl">
+      <Filter>IAR</Filter>
+    </None>
+    <None Include="src\Wdg.dep">
+      <Filter>IAR</Filter>
+    </None>
+    <None Include="src\settings\Wdg.dni">
+      <Filter>IAR</Filter>
+    </None>
+    <None Include="src\settings\Wdg.dnx">
+      <Filter>IAR</Filter>
+    </None>
+    <None Include="src\Wdg.ewd">
+      <Filter>IAR</Filter>
+    </None>
+    <None Include="src\Wdg.ewp">
+      <Filter>IAR</Filter>
+    </None>
+    <None Include="src\Wdg.ewt">
+      <Filter>IAR</Filter>
+    </None>
+    <None Include="src\Wdg.eww">
+      <Filter>IAR</Filter>
+    </None>
+    <None Include="src\settings\Wdg.wsdt">
+      <Filter>IAR</Filter>
+    </None>
+    <None Include="src\settings\Wdg.wspos">
+      <Filter>IAR</Filter>
+    </None>
   </ItemGroup>
 </Project>

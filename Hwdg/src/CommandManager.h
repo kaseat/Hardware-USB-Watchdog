@@ -22,4 +22,5 @@ private:
 	Uart& uart;
 	ResetController& resetController;
 	void Callback(uint8_t data);
+	void CmdSelector(uint8_t data) const;
 };

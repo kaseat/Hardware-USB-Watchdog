@@ -13,7 +13,7 @@
 #define _override override
 #endif
 
-enum class Response : uint8_t
+enum Response
 {
 	SetRebootTimeoutOk = 0x21,
 	SetResponseTimeoutOk = 0x22,
@@ -25,6 +25,7 @@ enum class Response : uint8_t
 	StopOk = 0x28,
 	PingOk = 0x29,
 	Busy = 0x2A,
+	Error = 0x2B,
 };
 
 /**
@@ -44,6 +45,11 @@ public:
 	 * \brief Dispose reset controller.
 	 */
 	~ResetController();
+
+	/**
+	* \brief Gets ResetController status.
+	*/
+	_virtual uint32_t GetStatus();
 
 	/**
 	 * \brief Allow watchdog restart computer via reset button.
@@ -75,11 +81,11 @@ public:
 	 * \param timeout Timeout (0-63).
 	 */
 	_virtual Response SetResponseTimeout(uint8_t timeout);
-        
-	 /**
-	 * \brief Set reset timeout.
-	 * \param timeout Timeout(0-127).
-	 */
+
+	/**
+	* \brief Set reset timeout.
+	* \param timeout Timeout(0-127).
+	*/
 	_virtual Response SetRebootTimeout(uint8_t timeout);
 
 	/**

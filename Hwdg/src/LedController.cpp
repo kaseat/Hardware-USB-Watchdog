@@ -28,31 +28,31 @@ LedController::~LedController()
 	timer.UnsubscribeOnElapse(*this);
 }
 
-void inline LedController::Off()
+void  LedController::Off()
 {
 	state = INITIAL;
 	driver.DriveLedLow();
 }
 
-void inline LedController::Glow()
+void  LedController::Glow()
 {
 	state = INITIAL;
 	driver.DriveLedHigh();
 }
 
-void inline LedController::BlinkFast()
+void  LedController::BlinkFast()
 {
 	state = FAST_BLINK;
 	driver.DriveLedLow();
 }
 
-void inline LedController::BlinkMid()
+void  LedController::BlinkMid()
 {
 	state = MID_BLINK;
 	driver.DriveLedLow();
 }
 
-void inline LedController::BlinkSlow()
+void  LedController::BlinkSlow()
 {
 	state = SLOW_BLINK;
 	driver.DriveLedLow();

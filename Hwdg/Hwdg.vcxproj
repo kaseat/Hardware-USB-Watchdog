@@ -115,6 +115,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Crc.cpp" />
     <ClCompile Include="src\GpioDriver.cpp" />
     <ClCompile Include="src\LedController.cpp" />
     <ClCompile Include="src\Timer.cpp" />
@@ -126,6 +127,7 @@
     <ClCompile Include="src\Uart.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Crc.h" />
     <ClInclude Include="src\GpioDriver.h" />
     <ClInclude Include="src\LedController.h" />
     <ClInclude Include="src\STM8S003F3.h" />
@@ -136,6 +138,24 @@
     <ClInclude Include="src\ISubscriber.h" />
     <ClInclude Include="src\ResetController.h" />
     <ClInclude Include="src\Uart.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDependency.dgml" />
+    <None Include="FileDependency.dgml" />
+    <None Include="src\settings\Wdg.dbgdt" />
+    <None Include="src\settings\Wdg.Debug.cspy.bat" />
+    <None Include="src\settings\Wdg.Debug.cspy.ps1" />
+    <None Include="src\settings\Wdg.Debug.driver.xcl" />
+    <None Include="src\settings\Wdg.Debug.general.xcl" />
+    <None Include="src\settings\Wdg.dni" />
+    <None Include="src\settings\Wdg.dnx" />
+    <None Include="src\settings\Wdg.wsdt" />
+    <None Include="src\settings\Wdg.wspos" />
+    <None Include="src\Wdg.dep" />
+    <None Include="src\Wdg.ewd" />
+    <None Include="src\Wdg.ewp" />
+    <None Include="src\Wdg.ewt" />
+    <None Include="src\Wdg.eww" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

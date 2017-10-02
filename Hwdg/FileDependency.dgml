@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DirectedGraph GraphDirection="LeftToRight" Layout="Sugiyama" ZoomLevel="-1" xmlns="http://schemas.microsoft.com/vs/2009/dgml">
+  <Nodes>
+    <Node Id="(@1 @26)" Category="CodeSchema_ProjectItem" Bounds="378.422666820825,440,135.024666743746,25.998000077079" FilePath="$(VsSolution)\Hwdg\src\LedController.cpp" Label="LedController.cpp" />
+    <Node Id="@11" Category="CodeSchema_ProjectItem" Bounds="543.447333564571,440,122.164666743746,25.998000077079" FilePath="$(VsSolution)\Hwdg\src\LedController.h" Label="LedController.h" />
+    <Node Id="@13" Category="CodeSchema_ProjectItem" Bounds="380.079333487492,332,131.711333410412,25.998000077079" FilePath="$(VsSolution)\Hwdg\src\ResetController.h" Label="ResetController.h" />
+    <Node Id="@15" Category="CodeSchema_ProjectItem" Bounds="709.078666974983,252,80.3680000770792,25.998000077079" FilePath="$(VsSolution)\Hwdg\src\Timer.h" Label="Timer.h" />
+    <Node Id="@17" Category="CodeSchema_ProjectItem" Bounds="554.969000231237,328,99.1213334104124,25.998000077079" FilePath="$(VsSolution)\Hwdg\src\Rebooter.h" Label="Rebooter.h" />
+    <Node Id="@19" Category="CodeSchema_ProjectItem" Bounds="695.612000308317,404,107.301333410412,25.998000077079" FilePath="$(VsSolution)\Hwdg\src\GpioDriver.h" Label="GpioDriver.h" />
+    <Node Id="@21" Category="CodeSchema_ProjectItem" Bounds="712.773666974983,156,72.9780000770791,25.998000077079" FilePath="$(VsSolution)\Hwdg\src\Uart.h" Label="Uart.h" />
+    <Node Id="@23" Category="CodeSchema_ProjectItem" Bounds="558.469000231237,2.8421709430404E-14,92.1213334104123,25.998000077079" FilePath="$(VsSolution)\Hwdg\src\Clock.cpp" Label="Clock.cpp" />
+    <Node Id="@25" Category="CodeSchema_ProjectItem" Bounds="181.263267844662,158.249492226284,165.641333410412,25.998000077079" FilePath="$(VsSolution)\Hwdg\src\CommandManager.cpp" Label="CommandManager.cpp" UseManualLocation="True" />
+    <Node Id="@28" Category="CodeSchema_ProjectItem" Bounds="199.746346234247,216.497084529423,144.571333410412,25.998000077079" FilePath="$(VsSolution)\Hwdg\src\ResetController.cpp" Label="ResetController.cpp" />
+    <Node Id="@3" Category="CodeSchema_ProjectItem" Bounds="832.913333718729,112,118.408000077079,25.998000077079" FilePath="$(VsSolution)\Hwdg\src\STM8S003F3.h" Label="STM8S003F3.h" />
+    <Node Id="@30" Category="CodeSchema_ProjectItem" Bounds="557.915666897904,112,93.2280000770791,25.998000077079" FilePath="$(VsSolution)\Hwdg\src\Timer.cpp" Label="Timer.cpp" />
+    <Node Id="@32" Category="CodeSchema_ProjectItem" Bounds="389.944333487492,276,111.981333410412,25.998000077079" FilePath="$(VsSolution)\Hwdg\src\Rebooter.cpp" Label="Rebooter.cpp" />
+    <Node Id="@34" Category="CodeSchema_ProjectItem" Bounds="544.449000231238,384,120.161333410412,25.998000077079" FilePath="$(VsSolution)\Hwdg\src\GpioDriver.cpp" Label="GpioDriver.cpp" />
+    <Node Id="@36" Category="CodeSchema_ProjectItem" Bounds="561.610666897904,56,85.838000077079,25.998000077079" FilePath="$(VsSolution)\Hwdg\src\Uart.cpp" Label="Uart.cpp" />
+    <Node Id="@5" Category="CodeSchema_ProjectItem" Bounds="709.632000308317,56,79.2613334104124,25.998000077079" FilePath="$(VsSolution)\Hwdg\src\Clock.h" Label="Clock.h" />
+    <Node Id="@7" Category="CodeSchema_ProjectItem" Bounds="837.608333718729,448,109.018000077079,25.998000077079" FilePath="$(VsSolution)\Hwdg\src\ISubscriber.h" Label="ISubscriber.h" />
+    <Node Id="@9" Category="CodeSchema_ProjectItem" Bounds="195.641330975458,272.495184606502,152.781333410412,25.998000077079" FilePath="$(VsSolution)\Hwdg\src\CommandManager.h" Label="CommandManager.h" />
+  </Nodes>
+  <Links>
+    <Link Source="(@1 @26)" Target="@11" Category="PoundInclude" Bounds="513.447326660156,452.998992919922,21,0" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+    <Link Source="@11" Target="@15" Category="PoundInclude" Bounds="628.927612304688,284.514892578125,101.746459960938,155.485107421875" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+    <Link Source="@11" Target="@19" Category="PoundInclude" Bounds="656.790344238281,432.010406494141,32.12109375,7.98959350585938" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+    <Link Source="@11" Target="@7" Category="PoundInclude" Bounds="665.611999511719,456.375274658203,162.996337890625,4.62371826171875" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+    <Link Source="@13" Target="@11" Category="PoundInclude" Bounds="465.023620605469,357.997985839844,112.978454589844,76.9362182617188" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+    <Link Source="@13" Target="@15" Category="PoundInclude" Bounds="488.884429931641,275.826507568359,211.406463623047,56.1734924316406" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+    <Link Source="@13" Target="@17" Category="PoundInclude" Bounds="511.790679931641,342.475921630859,34.1811828613281,0.862091064453125" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+    <Link Source="@13" Target="@7" Category="PoundInclude" Bounds="457.108825683594,357.997985839844,371.514587402344,116.778991699219" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+    <Link Source="@15" Target="@3" Category="PoundInclude" Bounds="762.526733398438,144.297409057617,109.898681640625,107.702590942383" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+    <Link Source="@15" Target="@7" Category="PoundInclude" Bounds="758.736999511719,277.997985839844,118.60498046875,162.728851318359" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+    <Link Source="@17" Target="@15" Category="PoundInclude" Bounds="629.284729003906,282.182159423828,87.254638671875,45.8178405761719" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+    <Link Source="@17" Target="@19" Category="PoundInclude" Bounds="629.284729003906,353.997985839844,87.254638671875,45.8178405761719" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+    <Link Source="@17" Target="@7" Category="PoundInclude" Bounds="654.09033203125,340.998992919922,215.660949707031,101.212219238281" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+    <Link Source="@21" Target="@3" Category="PoundInclude" Bounds="785.515380859375,140.647232055664,55.796875,17.1857452392578" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+    <Link Source="@21" Target="@7" Category="PoundInclude" Bounds="755.86865234375,181.998001098633,126.07958984375,257.893966674805" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+    <Link Source="@23" Target="@3" Category="PoundInclude" Bounds="650.59033203125,16.8179492950439,215.584289550781,90.0208263397217" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+    <Link Source="@23" Target="@5" Category="PoundInclude" Bounds="638.125793457031,25.9979991912842,69.1470947265625,26.7543506622314" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+    <Link Source="@25" Target="@21" Category="PoundInclude" Bounds="346.904605303839,169.209906582481,356.86918670266,1.65459835379852" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+    <Link Source="@25" Target="@9" Category="PoundInclude" Bounds="189.61213684082,184.247497558594,46.903076171875,84.8883056640625" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+    <Link Source="@28" Target="@13" Category="PoundInclude" Bounds="306.255065917969,242.495086669922,115.212890625,84.0936279296875" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+    <Link Source="@28" Target="@15" Category="PoundInclude" Bounds="344.317679644659,234.873675865204,355.785787048768,26.4681871154156" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+    <Link Source="@30" Target="@15" Category="PoundInclude" Bounds="617.968123066797,137.998000587856,111.387228636738,107.744681414689" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+    <Link Source="@30" Target="@3" Category="PoundInclude" Bounds="651.143676757813,124.999000549316,172.769653320313,0" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+    <Link Source="@30" Target="@5" Category="PoundInclude" Bounds="638.125793457031,85.2456512451172,69.1470947265625,26.7543487548828" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+    <Link Source="@32" Target="@15" Category="PoundInclude" Bounds="501.9256642638,268.888328344653,198.181040469312,15.6805510509456" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+    <Link Source="@32" Target="@17" Category="PoundInclude" Bounds="485.580614160557,301.997992958461,70.7513943760115,23.197958741672" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+    <Link Source="@34" Target="@19" Category="PoundInclude" Bounds="664.6103515625,405.30126953125,22.0863647460938,3.05203247070313" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+    <Link Source="@34" Target="@3" Category="PoundInclude" Bounds="664.6103515625,145.796691894531,215.526977539063,241.239562988281" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+    <Link Source="@36" Target="@21" Category="PoundInclude" Bounds="623.343505859375,81.9980010986328,99.7008056640625,68.8860168457031" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+    <Link Source="@36" Target="@5" Category="PoundInclude" Bounds="647.448669433594,68.9990005493164,53.183349609375,0" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+    <Link Source="@9" Target="@13" Category="PoundInclude" Bounds="310.021621813587,298.493184683581,89.4084660517842,30.5931074649853" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+    <Link Source="@9" Target="@21" Category="PoundInclude" Bounds="325.283319819741,180.04049738714,378.747103528354,92.4546737168988" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+    <Link Source="@9" Target="@7" Category="PoundInclude" Bounds="324.624694824219,298.493194580078,539.174743652344,144.719940185547" NativeProvider_CodeItemIds="Microsoft.VisualStudio.Progression.SmallList`1[System.Int64]" />
+  </Links>
+  <Categories>
+    <Category Id="CodeSchema_ProjectItem" Label="Project Item" BasedOn="File" CanBeDataDriven="True" DefaultAction="Node:Both:CodeSchema_Type" Icon="File" NavigationActionLabel="Project Items" />
+    <Category Id="File" Label="File" CanBeDataDriven="True" DefaultAction="Microsoft.Contains" Icon="File" NavigationActionLabel="Files" />
+    <Category Id="PoundInclude" Label="#include" CanBeDataDriven="True" CanLinkedNodesBeDataDriven="True" IncomingActionLabel="#include By" OutgoingActionLabel="#include" />
+  </Categories>
+  <Properties>
+    <Property Id="Bounds" DataType="System.Windows.Rect" />
+    <Property Id="CanBeDataDriven" Label="CanBeDataDriven" Description="CanBeDataDriven" DataType="System.Boolean" />
+    <Property Id="CanLinkedNodesBeDataDriven" Label="CanLinkedNodesBeDataDriven" Description="CanLinkedNodesBeDataDriven" DataType="System.Boolean" />
+    <Property Id="DefaultAction" Label="DefaultAction" Description="DefaultAction" DataType="System.String" />
+    <Property Id="Expression" DataType="System.String" />
+    <Property Id="FilePath" Label="File Path" Description="File Path" DataType="System.String" />
+    <Property Id="GraphDirection" DataType="Microsoft.VisualStudio.Diagrams.Layout.LayoutOrientation" />
+    <Property Id="GroupLabel" DataType="System.String" />
+    <Property Id="Icon" Label="Icon" Description="Icon" DataType="System.String" />
+    <Property Id="IncomingActionLabel" Label="IncomingActionLabel" Description="IncomingActionLabel" DataType="System.String" />
+    <Property Id="IsEnabled" DataType="System.Boolean" />
+    <Property Id="Label" Label="Label" Description="Displayable label of an Annotatable object" DataType="System.String" />
+    <Property Id="Layout" DataType="System.String" />
+    <Property Id="NativeProvider_CodeItemIds" Label="NodeIds" Description="NodeIds" DataType="Microsoft.VisualStudio.Progression.SmallList`1[[System.Int64, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]" />
+    <Property Id="NavigationActionLabel" Label="NavigationActionLabel" Description="NavigationActionLabel" DataType="System.String" />
+    <Property Id="OutgoingActionLabel" Label="OutgoingActionLabel" Description="OutgoingActionLabel" DataType="System.String" />
+    <Property Id="TargetType" DataType="System.Type" />
+    <Property Id="UseManualLocation" DataType="System.Boolean" />
+    <Property Id="Value" DataType="System.String" />
+    <Property Id="ValueLabel" DataType="System.String" />
+    <Property Id="ZoomLevel" DataType="System.String" />
+  </Properties>
+  <QualifiedNames>
+    <Name Id="Assembly" Label="Assembly" ValueType="Uri" />
+    <Name Id="File" Label="File" ValueType="Uri" />
+  </QualifiedNames>
+  <IdentifierAliases>
+    <Alias n="1" Uri="Assembly=$(VsSolutionUri)/Hwdg/Hwdg.vcxproj" />
+    <Alias n="2" Uri="File=$(VsSolutionUri)/Hwdg/src/STM8S003F3.h" />
+    <Alias n="3" Id="(@1 @2)" />
+    <Alias n="4" Uri="File=$(VsSolutionUri)/Hwdg/src/Clock.h" />
+    <Alias n="5" Id="(@1 @4)" />
+    <Alias n="6" Uri="File=$(VsSolutionUri)/Hwdg/src/ISubscriber.h" />
+    <Alias n="7" Id="(@1 @6)" />
+    <Alias n="8" Uri="File=$(VsSolutionUri)/Hwdg/src/CommandManager.h" />
+    <Alias n="9" Id="(@1 @8)" />
+    <Alias n="10" Uri="File=$(VsSolutionUri)/Hwdg/src/LedController.h" />
+    <Alias n="11" Id="(@1 @10)" />
+    <Alias n="12" Uri="File=$(VsSolutionUri)/Hwdg/src/ResetController.h" />
+    <Alias n="13" Id="(@1 @12)" />
+    <Alias n="14" Uri="File=$(VsSolutionUri)/Hwdg/src/Timer.h" />
+    <Alias n="15" Id="(@1 @14)" />
+    <Alias n="16" Uri="File=$(VsSolutionUri)/Hwdg/src/Rebooter.h" />
+    <Alias n="17" Id="(@1 @16)" />
+    <Alias n="18" Uri="File=$(VsSolutionUri)/Hwdg/src/GpioDriver.h" />
+    <Alias n="19" Id="(@1 @18)" />
+    <Alias n="20" Uri="File=$(VsSolutionUri)/Hwdg/src/Uart.h" />
+    <Alias n="21" Id="(@1 @20)" />
+    <Alias n="22" Uri="File=$(VsSolutionUri)/Hwdg/src/Clock.cpp" />
+    <Alias n="23" Id="(@1 @22)" />
+    <Alias n="24" Uri="File=$(VsSolutionUri)/Hwdg/src/CommandManager.cpp" />
+    <Alias n="25" Id="(@1 @24)" />
+    <Alias n="26" Uri="File=$(VsSolutionUri)/Hwdg/src/LedController.cpp" />
+    <Alias n="27" Uri="File=$(VsSolutionUri)/Hwdg/src/ResetController.cpp" />
+    <Alias n="28" Id="(@1 @27)" />
+    <Alias n="29" Uri="File=$(VsSolutionUri)/Hwdg/src/Timer.cpp" />
+    <Alias n="30" Id="(@1 @29)" />
+    <Alias n="31" Uri="File=$(VsSolutionUri)/Hwdg/src/Rebooter.cpp" />
+    <Alias n="32" Id="(@1 @31)" />
+    <Alias n="33" Uri="File=$(VsSolutionUri)/Hwdg/src/GpioDriver.cpp" />
+    <Alias n="34" Id="(@1 @33)" />
+    <Alias n="35" Uri="File=$(VsSolutionUri)/Hwdg/src/Uart.cpp" />
+    <Alias n="36" Id="(@1 @35)" />
+  </IdentifierAliases>
+  <Styles>
+    <Style TargetType="Node" GroupLabel="C++ Project File" ValueLabel="Has category">
+      <Condition Expression="HasCategory('CodeSchema_PoundIncludeFile')" />
+      <Setter Property="Background" Value="#FFEFEFEF" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Externals" ValueLabel="Has category">
+      <Condition Expression="HasCategory('Externals')" />
+      <Setter Property="Background" Value="#FFA08080" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Source File" ValueLabel="Has category">
+      <Condition Expression="HasCategory('CodeSchema_ProjectItem')" />
+      <Setter Property="Background" Value="#FFC0C0C0" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="#include Group" ValueLabel="Has category">
+      <Condition Expression="HasCategory('CodeSchema_PoundIncludeGroup')" />
+      <Setter Property="Background" Value="#FFEFEFEF" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Comment" ValueLabel="Has comment">
+      <Condition Expression="HasCategory('Comment')" />
+      <Setter Property="Background" Value="#FFFFFACD" />
+      <Setter Property="Stroke" Value="#FFE5C365" />
+      <Setter Property="StrokeThickness" Value="1" />
+      <Setter Property="NodeRadius" Value="2" />
+      <Setter Property="MaxWidth" Value="250" />
+    </Style>
+  </Styles>
+  <Paths>
+    <Path Id="VsSolution" Value="C:\Users\nomuu\OneDrive\TotalControl\Watchdog\Software\Hwdg" />
+    <Path Id="VsSolutionUri" Value="file:///C:/Users/nomuu/OneDrive/TotalControl/Watchdog/Software/Hwdg" />
+  </Paths>
+</DirectedGraph>

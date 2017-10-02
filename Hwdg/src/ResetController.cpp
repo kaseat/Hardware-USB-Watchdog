@@ -40,6 +40,9 @@
 #define RESPONSE_ELAPSED (1U << 2U)
 // Response timeout elapsed
 #define LED_STARDED (1U << 3U)
+// Output bit
+#define OUTPUT_BIT (1U << 7U)
+
 
 // Mask applied to extract attempts value
 #define ATTEMPTS_MASK 0x07U
@@ -71,72 +74,82 @@ ResetController::~ResetController()
 	timer.UnsubscribeOnElapse(*this);
 }
 
+uint32_t ResetController::GetStatus()
+{
+	uint32_t result = 0;
+	uint8_t* rs = reinterpret_cast<uint8_t*>(&result);
+	rs[0] = (rebootTimeout - REBOOT_MIN_TIMEOUT) / HR_TIMEBASE | OUTPUT_BIT;
+	rs[1] = responseTimeout / SR_TIMEBASE - 1 << 2 | state & 0x03;
+	rs[2] = sAttemptCurr - 1 << 5 | hAttemptCurr - 1 << 2 | (state & 0x04) >> 1;
+	return result;
+}
+
 Response ResetController::Start()
 {
-	if (state & ENABLED) return Response::Busy;
+  if (state & ENABLED) return Busy;
 	counter = INITIAL;
+	state &= ~(ENABLED | RESPONSE_ELAPSED | LED_STARDED);
 	state |= ENABLED;
 	sAttempt = sAttemptCurr;
 	hAttempt = hAttemptCurr;
 	ledController.BlinkSlow();
-	return Response::StartOk;
+	return StartOk;
 }
 
 Response ResetController::Stop()
 {
 	ledController.Glow();
-	state &= ~ENABLED;
-	return Response::StopOk;
+	state &= ~(ENABLED | RESPONSE_ELAPSED | LED_STARDED);
+	return StopOk;
 }
 
 Response ResetController::EnableHardReset()
 {
-	if (state & ENABLED) return Response::Busy;
+	if (state & ENABLED) return Busy;
 	state |= HR_ENABLED;
-	return Response::EnableHardResetOk;
+	return EnableHardResetOk;
 }
 
 Response ResetController::DisableHardReset()
 {
-	if (state & ENABLED) return Response::Busy;
+	if (state & ENABLED) return Busy;
 	state &= ~(HR_ENABLED);
-	return Response::DisableHardResetOk;
+	return DisableHardResetOk;
 }
 
 Response ResetController::Ping()
 {
-	if (!(state & ENABLED)) return Response::Busy;
+	if (!(state & ENABLED) || state & RESPONSE_ELAPSED) return Busy;
 	counter = INITIAL;
-	state &= ~(RESPONSE_ELAPSED);
-	return Response::PingOk;
+	return PingOk;
 }
 
 Response ResetController::SetResponseTimeout(uint8_t timeout)
 {
-	if (state & ENABLED) return Response::Busy;
+	if (state & ENABLED) return Busy;
 	responseTimeout = ((timeout & RESPONSE_MASK) + 1) * SR_TIMEBASE;
-	return Response::SetResponseTimeoutOk;
+	return SetResponseTimeoutOk;
 }
 
 Response ResetController::SetRebootTimeout(uint8_t timeout)
 {
-	if (state & ENABLED) return Response::Busy;
+	if (state & ENABLED) return Busy;
 	rebootTimeout = REBOOT_MIN_TIMEOUT + (timeout & REBOOT_MASK) * HR_TIMEBASE;
-	return Response::SetRebootTimeoutOk;
+	return SetRebootTimeoutOk;
 }
 
 Response ResetController::SetSoftResetAttempts(uint8_t attempts)
 {
-	if (state & ENABLED) return Response::Busy;
+	if (state & ENABLED) return Busy;
 	sAttemptCurr = (attempts & ATTEMPTS_MASK) + 1;
-	return Response::SetSoftResetAttemptsOk;
+	return SetSoftResetAttemptsOk;
 }
 
 Response ResetController::SetHardResetAttempts(uint8_t attempts)
 {
-	if (state & ENABLED) return Response::Busy;
+	if (state & ENABLED) return Busy;
 	hAttemptCurr = (attempts & ATTEMPTS_MASK) + 1;
-	return Response::SetHardResetAttemptsOk;
+	return SetHardResetAttemptsOk;
 }
 
 void ResetController::Callback(uint8_t data)

@@ -993,6 +993,31 @@ namespace HwdgTests
 		}
 
 
+		/**
+		* \brief ID:500019 Verify GetResponse command works propertly.
+		*/
+		TEST_METHOD(VerifyResetControllerResponseCorrect)
+		{
+			// Arrange
+			Mock<Rebooter> rebooter;
+			When(Method(rebooter, SoftReset)).AlwaysReturn();
+			When(Method(rebooter, HardReset)).AlwaysReturn();
+
+			Mock<LedController> ledController;
+			When(Method(ledController, Off)).AlwaysReturn();
+			When(Method(ledController, Glow)).AlwaysReturn();
+			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkMid)).AlwaysReturn();
+			When(Method(ledController, BlinkSlow)).AlwaysReturn();
+
+			ResetController rc(timer, rebooter.get(), ledController.get());
+
+			auto result = rc.GetStatus();
+			// Act
+			//rc.EnableHardReset();
+			Assert::IsTrue(0x006C049C == result);
+		}
+
 
 
 
