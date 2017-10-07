@@ -1011,11 +1011,8 @@ namespace HwdgTests
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
 			ResetController rc(timer, rebooter.get(), ledController.get());
-
-			auto result = rc.GetStatus();
-			// Act
-			//rc.EnableHardReset();
-			Assert::IsTrue(0x006C049C == result);
+			// Act & Assert
+			Assert::IsTrue(0x0048049C == rc.GetStatus());
 		}
 
 
