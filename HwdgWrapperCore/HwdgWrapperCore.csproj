@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\HwdgWrapper\IHwdg.cs" Link="IHwdg.cs" />
+    <Compile Include="..\HwdgWrapper\IWrapper.cs" Link="IWrapper.cs" />
+    <Compile Include="..\HwdgWrapper\Response.cs" Link="Response.cs" />
+    <Compile Include="..\HwdgWrapper\SerialHwdg.cs" Link="SerialHwdg.cs" />
+    <Compile Include="..\HwdgWrapper\SerialWrapper.cs" Link="SerialWrapper.cs" />
+    <Compile Include="..\HwdgWrapper\Status.cs" Link="Status.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.IO.Ports" Version="4.4.0" />
+  </ItemGroup>
+
+</Project>
