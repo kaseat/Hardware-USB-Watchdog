@@ -182,6 +182,6 @@ namespace HwdgWrapper
         /// <summary>
         /// Occurs when hwdg connects to host.
         /// </summary>
-        event Action Connected;
+        event HwdgConnected Connected;
     }
 }

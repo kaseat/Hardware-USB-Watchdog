@@ -3,10 +3,39 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:HwdgGui.Views"
+        xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
         Title="ShellView" Height="350" Width="525">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Label Content="Статус сторожевого таймера:" HorizontalContentAlignment="Stretch"/>
+            <Label Grid.Column="1" Content="Подключен"/>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition ></ColumnDefinition>
+                <ColumnDefinition ></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <CheckBox Content="Запущен"/>
+                <CheckBox Content="Жёсткая перезагрузка"/>
+                <StackPanel Orientation="Horizontal">
+                </StackPanel>
+                <Label>Таймаут перезагрузки</Label>
+                <TextBox />
+                <CheckBox Name="AutoStart" cal:Message.Attach="[Event Checked] = [Action AutoStartChanged($this)]; [Event Unchecked] = [Action AutoStartChanged($this)]"  Content="Запуск при старте Windodws" TargetUpdated="AutoStart_TargetUpdated"/>
+                <Label Content="{Binding Value, ElementName=RebootTimeout}"/>
+                <Slider x:Name="RebootTimeout" cal:Message.Attach="[Event LostMouseCapture] = [Action UpdateRebootTimeout($this)]" VerticalAlignment="Top"  Maximum="645" Minimum="10" SmallChange="5" LargeChange="30" TickFrequency="5" Value="50" IsSnapToTickEnabled="True" Focusable="False"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>

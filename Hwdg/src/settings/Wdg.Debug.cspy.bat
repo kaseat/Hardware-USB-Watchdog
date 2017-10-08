@@ -25,7 +25,7 @@ if not "%~1" == "" goto debugFile
 
 @echo on 
 
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "C:\Users\nomuu\OneDrive\TotalControl\Watchdog\Software\Hwdg\Hwdg\src\settings\Wdg.Debug.general.xcl" --backend -f "C:\Users\nomuu\OneDrive\TotalControl\Watchdog\Software\Hwdg\Hwdg\src\settings\Wdg.Debug.driver.xcl" 
+"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "C:\Users\nomuu\Source\Repos\Hwdg\Hwdg\src\settings\Wdg.Debug.general.xcl" --backend -f "C:\Users\nomuu\Source\Repos\Hwdg\Hwdg\src\settings\Wdg.Debug.driver.xcl" 
 
 @echo off 
 goto end 
@@ -34,7 +34,7 @@ goto end
 
 @echo on 
 
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "C:\Users\nomuu\OneDrive\TotalControl\Watchdog\Software\Hwdg\Hwdg\src\settings\Wdg.Debug.general.xcl" "--debug_file=%~1" --backend -f "C:\Users\nomuu\OneDrive\TotalControl\Watchdog\Software\Hwdg\Hwdg\src\settings\Wdg.Debug.driver.xcl" 
+"C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\common\bin\cspybat" -f "C:\Users\nomuu\Source\Repos\Hwdg\Hwdg\src\settings\Wdg.Debug.general.xcl" "--debug_file=%~1" --backend -f "C:\Users\nomuu\Source\Repos\Hwdg\Hwdg\src\settings\Wdg.Debug.driver.xcl" 
 
 @echo off 
 :end

@@ -12,7 +12,7 @@ int main()
 	// Hardware init.
 	Clock::SetCpuFreq(Freq16Mhz);
 	Uart uart(9600);
-	uart.SendByte(0x33);
+	//uart.SendByte(0x33);
 	Timer timer;
 	timer.Run();
 	// Create reset controller with GPIO rebooter.
