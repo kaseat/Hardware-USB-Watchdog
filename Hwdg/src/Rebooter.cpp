@@ -3,30 +3,30 @@
 
 #ifndef RST_TIM
 // Soft reset pin low level duration
-#define RST_TIM 200U
+#define RST_TIM             ((uint_fast16_t)200U)
 #endif
 
 #ifndef HR_LO_TIM
 // Hard reset pin low level duration
-#define HR_LO_TIM 6000U
+#define HR_LO_TIM           ((uint_fast16_t)6000U)
 #endif
 
 #ifndef HR_HI_TIM
 // Hard reset pin high level duration
-#define HR_HI_TIM 2000U
+#define HR_HI_TIM           ((uint_fast16_t)2000U)
 #endif
 // Reboot is in proccess
-#define IN_PROCESS 0x10U
+#define IN_PROCESS          ((uint_least8_t)0x10U)
 // Soft reset marker
-#define SOFT_RESET 0x01U
+#define SOFT_RESET          ((uint_least8_t)0x01U)
 // Hard reset marker
-#define HARD_RESET 0x02U
+#define HARD_RESET          ((uint_least8_t)0x02U)
 // Hard reset HR_LO_TIM elapsed
-#define HR_LO_ELAPSED 0x04U
+#define HR_LO_ELAPSED       ((uint_least8_t)0x04U)
 // Hard reset HR_HI_TIM elapsed
-#define HR_HI_ELAPSED 0x08U
+#define HR_HI_ELAPSED       ((uint_least8_t)0x08U)
 // Reset value
-#define INITIAL 0x00U
+#define INITIAL             ((uint_least8_t)0x00U)
 
 Rebooter::Rebooter(Timer& tmr, GpioDriver& driver) :timer(tmr), driver(driver), state(INITIAL), counter(INITIAL)
 {

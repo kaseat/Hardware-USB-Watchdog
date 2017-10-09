@@ -1,22 +1,22 @@
 #include "LedController.h"
 
 #ifndef SLOW_BLINK_TIMEOUT
-#define SLOW_BLINK_TIMEOUT 1000U
+#define SLOW_BLINK_TIMEOUT  ((uint32_t)1000U)
 #endif
 
 #ifndef MID_BLINK_TIMEOUT
-#define MID_BLINK_TIMEOUT 500U
+#define MID_BLINK_TIMEOUT   ((uint32_t)500U)
 #endif
 
 #ifndef FAST_BLINK_TIMEOUT
-#define FAST_BLINK_TIMEOUT 250U
+#define FAST_BLINK_TIMEOUT  ((uint32_t)250U)
 #endif
 
-#define INITIAL 0x00U
-#define FAST_BLINK 0x01U
-#define MID_BLINK 0x02U
-#define SLOW_BLINK 0x04U
-#define IS_LED_HIGH 0x08U
+#define INITIAL             ((uint8_t)0x00U)
+#define FAST_BLINK          ((uint8_t)0x01U)
+#define MID_BLINK           ((uint8_t)0x02U)
+#define SLOW_BLINK          ((uint8_t)0x04U)
+#define IS_LED_HIGH         ((uint8_t)0x08U)
 
 LedController::LedController(Timer& timer, GpioDriver& driver): timer(timer), driver(driver), state(INITIAL), counter(INITIAL)
 {

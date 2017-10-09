@@ -17,13 +17,19 @@ namespace HwdgWrapper
         {
             GetStatus();
             timer.Elapsed += OnElapse;
+            timer.AutoReset = false;
             timer.Start();
         }
 
         public event HwdgConnected HwdgConnected = delegate { };
         public event Action HwdgDisconnected = delegate { };
         private event Action TransmissionComplete = delegate { };
-        private void OnElapse(Object sender, ElapsedEventArgs e) => GetStatus();
+
+        private void OnElapse(Object sender, ElapsedEventArgs e)
+        {
+            GetStatus();
+            timer.Enabled = true;
+        }
 
         public Status GetStatus()
         {

@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="HwdgGui.Views.StatusView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:HwdgGui.Views"
+             xmlns:cal="http://www.caliburnproject.org"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid Style="{StaticResource ContentRoot}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Label Content="Статус сторожевого таймера:" HorizontalContentAlignment="Stretch"/>
+            <Label Grid.Column="1" Content="Подключен"/>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition ></ColumnDefinition>
+                <ColumnDefinition ></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <Button Focusable="False">Запустить монитринг</Button>
+                <CheckBox Content="Запущен"/>
+                <CheckBox Content="Жёсткая перезагрузка"/>
+                <StackPanel Orientation="Horizontal">
+                </StackPanel>
+                <Label>Таймаут перезагрузки</Label>
+                <TextBox />
+                <CheckBox Name="AutoStart" cal:Message.Attach="[Event Checked] = [Action AutoStartChanged($this)]; [Event Unchecked] = [Action AutoStartChanged($this)]"  Content="Запуск при старте Windodws"/>
+                <Label Content="{Binding Value, ElementName=RebootTimeout}"/>
+                <Slider x:Name="RebootTimeout" cal:Message.Attach="[Event LostMouseCapture] = [Action UpdateRebootTimeout($this)]" VerticalAlignment="Top"  Maximum="645" Minimum="10" SmallChange="5" LargeChange="30" TickFrequency="5" Value="50" IsSnapToTickEnabled="True" Focusable="False"/>
+                <StackPanel x:Name="Panel" MinWidth="150">
+                    <TextBlock Text="APPEARANCE" Style="{StaticResource Heading2}" Margin="0,0,0,8" />
+
+                    <ListBox ItemsSource="{Binding AccentColors}"
+                         SelectedItem="{Binding SelectedAccentColor, Mode=TwoWay}"
+                         Margin="0,0,0,16">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel MaxWidth="{Binding ActualWidth, ElementName=Panel}" />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Rectangle Width="40" Height="40" Margin="2" >
+                                    <Rectangle.Fill>
+                                        <SolidColorBrush x:Name="Brush" Color="{Binding}" />
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

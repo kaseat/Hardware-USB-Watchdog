@@ -1,20 +1,15 @@
-﻿using System;
+﻿using Caliburn.Micro;
+using System;
 using System.Windows;
-using Caliburn.Micro;
 using HwdgGui.ViewModels;
 
 namespace HwdgGui
 {
-    public class Bootstrapper : BootstrapperBase
+    class Bootstrapper : BootstrapperBase
     {
-        public Bootstrapper()
-        {
-            Initialize();
-        }
+        public Bootstrapper() => Initialize();
 
-        protected override void OnStartup(Object sender, StartupEventArgs e)
-        {
-            DisplayRootViewFor<ShellViewModel>();
-        }
+        /// <inheritdoc />
+        protected override void OnStartup(Object sender, StartupEventArgs e) => DisplayRootViewFor<ShellViewModel>();
     }
 }

@@ -240,6 +240,3 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
-/HwdgGui
-/HwdgClient
-/Hardware watchdog v1 Reference manual.docx

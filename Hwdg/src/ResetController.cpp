@@ -3,55 +3,55 @@
 
 #ifndef RESPONSE_DEF_TIMEOUT
 // Default response timeout, ms
-#define RESPONSE_DEF_TIMEOUT 10000U
+#define RESPONSE_DEF_TIMEOUT   ((uint32_t)10000UL)
 #endif
 #ifndef REBOOT_DEF_TIMEOUT
 // Default reboot timeout, ms
-#define REBOOT_DEF_TIMEOUT 150000U
+#define REBOOT_DEF_TIMEOUT     ((uint32_t)150000UL)
 #endif
 #ifndef REBOOT_MIN_TIMEOUT
 // Least reboot timeout value, ms
-#define REBOOT_MIN_TIMEOUT 10000U
+#define REBOOT_MIN_TIMEOUT     ((uint32_t)10000UL)
 #endif
 
 #ifndef SR_TIMEBASE
 // Soft reset time base, ms
-#define SR_TIMEBASE 5000U
+#define SR_TIMEBASE            ((uint32_t)5000UL)
 #endif
 #ifndef HR_TIMEBASE
 // Hard reset time base, ms
-#define HR_TIMEBASE 5000U
+#define HR_TIMEBASE            ((uint32_t)5000UL)
 #endif
 
 #ifndef SR_ATTEMPTS
 // Default soft reset attempts count
-#define SR_ATTEMPTS 3U
+#define SR_ATTEMPTS            ((uint8_t)3U)
 #endif
 #ifndef HR_ATTEMPTS
 // Default hard reset attempts count
-#define HR_ATTEMPTS 3U
+#define HR_ATTEMPTS            ((uint8_t)3U)
 #endif
 
 // RSM enabled
-#define ENABLED (1U << 0U)
+#define ENABLED                ((uint8_t)(1U << 0U))
 // Hard reset enabled
-#define HR_ENABLED (1U << 1U)
+#define HR_ENABLED             ((uint8_t)(1U << 1U))
 // Response timeout elapsed
-#define RESPONSE_ELAPSED (1U << 2U)
+#define RESPONSE_ELAPSED       ((uint8_t)(1U << 2U))
 // Response timeout elapsed
-#define LED_STARDED (1U << 3U)
+#define LED_STARDED            ((uint8_t)(1U << 3U))
 // Output bit
-#define OUTPUT_BIT (1U << 7U)
+#define OUTPUT_BIT             ((uint8_t)(1U << 7U))
 
 
 // Mask applied to extract attempts value
-#define ATTEMPTS_MASK 0x07U
+#define ATTEMPTS_MASK          ((uint8_t)0x07U)
 // Mask applied to extract reboot timeout value
-#define REBOOT_MASK 0x7FU
+#define REBOOT_MASK            ((uint8_t)0x7FU)
 // Mask applied to extract response timeout value
-#define RESPONSE_MASK 0x3FU
+#define RESPONSE_MASK          ((uint8_t)0x3FU)
 // Reset value
-#define INITIAL 0x00U
+#define INITIAL                ((uint8_t)0x00U)
 
 ResetController::ResetController(Timer & time, Rebooter & rb, LedController & ledController)
 	: timer(time)

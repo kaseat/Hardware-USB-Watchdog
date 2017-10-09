@@ -1,20 +1,15 @@
-﻿using System.Windows;
+﻿using FirstFloor.ModernUI.Windows.Controls;
 
 namespace HwdgGui.Views
 {
     /// <summary>
     /// Interaction logic for ShellView.xaml
     /// </summary>
-    public partial class ShellView : Window
+    public partial class ShellView : ModernWindow
     {
         public ShellView()
         {
             InitializeComponent();
-        }
-
-        private void AutoStart_TargetUpdated(object sender, System.Windows.Data.DataTransferEventArgs e)
-        {
-            MessageBox.Show("sd");
         }
     }
 }
