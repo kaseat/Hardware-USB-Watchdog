@@ -25,23 +25,23 @@ namespace HwdgWrapper
         /// <summary>
         /// Get inner watchdog state.
         /// </summary>
-        public WatchdogState State { get; }
+        public WatchdogState State { get; set; }
         /// <summary>
         /// Get watchdog response timeout.
         /// </summary>
-        public Int32 ResponseTimeout { get; }
+        public Int32 ResponseTimeout { get; set; }
         /// <summary>
         /// Get watchdog reboot tomeout.
         /// </summary>
-        public Int32 RebootTimeout { get; }
+        public Int32 RebootTimeout { get; set; }
         /// <summary>
         /// Get watchdog hard reset attempts.
         /// </summary>
-        public Byte HardResetAttempts { get; }
+        public Byte HardResetAttempts { get; set; }
         /// <summary>
         /// Get watchdog soft reset attempts.
         /// </summary>
-        public Byte SoftResetAttempts { get; }
+        public Byte SoftResetAttempts { get; set; }
     }
 
     /// <summary>

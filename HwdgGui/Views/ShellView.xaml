@@ -8,10 +8,8 @@
         mc:Ignorable="d"
         ContentLoader="{StaticResource CaliburnContentLoader}"
         ContentSource="/Views/StatusView.xaml"
-        Title="ShellView" IsTitleVisible="True" Height="350" Width="525">
+        Title="ShellView" IsTitleVisible="True" Height="350" Width="525" Visibility="Visible">
     <mui:ModernWindow.MenuLinkGroups>
-        
-        <mui:LinkGroup DisplayName="Статус" >
-        </mui:LinkGroup>
+        <mui:LinkGroup x:Name="LinkName" DisplayName="Статус" />
     </mui:ModernWindow.MenuLinkGroups>
 </mui:ModernWindow>

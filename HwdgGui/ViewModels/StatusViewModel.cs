@@ -1,131 +1,98 @@
 ﻿using System;
-using System.Reflection;
-using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
 using Caliburn.Micro;
 using FirstFloor.ModernUI.Presentation;
 using HwdgWrapper;
-using Microsoft.Win32;
 
 namespace HwdgGui.ViewModels
 {
-    public class StatusViewModel : PropertyChangedBase, IDisposable
+    public partial class StatusViewModel : PropertyChangedBase, IDisposable
     {
+
+        private readonly IHwdg hwdg = new SerialHwdg(new SerialWrapper());
         private readonly Dispatcher uiDispatcher;
-        private readonly RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true);
-        private readonly SerialHwdg hwdg = new SerialHwdg(new SerialWrapper());
-        private String name;
-        private Boolean autoStart;
-        private Int32 hrTimeout;
+        private Status status;
 
+        /// <summary>
+        /// Updates main window accent color.
+        /// </summary>
+        /// <param name="color">Accent color.</param>
+        private void SetAccentColor(Color color) =>
+            uiDispatcher.Invoke(() => { AppearanceManager.Current.AccentColor = color; });
 
+        /// <summary>
+        /// ctor
+        /// </summary>
         public StatusViewModel()
         {
             uiDispatcher = Dispatcher.CurrentDispatcher;
-            AutoStart = IsAutostart();
-            hwdg.Disconnected += Hwdg_Disconnected;
-            hwdg.Connected += Hwdg_Connected;
-            var sta = hwdg.GetStatus();
-            if (sta == null)
+            Autorun = ReadAutostartEntry();
+            hwdg.Disconnected += OnDisconnected;
+            hwdg.Connected += OnConnected;
+            status = hwdg.GetStatus();
+            if ((status.State & WatchdogState.WaitingForReboot) != 0)
             {
-                AppearanceManager.Current.AccentColor = Color.FromRgb(0xe5, 0x14, 0x00);
-                return;
+                hwdg.Stop();
+                hwdg.GetStatus();
             }
-            AppearanceManager.Current.AccentColor = Color.FromRgb(0x60, 0xa9, 0x17);
-
-            RebootTimeout = sta.RebootTimeout / 1000;
+            SetAccentColor(status == null ? Color.FromRgb(229, 20, 0) : Color.FromRgb(96, 169, 23));
+            NotifyOfPropertyChange(() => CanRunMonitor);
         }
 
-        private Boolean IsAutostart()
+        /// <summary>
+        /// Hwdg connected event handler.
+        /// </summary>
+        /// <param name="st">Hwdg status.</param>
+        private void OnConnected(Status st)
         {
-            var startVal = String.Empty;
-            var curAssembly = Assembly.GetExecutingAssembly();
-            try
-            {
-                startVal = (String)key.GetValue(curAssembly.GetName().Name, "");
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Ошибка чтения реестра");
-            }
-            return startVal == curAssembly.Location;
+            status = st;
+            NotifyOfPropertyChange(() => CanRunMonitor);
+            SetAccentColor(Color.FromRgb(96, 169, 23));
         }
-        public void AutoStartChanged(Boolean val)
+
+        /// <summary>
+        /// Hwdg disconnected event handler.
+        /// </summary>
+        private void OnDisconnected()
         {
-            try
-            {
-
-                var curAssembly = Assembly.GetExecutingAssembly();
-                if (!val)
-                {
-                    key?.SetValue(curAssembly.GetName().Name, curAssembly.Location);
-                }
-                else
-                {
-                    key?.DeleteValue(curAssembly.GetName().Name, false);
-                }
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Ошибка изменения реестра");
-            }
+            status = null;
+            NotifyOfPropertyChange(() => CanRunMonitor);
+            SetAccentColor(Color.FromRgb(229, 20, 0));
         }
 
-        public Boolean AutoStart
-        {
-            get => autoStart;
-            set
-            {
-                autoStart = value;
-                NotifyOfPropertyChange(() => AutoStart);
-            }
-        }
-
-        private void Hwdg_Connected(Status status)
-        {
-            RebootTimeout = status.RebootTimeout / 1000;
-            uiDispatcher.Invoke(() => { AppearanceManager.Current.AccentColor = Color.FromRgb(0x60, 0xa9, 0x17); });
-        }
-
-        private void Hwdg_Disconnected()
-        {
-            uiDispatcher.Invoke(() => { AppearanceManager.Current.AccentColor = Color.FromRgb(0xe5, 0x14, 0x00); });
-        }
-
-        public String Name
-        {
-            get => name;
-            set
-            {
-                name = value;
-                NotifyOfPropertyChange(() => Name);
-                NotifyOfPropertyChange(() => CanSayHello);
-            }
-        }
-
-        public Boolean CanSayHello => !String.IsNullOrWhiteSpace(Name);
-
-        public void SayHello() => MessageBox.Show($"Hello { hwdg.Start()}!");
-
+        /// <summary>
+        /// Reboot timeout binding.
+        /// </summary>
         public Int32 RebootTimeout
         {
-            get => hrTimeout;
+            get => status.RebootTimeout / 1000;
             set
             {
-                hrTimeout = value;
+                status.RebootTimeout = value * 1000;
                 NotifyOfPropertyChange(() => RebootTimeout);
             }
         }
 
-        public void UpdateRebootTimeout(Int32 timeout)
+
+
+        /// <summary>
+        /// Executes when WPF RebootTimeout slider value changes.
+        /// </summary>
+        /// <param name="timeout">Slider value.</param>
+        public void OnRebootTimeoutChanged(Int32 timeout)
         {
             var rts = hwdg.SetRebootTimeout(timeout * 1000);
         }
 
+        public Boolean CanEditSettings => (status.State & WatchdogState.IsRunning) != 0;
+
+
+        /// <inheritdoc />
         public void Dispose()
         {
-            hwdg.Dispose();
+            hwdg.Disconnected -= OnDisconnected;
+            hwdg.Connected -= OnConnected;
             key.Dispose();
             GC.SuppressFinalize(this);
         }
