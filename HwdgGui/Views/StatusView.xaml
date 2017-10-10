@@ -8,40 +8,49 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Style="{StaticResource ContentRoot}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Button Name="RunMonitor" Margin="5" Focusable="False" Content="{Binding BtnText}" Grid.ColumnSpan="2"/>
-        <StackPanel IsEnabled="{Binding CanEditSettings}" Grid.Row="1" Grid.ColumnSpan="2">
-            <CheckBox Content="Запущен"/>
-            <CheckBox Content="Жёсткая перезагрузка"/>
-            <StackPanel Orientation="Horizontal">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Button Name="RunButtonAsync" Margin="5" Focusable="False" Content="{Binding RunButtonText}" Grid.ColumnSpan="2"/>
+            <StackPanel IsEnabled="{Binding CanEditSettings}" Grid.Row="1" Grid.ColumnSpan="2">
+                <CheckBox Content="Запущен"/>
+                <CheckBox Content="Жёсткая перезагрузка"/>
+                <StackPanel Orientation="Horizontal">
+                </StackPanel>
+                <Label>Ожиание запуска системы:</Label>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="22"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Slider Grid.Column="0" x:Name="RebootTimeout" cal:Message.Attach="[Event LostMouseCapture] = [Action OnRebootTimeoutChanged($this)]" VerticalAlignment="Top"  Maximum="645" Minimum="10" SmallChange="5" LargeChange="30" TickFrequency="5" Value="50" IsSnapToTickEnabled="True" Focusable="False"/>
+                    <Label Grid.Column="1" Content="{Binding Value, ElementName=RebootTimeout}"/>
+                    <Label Grid.Column="2" Content="с."/>
+                </Grid>
+                <Label>Ожиание отклика системы:</Label>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="22"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Slider Grid.Column="0" x:Name="ResetTimeout" cal:Message.Attach="[Event LostMouseCapture] = [Action UpdateRebootTimeout($this)]" VerticalAlignment="Top"  Maximum="320" Minimum="5" SmallChange="5" LargeChange="30" TickFrequency="5" Value="50" IsSnapToTickEnabled="True" Focusable="False"/>
+                    <Label Grid.Column="1" Content="{Binding Value, ElementName=ResetTimeout}"/>
+                    <Label Grid.Column="2" Content="с."/>
+                </Grid>
             </StackPanel>
-            <Label>Ожиание запуска системы:</Label>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition Width="22"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Slider Grid.Column="0" x:Name="RebootTimeout" cal:Message.Attach="[Event LostMouseCapture] = [Action OnRebootTimeoutChanged($this)]" VerticalAlignment="Top"  Maximum="645" Minimum="10" SmallChange="5" LargeChange="30" TickFrequency="5" Value="50" IsSnapToTickEnabled="True" Focusable="False"/>
-                <Label Grid.Column="1" Content="{Binding Value, ElementName=RebootTimeout}"/>
-                <Label Grid.Column="2" Content="с."/>
-            </Grid>
-            <Label>Ожиание отклика системы:</Label>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition Width="22"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Slider Grid.Column="0" x:Name="ResetTimeout" cal:Message.Attach="[Event LostMouseCapture] = [Action UpdateRebootTimeout($this)]" VerticalAlignment="Top"  Maximum="320" Minimum="5" SmallChange="5" LargeChange="30" TickFrequency="5" Value="50" IsSnapToTickEnabled="True" Focusable="False"/>
-                <Label Grid.Column="1" Content="{Binding Value, ElementName=ResetTimeout}"/>
-                <Label Grid.Column="2" Content="с."/>
-            </Grid>
-        </StackPanel>
-        <CheckBox Grid.Row="2" Name="Autorun" Content="Запуск при старте Windodws"/>
+            <CheckBox Grid.Row="2" Name="Autorun" Content="Запуск при старте Windodws"/>
+        </Grid>
+        <Canvas Grid.Column="1" Width="32" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <Path Width="30" Height="25" Stretch="Fill" Fill="#21D400" Data="F1 M 23.7501,33.25L 34.8334,44.3333L 52.2499,22.1668L 56.9999,26.9168L 34.8334,53.8333L 19.0001,38L 23.7501,33.25 Z "  HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        </Canvas>
     </Grid>
 </UserControl>

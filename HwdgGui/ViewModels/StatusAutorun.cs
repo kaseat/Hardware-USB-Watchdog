@@ -70,7 +70,6 @@ namespace HwdgGui.ViewModels
             {
                 autorun = value;
                 WriteAutostartEntry(value);
-                NotifyOfPropertyChange(() => Autorun);
             }
         }
     }

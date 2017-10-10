@@ -1,43 +1,35 @@
 ﻿using System;
-using System.Windows.Media;
 using System.Windows.Threading;
 using Caliburn.Micro;
-using FirstFloor.ModernUI.Presentation;
 using HwdgWrapper;
 
 namespace HwdgGui.ViewModels
 {
     public partial class StatusViewModel : PropertyChangedBase, IDisposable
     {
-
         private readonly IHwdg hwdg = new SerialHwdg(new SerialWrapper());
         private readonly Dispatcher uiDispatcher;
         private Status status;
-
-        /// <summary>
-        /// Updates main window accent color.
-        /// </summary>
-        /// <param name="color">Accent color.</param>
-        private void SetAccentColor(Color color) =>
-            uiDispatcher.Invoke(() => { AppearanceManager.Current.AccentColor = color; });
 
         /// <summary>
         /// ctor
         /// </summary>
         public StatusViewModel()
         {
+            RunButtonText = "Запустить монитринг";
+            CanRunButton = true;
             uiDispatcher = Dispatcher.CurrentDispatcher;
             Autorun = ReadAutostartEntry();
             hwdg.Disconnected += OnDisconnected;
             hwdg.Connected += OnConnected;
             status = hwdg.GetStatus();
-            if ((status.State & WatchdogState.WaitingForReboot) != 0)
+            if (status != null && (status.State & WatchdogState.WaitingForReboot) != 0)
             {
                 hwdg.Stop();
                 hwdg.GetStatus();
             }
-            SetAccentColor(status == null ? Color.FromRgb(229, 20, 0) : Color.FromRgb(96, 169, 23));
-            NotifyOfPropertyChange(() => CanRunMonitor);
+
+            SetAccentColor(status == null ? AccentColor.Disconnected : AccentColor.Connected);
         }
 
         /// <summary>
@@ -47,8 +39,9 @@ namespace HwdgGui.ViewModels
         private void OnConnected(Status st)
         {
             status = st;
-            NotifyOfPropertyChange(() => CanRunMonitor);
-            SetAccentColor(Color.FromRgb(96, 169, 23));
+            CanRunButton = true;
+            RunButtonText = "Запустить монитринг";
+            SetAccentColor(AccentColor.Connected);
         }
 
         /// <summary>
@@ -57,8 +50,9 @@ namespace HwdgGui.ViewModels
         private void OnDisconnected()
         {
             status = null;
-            NotifyOfPropertyChange(() => CanRunMonitor);
-            SetAccentColor(Color.FromRgb(229, 20, 0));
+            CanRunButton = false;
+            RunButtonText = "Железный пёс не подключен";
+            SetAccentColor(AccentColor.Disconnected);
         }
 
         /// <summary>
@@ -66,12 +60,8 @@ namespace HwdgGui.ViewModels
         /// </summary>
         public Int32 RebootTimeout
         {
-            get => status.RebootTimeout / 1000;
-            set
-            {
-                status.RebootTimeout = value * 1000;
-                NotifyOfPropertyChange(() => RebootTimeout);
-            }
+            get => status?.RebootTimeout / 1000 ?? 50;
+            set => status.RebootTimeout = value * 1000;
         }
 
 
@@ -85,7 +75,7 @@ namespace HwdgGui.ViewModels
             var rts = hwdg.SetRebootTimeout(timeout * 1000);
         }
 
-        public Boolean CanEditSettings => (status.State & WatchdogState.IsRunning) != 0;
+        public Boolean CanEditSettings => status != null && (status.State & WatchdogState.IsRunning) != 0;
 
 
         /// <inheritdoc />
