@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Threading;
 using Caliburn.Micro;
+using HwdgGui.Utils;
 using HwdgWrapper;
 
 namespace HwdgGui.ViewModels
@@ -8,7 +9,7 @@ namespace HwdgGui.ViewModels
     public partial class StatusViewModel : PropertyChangedBase, IDisposable
     {
         private readonly IHwdg hwdg = new SerialHwdg(new SerialWrapper());
-        private readonly Dispatcher uiDispatcher;
+        private readonly Dispatcher uiDisp;
         private Status status;
 
         /// <summary>
@@ -16,10 +17,10 @@ namespace HwdgGui.ViewModels
         /// </summary>
         public StatusViewModel()
         {
+            uiDisp = Dispatcher.CurrentDispatcher;
             RunButtonText = "Запустить монитринг";
             CanRunButton = true;
-            uiDispatcher = Dispatcher.CurrentDispatcher;
-            Autorun = ReadAutostartEntry();
+
             hwdg.Disconnected += OnDisconnected;
             hwdg.Connected += OnConnected;
             status = hwdg.GetStatus();
@@ -28,8 +29,7 @@ namespace HwdgGui.ViewModels
                 hwdg.Stop();
                 hwdg.GetStatus();
             }
-
-            SetAccentColor(status == null ? AccentColor.Disconnected : AccentColor.Connected);
+            uiDisp.SetAccentColor(status == null ? AccentColor.Disconnected : AccentColor.Connected);
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace HwdgGui.ViewModels
             status = st;
             CanRunButton = true;
             RunButtonText = "Запустить монитринг";
-            SetAccentColor(AccentColor.Connected);
+            uiDisp.SetAccentColor(AccentColor.Connected);
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace HwdgGui.ViewModels
             status = null;
             CanRunButton = false;
             RunButtonText = "Железный пёс не подключен";
-            SetAccentColor(AccentColor.Disconnected);
+            uiDisp.SetAccentColor(AccentColor.Disconnected);
         }
 
         /// <summary>
@@ -63,8 +63,6 @@ namespace HwdgGui.ViewModels
             get => status?.RebootTimeout / 1000 ?? 50;
             set => status.RebootTimeout = value * 1000;
         }
-
-
 
         /// <summary>
         /// Executes when WPF RebootTimeout slider value changes.
@@ -83,7 +81,7 @@ namespace HwdgGui.ViewModels
         {
             hwdg.Disconnected -= OnDisconnected;
             hwdg.Connected -= OnConnected;
-            key.Dispose();
+            settings.Dispose();
             GC.SuppressFinalize(this);
         }
     }

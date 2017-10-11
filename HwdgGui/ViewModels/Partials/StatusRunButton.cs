@@ -1,4 +1,5 @@
 ﻿using System;
+using HwdgGui.Utils;
 using HwdgWrapper;
 
 namespace HwdgGui.ViewModels
@@ -18,14 +19,14 @@ namespace HwdgGui.ViewModels
             status = await hwdg.GetStatusAsync();
             if ((status.State & WatchdogState.IsRunning) != 0)
             {
-                SetAccentColor(AccentColor.Connected);
+                uiDisp.SetAccentColor(AccentColor.Connected);
                 RunButtonText = "Запустить монитроинг";
                 await hwdg.StopAsync();
             }
             else
             {
                 RunButtonText = "Остановить монитроинг";
-                SetAccentColor(AccentColor.Running);
+                uiDisp.SetAccentColor(AccentColor.Running);
                 await hwdg.StartAsync();
             }
         }

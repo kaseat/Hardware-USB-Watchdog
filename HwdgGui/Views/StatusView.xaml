@@ -17,6 +17,7 @@
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
             <Button Name="RunButtonAsync" Margin="5" Focusable="False" Content="{Binding RunButtonText}" Grid.ColumnSpan="2"/>
             <StackPanel IsEnabled="{Binding CanEditSettings}" Grid.Row="1" Grid.ColumnSpan="2">
@@ -47,7 +48,8 @@
                     <Label Grid.Column="2" Content="с."/>
                 </Grid>
             </StackPanel>
-            <CheckBox Grid.Row="2" Name="Autorun" Content="Запуск при старте Windodws"/>
+            <CheckBox Grid.Row="2" Name="Autorun" Content="Запуск приложения при старте Windodws"/>
+            <CheckBox Grid.Row="3" Name="AutoMonitor" Content="Автозапуск мониторинга"/>
         </Grid>
         <Canvas Grid.Column="1" Width="32" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Path Width="30" Height="25" Stretch="Fill" Fill="#21D400" Data="F1 M 23.7501,33.25L 34.8334,44.3333L 52.2499,22.1668L 56.9999,26.9168L 34.8334,53.8333L 19.0001,38L 23.7501,33.25 Z "  HorizontalAlignment="Left" VerticalAlignment="Top"/>
