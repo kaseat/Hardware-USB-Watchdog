@@ -6,23 +6,22 @@ using Timer = System.Timers.Timer;
 
 namespace HwdgWrapper
 {
-    public class SerialWrapper : IWrapper, IDisposable
+    public partial class SerialWrapper : IWrapper, IDisposable
     {
         private readonly Object threadLock = new Object();
         private readonly Timer timer = new Timer(500);
         private String lastSuccessedPortName;
         private Boolean isUpdated;
+        private Status lastStatus;
 
         public SerialWrapper()
         {
-            GetStatus();
+            lastStatus = GetStatus();
             timer.Elapsed += OnElapse;
             timer.AutoReset = false;
             timer.Start();
         }
 
-        public event HwdgConnected HwdgConnected = delegate { };
-        public event Action HwdgDisconnected = delegate { };
         private event Action TransmissionComplete = delegate { };
 
         private void OnElapse(Object sender, ElapsedEventArgs e)
@@ -36,11 +35,17 @@ namespace HwdgWrapper
             lock (threadLock)
             {
                 var result = SearchAndGetStatus() ?? SearchAndGetStatus();
+                if (lastStatus != null && result != null && !lastStatus.Equals(result))
+                    OnUpdated(lastStatus = result);
+                if (lastStatus == null && result != null) OnUpdated(lastStatus = result);
+                if (lastStatus != null && result == null) OnUpdated(lastStatus=null);
                 TransmissionComplete?.Invoke();
+
                 if (!isUpdated) return result;
+
                 isUpdated = false;
-                if (lastSuccessedPortName == null) HwdgDisconnected?.Invoke();
-                else HwdgConnected?.Invoke(result);
+                if (lastSuccessedPortName == null) OnDisconnected();
+                else OnConnected(result);
                 return result;
             }
         }
@@ -54,8 +59,17 @@ namespace HwdgWrapper
                 TransmissionComplete?.Invoke();
                 if (!isUpdated) return result;
                 isUpdated = false;
-                if (lastSuccessedPortName == null) HwdgDisconnected?.Invoke();
-                else HwdgConnected?.Invoke(GetStatus(lastSuccessedPortName));
+                if (lastSuccessedPortName == null) OnDisconnected();
+                else
+                {
+                    var status = GetStatus(lastSuccessedPortName);
+
+                    if (lastStatus != null && status != null && !lastStatus.Equals(status))
+                        OnUpdated(lastStatus = status);
+                    if (lastStatus == null && status != null) OnUpdated(lastStatus = status);
+                    if (lastStatus != null && status == null) OnUpdated(lastStatus);
+                    OnConnected(status);
+                }
                 return result;
             }
         }

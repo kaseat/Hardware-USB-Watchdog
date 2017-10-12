@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace HwdgWrapper
 {
 
-    public delegate void HwdgConnected(Status status);
+    public delegate void HwdgResult(Status status);
 
     /// <summary>
     /// Represents hwdg send/get status wrapper.
@@ -14,12 +14,17 @@ namespace HwdgWrapper
         /// <summary>
         /// Occurs when hwdg gets connected.
         /// </summary>
-        event HwdgConnected HwdgConnected;
+        event HwdgResult HwdgConnected;
 
         /// <summary>
         /// Occurs when hwdg disconnects.
         /// </summary>
         event Action HwdgDisconnected;
+
+        /// <summary>
+        /// Occurs when hwdg state changes.
+        /// </summary>
+        event HwdgResult HwdgUpdated;
 
         /// <summary>
         /// Gets hwdg status.

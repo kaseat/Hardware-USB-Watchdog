@@ -6,10 +6,14 @@
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:mui="http://firstfloorsoftware.com/ModernUI"
         mc:Ignorable="d"
-        ContentLoader="{StaticResource CaliburnContentLoader}"
+        ContentLoader="{StaticResource Bootstrapper}"
         ContentSource="/Views/StatusView.xaml"
-        Title="ShellView" IsTitleVisible="True" Height="350" Width="525" Visibility="Visible">
+        Title="ShellView" IsTitleVisible="False" Height="350" Width="525" Visibility="Visible">
     <mui:ModernWindow.MenuLinkGroups>
-        <mui:LinkGroup x:Name="LinkName" DisplayName="Статус" />
+        <mui:LinkGroup DisplayName="Панель управления">
+            <mui:LinkGroup.Links>
+                <mui:Link Source="/Views/StatusView.xaml"></mui:Link>
+            </mui:LinkGroup.Links>
+        </mui:LinkGroup>
     </mui:ModernWindow.MenuLinkGroups>
 </mui:ModernWindow>

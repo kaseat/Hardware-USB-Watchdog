@@ -182,6 +182,11 @@ namespace HwdgWrapper
         /// <summary>
         /// Occurs when hwdg connects to host.
         /// </summary>
-        event HwdgConnected Connected;
+        event HwdgResult Connected;
+
+        /// <summary>
+        /// Occurs when hwdg state changes.
+        /// </summary>
+        event HwdgResult Updated;
     }
 }

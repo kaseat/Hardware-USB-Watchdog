@@ -8,19 +8,19 @@ namespace HwdgGui.ViewModels
 {
     public partial class StatusViewModel : PropertyChangedBase, IDisposable
     {
-        private readonly IHwdg hwdg = new SerialHwdg(new SerialWrapper());
+        private readonly IHwdg hwdg;
         private readonly Dispatcher uiDisp;
         private Status status;
 
         /// <summary>
         /// ctor
         /// </summary>
-        public StatusViewModel()
+        public StatusViewModel(IHwdg hwdg)
         {
+            this.hwdg = hwdg;
             uiDisp = Dispatcher.CurrentDispatcher;
             RunButtonText = "Запустить монитринг";
             CanRunButton = true;
-
             hwdg.Disconnected += OnDisconnected;
             hwdg.Connected += OnConnected;
             status = hwdg.GetStatus();

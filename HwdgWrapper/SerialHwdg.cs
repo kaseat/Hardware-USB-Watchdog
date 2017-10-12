@@ -15,12 +15,14 @@ namespace HwdgWrapper
             this.wrapper = wrapper ?? throw new ArgumentNullException(nameof(wrapper));
             this.wrapper.HwdgConnected += OnConnected;
             this.wrapper.HwdgDisconnected += OnDisconnected;
+            this.wrapper.HwdgUpdated += OnUpdated;
             timer.Elapsed += OnElapse;
         }
 
         private void OnDisconnected() => Disconnected?.Invoke();
 
         private void OnConnected(Status status) => Connected?.Invoke(status);
+        private void OnUpdated(Status status) => Updated?.Invoke(status);
 
         private void OnElapse(Object sender, ElapsedEventArgs e)
         {
@@ -158,7 +160,8 @@ namespace HwdgWrapper
         }
 
         public event Action Disconnected;
-        public event HwdgConnected Connected;
+        public event HwdgResult Connected;
+        public event HwdgResult Updated;
 
         public void Dispose()
         {
@@ -167,6 +170,7 @@ namespace HwdgWrapper
             timer.Elapsed -= OnElapse;
             wrapper.HwdgConnected -= OnConnected;
             wrapper.HwdgDisconnected -= OnDisconnected;
+            wrapper.HwdgUpdated -= OnUpdated;
             timer.Dispose();
             GC.SuppressFinalize(this);
         }

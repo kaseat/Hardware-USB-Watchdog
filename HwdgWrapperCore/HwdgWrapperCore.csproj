@@ -9,7 +9,6 @@
     <Compile Include="..\HwdgWrapper\IWrapper.cs" Link="IWrapper.cs" />
     <Compile Include="..\HwdgWrapper\Response.cs" Link="Response.cs" />
     <Compile Include="..\HwdgWrapper\SerialHwdg.cs" Link="SerialHwdg.cs" />
-    <Compile Include="..\HwdgWrapper\SerialWrapper.cs" Link="SerialWrapper.cs" />
     <Compile Include="..\HwdgWrapper\Status.cs" Link="Status.cs" />
   </ItemGroup>
 

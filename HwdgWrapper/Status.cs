@@ -42,6 +42,27 @@ namespace HwdgWrapper
         /// Get watchdog soft reset attempts.
         /// </summary>
         public Byte SoftResetAttempts { get; set; }
+
+        public override Boolean Equals(Object obj)
+        {
+            return obj is Status status &&
+                   State == status.State &&
+                   ResponseTimeout == status.ResponseTimeout &&
+                   RebootTimeout == status.RebootTimeout &&
+                   HardResetAttempts == status.HardResetAttempts &&
+                   SoftResetAttempts == status.SoftResetAttempts;
+        }
+        
+        public override Int32 GetHashCode()
+        {
+            var hashCode = -1572781591;
+            hashCode = hashCode * -1521134295 + State.GetHashCode();
+            hashCode = hashCode * -1521134295 + ResponseTimeout.GetHashCode();
+            hashCode = hashCode * -1521134295 + RebootTimeout.GetHashCode();
+            hashCode = hashCode * -1521134295 + HardResetAttempts.GetHashCode();
+            hashCode = hashCode * -1521134295 + SoftResetAttempts.GetHashCode();
+            return hashCode;
+        }
     }
 
     /// <summary>
