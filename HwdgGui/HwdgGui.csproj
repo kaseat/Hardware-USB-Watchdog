@@ -90,8 +90,6 @@
     <Compile Include="Utils\RegistrySettingsProvider.cs" />
     <Compile Include="Utils\WpfAssemblyExtentions.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
-    <Compile Include="ViewModels\Partials\StatusAutorun.cs" />
-    <Compile Include="ViewModels\Partials\StatusRunButton.cs" />
     <Compile Include="ViewModels\StatusViewModel.cs" />
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>

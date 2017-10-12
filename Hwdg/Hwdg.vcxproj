@@ -142,15 +142,6 @@
   <ItemGroup>
     <None Include="ClassDependency.dgml" />
     <None Include="FileDependency.dgml" />
-    <None Include="src\settings\Wdg.dbgdt" />
-    <None Include="src\settings\Wdg.Debug.cspy.bat" />
-    <None Include="src\settings\Wdg.Debug.cspy.ps1" />
-    <None Include="src\settings\Wdg.Debug.driver.xcl" />
-    <None Include="src\settings\Wdg.Debug.general.xcl" />
-    <None Include="src\settings\Wdg.dni" />
-    <None Include="src\settings\Wdg.dnx" />
-    <None Include="src\settings\Wdg.wsdt" />
-    <None Include="src\settings\Wdg.wspos" />
     <None Include="src\Wdg.dep" />
     <None Include="src\Wdg.ewd" />
     <None Include="src\Wdg.ewp" />

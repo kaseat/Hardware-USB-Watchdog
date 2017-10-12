@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using HwdgWrapper;
 using Microsoft.Win32;
 
 namespace HwdgGui.Utils
@@ -13,20 +14,25 @@ namespace HwdgGui.Utils
         private const String AutorunPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
         private const String SettingsPath = @"SOFTWARE\Hwdg";
         private const String AutoMonitor = "AutoMonitor";
+        private const String HwStatus = "HwStatus";
         private readonly RegistryKey autorunKey;
-        private readonly RegistryKey automonitorKey;
+        private readonly RegistryKey settingsKey;
 
         public RegistrySettingsProvider()
         {
             autorunKey = Registry.CurrentUser.OpenSubKey(AutorunPath, true);
-            automonitorKey = Registry.CurrentUser.OpenSubKey(SettingsPath, true);
-            if (automonitorKey == null)
+            settingsKey = Registry.CurrentUser.OpenSubKey(SettingsPath, true);
+            if (settingsKey == null)
             {
-                automonitorKey = Registry.CurrentUser.CreateSubKey(SettingsPath, true);
-                automonitorKey.SetValue(AutoMonitor, 0, RegistryValueKind.DWord);
+                settingsKey = Registry.CurrentUser.CreateSubKey(SettingsPath, true);
+                settingsKey.SetValue(AutoMonitor, 0, RegistryValueKind.DWord);
+                settingsKey.SetValue(HwStatus, 0, RegistryValueKind.DWord);
             }
-            var am = automonitorKey.GetValue(AutoMonitor, null);
-            if (am == null) automonitorKey.SetValue(AutoMonitor, 0);
+            var am = settingsKey.GetValue(AutoMonitor, null);
+            if (am == null) settingsKey.SetValue(AutoMonitor, 0);
+
+            var hs = settingsKey.GetValue(HwStatus, null);
+            if (hs == null) settingsKey.SetValue(HwStatus, 0);
         }
 
         /// <summary>
@@ -70,15 +76,21 @@ namespace HwdgGui.Utils
         /// <inheritdoc />
         public Boolean Automonitor
         {
-            get => Convert.ToBoolean(automonitorKey.GetValue(AutoMonitor, 0));
-            set => automonitorKey.SetValue(AutoMonitor, value, RegistryValueKind.DWord);
+            get => Convert.ToBoolean(settingsKey.GetValue(AutoMonitor, 0));
+            set => settingsKey.SetValue(AutoMonitor, value, RegistryValueKind.DWord);
+        }
+
+        public Status HwdgStatus
+        {
+            get => new Status((Int32) settingsKey.GetValue(HwStatus, 0));
+            set => settingsKey.SetValue(HwStatus, value.RawData, RegistryValueKind.DWord);
         }
 
         /// <inheritdoc />
         public void Dispose()
         {
             autorunKey.Dispose();
-            automonitorKey.Dispose();
+            settingsKey.Dispose();
             GC.SuppressFinalize(this);
         }
     }

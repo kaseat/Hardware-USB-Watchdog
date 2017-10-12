@@ -9,6 +9,12 @@ namespace HwdgWrapper
     public interface IHwdg
     {
         /// <summary>
+        /// Restore hwdg ststus.
+        /// </summary>
+        /// <param name="status">Status to be restored.</param>
+        void RestoreStatus(Status status);
+
+        /// <summary>
         /// Set reboot timeout.
         /// </summary>
         /// <param name="ms">Timeout, ms. Range 10000-645000 ms.</param>
@@ -87,7 +93,7 @@ namespace HwdgWrapper
         /// <summary>
         /// Get current hwdg status.
         /// </summary>
-        /// <returns>Returns <see cref="Status"/></returns>
+        /// <returns>Returns <see cref="Status"/> or null if there is no status available.</returns>
         /// <remarks>See par.4.10 "Hardware watchdog V1 reference manual" for more details.</remarks>
         Status GetStatus();
 

@@ -25,6 +25,7 @@ namespace HwdgGui
             builder.RegisterTypes(assembly.GetViewModels());
             builder.RegisterTypes(assembly.GetViews());
             builder.Register<IHwdg>(x => new SerialHwdg(new SerialWrapper())).SingleInstance();
+            builder.Register<ISettingsProvider>(x => new RegistrySettingsProvider()).SingleInstance();
             builder.Register<IWindowManager>(x => new WindowManager()).InstancePerLifetimeScope();
             builder.Register<IEventAggregator>(x => new EventAggregator()).InstancePerLifetimeScope();
             container = builder.Build();

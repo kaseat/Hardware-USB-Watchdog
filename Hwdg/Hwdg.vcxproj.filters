@@ -119,28 +119,7 @@
   <ItemGroup>
     <None Include="ClassDependency.dgml" />
     <None Include="FileDependency.dgml" />
-    <None Include="src\settings\Wdg.Debug.cspy.bat">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="src\settings\Wdg.dbgdt">
-      <Filter>IAR</Filter>
-    </None>
-    <None Include="src\settings\Wdg.Debug.cspy.ps1">
-      <Filter>IAR</Filter>
-    </None>
-    <None Include="src\settings\Wdg.Debug.driver.xcl">
-      <Filter>IAR</Filter>
-    </None>
-    <None Include="src\settings\Wdg.Debug.general.xcl">
-      <Filter>IAR</Filter>
-    </None>
     <None Include="src\Wdg.dep">
-      <Filter>IAR</Filter>
-    </None>
-    <None Include="src\settings\Wdg.dni">
-      <Filter>IAR</Filter>
-    </None>
-    <None Include="src\settings\Wdg.dnx">
       <Filter>IAR</Filter>
     </None>
     <None Include="src\Wdg.ewd">
@@ -153,12 +132,6 @@
       <Filter>IAR</Filter>
     </None>
     <None Include="src\Wdg.eww">
-      <Filter>IAR</Filter>
-    </None>
-    <None Include="src\settings\Wdg.wsdt">
-      <Filter>IAR</Filter>
-    </None>
-    <None Include="src\settings\Wdg.wspos">
       <Filter>IAR</Filter>
     </None>
   </ItemGroup>

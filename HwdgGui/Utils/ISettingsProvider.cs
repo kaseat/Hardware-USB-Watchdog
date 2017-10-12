@@ -1,4 +1,5 @@
 ﻿using System;
+using HwdgWrapper;
 
 namespace HwdgGui.Utils
 {
@@ -13,5 +14,10 @@ namespace HwdgGui.Utils
         /// Is monitoring sarts when application starts.
         /// </summary>
         Boolean Automonitor { get; set; }
+
+        /// <summary>
+        /// Save or restore hwdg status.
+        /// </summary>
+        Status HwdgStatus { get; set; }
     }
 }

@@ -65,6 +65,22 @@ namespace HwdgWrapper
             return (Byte) (nhi | 0x18);
         }
 
+        public void RestoreStatus(Status status)
+        {
+            SetRebootTimeout(status.RebootTimeout);
+            SetResponseTimeout(status.ResponseTimeout);
+            SetHardResetAttempts(status.HardResetAttempts);
+            SetSoftResetAttempts(status.SoftResetAttempts);
+            if ((status.State & WatchdogState.HardRersetEnabled) != 0)
+            {
+                EnableHardReset();
+            }
+            else
+            {
+                DisableHardReset();
+            }
+        }
+
         public Response SetRebootTimeout(Int32 ms) => wrapper.SendCommand(ConvertRebootTimeout(ms));
 
         public Response SetResponseTimeout(Int32 ms) => wrapper.SendCommand(ConvertResponseTimeout(ms));

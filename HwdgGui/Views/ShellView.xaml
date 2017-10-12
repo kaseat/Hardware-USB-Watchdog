@@ -8,7 +8,9 @@
         mc:Ignorable="d"
         ContentLoader="{StaticResource Bootstrapper}"
         ContentSource="/Views/StatusView.xaml"
-        Title="ShellView" IsTitleVisible="False" Height="350" Width="525" Visibility="Visible">
+                  ResizeMode="CanMinimize"
+        Title="ShellView" IsTitleVisible="False" Height="350" Width="525" Visibility="Visible"
+                  cal:Message.Attach="[Event Closing] = [Action OnClose]">
     <mui:ModernWindow.MenuLinkGroups>
         <mui:LinkGroup DisplayName="Панель управления">
             <mui:LinkGroup.Links>
