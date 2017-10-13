@@ -14,6 +14,12 @@ namespace HwdgWrapper
         /// <param name="status">Status to be restored.</param>
         void RestoreStatus(Status status);
 
+
+        /// <summary>
+        /// Execute sequence to test reset ability.
+        /// </summary>
+        void TestReset();
+
         /// <summary>
         /// Set reboot timeout.
         /// </summary>

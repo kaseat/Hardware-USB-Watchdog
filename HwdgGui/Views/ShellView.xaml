@@ -17,5 +17,10 @@
                 <mui:Link Source="/Views/StatusView.xaml"></mui:Link>
             </mui:LinkGroup.Links>
         </mui:LinkGroup>
+        <mui:LinkGroup DisplayName="Настройки">
+            <mui:LinkGroup.Links>
+                <mui:Link Source="/Views/SettingsView.xaml"></mui:Link>
+            </mui:LinkGroup.Links>
+        </mui:LinkGroup>
     </mui:ModernWindow.MenuLinkGroups>
 </mui:ModernWindow>

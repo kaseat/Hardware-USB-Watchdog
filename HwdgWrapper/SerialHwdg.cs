@@ -67,8 +67,17 @@ namespace HwdgWrapper
 
         public void RestoreStatus(Status status)
         {
-            SetRebootTimeout(status.RebootTimeout);
-            SetResponseTimeout(status.ResponseTimeout);
+            if ((GetStatus()?.RawData & 0x80000000) == 0)
+            {
+                SetResponseTimeout(status.ResponseTimeout);
+                SetRebootTimeout(status.RebootTimeout);
+            }
+            else
+            {
+                SetResponseTimeout(status.ResponseTimeout > 60000 ? 60000 : status.ResponseTimeout);
+            }
+
+
             SetHardResetAttempts(status.HardResetAttempts);
             SetSoftResetAttempts(status.SoftResetAttempts);
             if ((status.State & WatchdogState.HardRersetEnabled) != 0)
@@ -79,6 +88,13 @@ namespace HwdgWrapper
             {
                 DisableHardReset();
             }
+        }
+
+        public void TestReset()
+        {
+            Stop();
+            SetResponseTimeout(5000);
+            wrapper.SendCommand(0x01);
         }
 
         public Response SetRebootTimeout(Int32 ms) => wrapper.SendCommand(ConvertRebootTimeout(ms));

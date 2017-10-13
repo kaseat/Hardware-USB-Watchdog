@@ -6,75 +6,84 @@
              xmlns:local="clr-namespace:HwdgGui.Views"
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid Style="{StaticResource ContentRoot}">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-            </Grid.RowDefinitions>
-            <Button Name="RunButtonAsync" Margin="5" Focusable="False" Content="{Binding RunButtonText}" Grid.ColumnSpan="2"/>
-            <StackPanel IsEnabled="{Binding CanEditSettings}" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,5,0,8">
-                <StackPanel.Resources>
-                    <BooleanToVisibilityConverter x:Key="BoolToVis"/>
-                </StackPanel.Resources>
-                <Grid Margin="0,0,0,5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition Width="22"></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0" >Ожиание запуска системы:</Label>
-                    <Slider Grid.Column="1" x:Name="RebootTimeout" cal:Message.Attach="[Event LostMouseCapture] = [Action OnRebootTimeoutChanged($this)]" VerticalAlignment="Top"  Maximum="645" Minimum="10" SmallChange="5" LargeChange="30" TickFrequency="5" Value="50" IsSnapToTickEnabled="True" Focusable="False"/>
-                    <Label Grid.Column="2" Content="{Binding Value, ElementName=RebootTimeout}"/>
-                    <Label Grid.Column="3" Content="с."/>
-                </Grid>
-                <Grid Margin="0,0,0,5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition Width="22"></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0" >Ожиание отклика системы:</Label>
-                    <Slider Grid.Column="1" x:Name="ResponseTimeout" cal:Message.Attach="[Event LostMouseCapture] = [Action OnResponseTimeoutChanged($this)]" VerticalAlignment="Top"  Maximum="320" Minimum="5" SmallChange="5" LargeChange="30" TickFrequency="5" Value="50" IsSnapToTickEnabled="True" Focusable="False"/>
-                    <Label Grid.Column="2" Content="{Binding Value, ElementName=ResponseTimeout}"/>
-                    <Label Grid.Column="3" Content="с."/>
-                </Grid>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0" >Количество попыток перезагрузки:</Label>
-                    <Slider Grid.Column="1" x:Name="SoftResetCount" cal:Message.Attach="[Event LostMouseCapture] = [Action OnSoftResetCountChanged($this)]" VerticalAlignment="Top"  Maximum="8" Minimum="1" SmallChange="1" LargeChange="1" TickFrequency="1" Value="3" IsSnapToTickEnabled="True" Focusable="False"/>
-                    <Label Grid.Column="2" Content="{Binding Value, ElementName=SoftResetCount}"/>
-                </Grid>
-                <CheckBox Name="HardReset" Content="Жёсткая перезагрузка" IsChecked="True" Focusable="False"/>
-                <Grid Visibility="{Binding IsChecked,ElementName=HardReset,Converter={StaticResource BoolToVis}}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0" >Количество попыток жёсткой перезагрузки:</Label>
-                    <Slider Grid.Column="1" x:Name="HardResetCount" cal:Message.Attach="[Event LostMouseCapture] = [Action OnHardResetCountChanged($this)]" VerticalAlignment="Top"  Maximum="8" Minimum="1" SmallChange="1" LargeChange="1" TickFrequency="1" Value="3" IsSnapToTickEnabled="True" Focusable="False"/>
-                    <Label Grid.Column="2" Content="{Binding Value, ElementName=HardResetCount}"/>
-                </Grid>
-            </StackPanel>
-            <CheckBox Grid.Row="2" Name="Autorun" Content="Запуск приложения при старте Windodws" Focusable="False"/>
-            <CheckBox Grid.Row="3" Name="AutoMonitor" Content="Автозапуск мониторинга при старте приложения" Focusable="False"/>
-        </Grid>
-        <Canvas Grid.Column="1" Width="32" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <Path Width="30" Height="25" Stretch="Fill" Fill="#21D400" Data="F1 M 23.7501,33.25L 34.8334,44.3333L 52.2499,22.1668L 56.9999,26.9168L 34.8334,53.8333L 19.0001,38L 23.7501,33.25 Z "  HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        </Canvas>
+             d:DesignHeight="300" d:DesignWidth="400">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+    </UserControl.Resources>
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Button Grid.Row="1" Name="RunButtonAsync" Margin="5" Focusable="False" Content="{Binding RunButtonText}" Grid.ColumnSpan="2"/>
+        <StackPanel Grid.Row="2" IsEnabled="{Binding CanEditSettings}" Grid.ColumnSpan="2" Margin="0,5,0,8">
+
+            <Grid Visibility="{Binding HwdgVersion,Converter={StaticResource BoolToVis}}" Margin="0,0,0,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="22"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" >Ожиание запуска системы:</Label>
+                <Slider Grid.Column="1" x:Name="RebootTimeout" cal:Message.Attach="[Event LostMouseCapture] = [Action OnRebootTimeoutChanged($this)]" VerticalAlignment="Top"  Maximum="645" Minimum="10" SmallChange="5" LargeChange="30" TickFrequency="5" Value="50" IsSnapToTickEnabled="True" Focusable="False"/>
+                <Label Grid.Column="2" Content="{Binding Value, ElementName=RebootTimeout}"/>
+                <Label Grid.Column="3" Content="с."/>
+            </Grid>
+            <Grid Margin="0,0,0,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="22"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" >Ожиание отклика системы:</Label>
+                <Slider Grid.Column="1" x:Name="ResponseTimeout" cal:Message.Attach="[Event LostMouseCapture] = [Action OnResponseTimeoutChanged($this)]" VerticalAlignment="Top"  Maximum="{Binding MaxResp}" Minimum="5" SmallChange="5" LargeChange="30" TickFrequency="5" Value="50" IsSnapToTickEnabled="True" Focusable="False"/>
+                <Label Grid.Column="2" Content="{Binding Value, ElementName=ResponseTimeout}"/>
+                <Label Grid.Column="3" Content="с."/>
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" >Количество попыток перезагрузки:</Label>
+                <Slider Grid.Column="1" x:Name="SoftResetCount" cal:Message.Attach="[Event LostMouseCapture] = [Action OnSoftResetCountChanged($this)]" VerticalAlignment="Top"  Maximum="8" Minimum="1" SmallChange="1" LargeChange="1" TickFrequency="1" Value="3" IsSnapToTickEnabled="True" Focusable="False"/>
+                <Label Grid.Column="2" Content="{Binding Value, ElementName=SoftResetCount}"/>
+            </Grid>
+            <CheckBox Name="HardReset" Content="Жёсткая перезагрузка" Focusable="False" cal:Message.Attach="[Event Checked] = [Action OnHwdgHrChecked];[Event Unchecked] = [Action OnHwdgHrUnchecked]" IsChecked="True"/>
+            <Grid Visibility="{Binding IsChecked, Converter={StaticResource BoolToVis}, ElementName=HardReset}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" >Количество попыток жёсткой перезагрузки:</Label>
+                <Slider Grid.Column="1" x:Name="HardResetCount" cal:Message.Attach="[Event LostMouseCapture] = [Action OnHardResetCountChanged($this)]" VerticalAlignment="Top"  Maximum="8" Minimum="1" SmallChange="1" LargeChange="1" TickFrequency="1" Value="3" IsSnapToTickEnabled="True" Focusable="False"/>
+                <Label Grid.Column="2" Content="{Binding Value, ElementName=HardResetCount}"/>
+            </Grid>
+        </StackPanel>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Visibility="{Binding RunVis,Converter={StaticResource BoolToVis}}" >
+            <Label FontSize="32" Foreground="#FF238FFF" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" FontFamily="Calibri Light">Мониторинг запущен</Label>
+            <Canvas Width="25" Height="30" Margin="15,0,0,0">
+                <Path Width="25" Height="30" Stretch="Fill" Fill="#FF238FFF" Data="F1 M 38,20.5833C 42.9908,20.5833 47.4912,22.6825 50.6667,26.046L 50.6667,17.4167L 55.4166,22.1667L 55.4167,34.8333L 42.75,34.8333L 38,30.0833L 46.8512,30.0833C 44.6768,27.6539 41.517,26.125 38,26.125C 31.9785,26.125 27.0037,30.6068 26.2296,36.4167L 20.6543,36.4167C 21.4543,27.5397 28.9148,20.5833 38,20.5833 Z M 38,49.875C 44.0215,49.875 48.9963,45.3932 49.7703,39.5833L 55.3457,39.5833C 54.5457,48.4603 47.0852,55.4167 38,55.4167C 33.0092,55.4167 28.5088,53.3175 25.3333,49.954L 25.3333,58.5833L 20.5833,53.8333L 20.5833,41.1667L 33.25,41.1667L 38,45.9167L 29.1487,45.9167C 31.3231,48.3461 34.483,49.875 38,49.875 Z " Margin="0"/>
+            </Canvas>
+        </StackPanel>
+        <StackPanel Visibility="{Binding ErrVis,Converter={StaticResource BoolToVis}}" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Label FontSize="32" Foreground="#FFE51400" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" FontFamily="Calibri Light">Железный пёс не подключен</Label>
+            <Canvas Width="32" Height="30" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0">
+                <Path Width="32" Height="30" Stretch="Fill" Fill="#FFE51400" Data="F1 M 58.5832,55.4172L 17.4169,55.4171C 15.5619,53.5621 15.5619,50.5546 17.4168,48.6996L 35.201,15.8402C 37.056,13.9852 40.0635,13.9852 41.9185,15.8402L 58.5832,48.6997C 60.4382,50.5546 60.4382,53.5622 58.5832,55.4172 Z M 34.0417,25.7292L 36.0208,41.9584L 39.9791,41.9583L 41.9583,25.7292L 34.0417,25.7292 Z M 38,44.3333C 36.2511,44.3333 34.8333,45.7511 34.8333,47.5C 34.8333,49.2489 36.2511,50.6667 38,50.6667C 39.7489,50.6667 41.1666,49.2489 41.1666,47.5C 41.1666,45.7511 39.7489,44.3333 38,44.3333 Z " Margin="15,0,0,0"/>
+            </Canvas>
+        </StackPanel>
+        <StackPanel Visibility="{Binding ConnVis,Converter={StaticResource BoolToVis}}" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Label FontSize="32" Foreground="#FF60A917" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" FontFamily="Calibri Light">Готов к запуску</Label>
+            <Canvas Width="36" Height="30" Clip="F1 M 0,0L 76,0L 76,76L 0,76L 0,0" Margin="15,0,0,0">
+                <Path Width="36" Height="30" Stretch="Fill" Fill="#FF60A917" Data="F1 M 23.7501,33.25L 34.8334,44.3333L 52.2499,22.1668L 56.9999,26.9168L 34.8334,53.8333L 19.0001,38L 23.7501,33.25 Z "/>
+            </Canvas>
+        </StackPanel>
     </Grid>
 </UserControl>

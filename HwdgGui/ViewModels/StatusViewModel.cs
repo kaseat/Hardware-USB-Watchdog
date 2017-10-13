@@ -34,7 +34,7 @@ namespace HwdgGui.ViewModels
             hwdg.Connected += OnConnected;
 
             hwdg.Stop();
-            if (AutoMonitor)
+            if (settings.Automonitor)
             {
                 hwdg.RestoreStatus(settings.HwdgStatus);
                 hwdg.Start();
@@ -65,6 +65,9 @@ namespace HwdgGui.ViewModels
                 CanEditSettings = false;
                 RunButtonText = "Железный пёс не подключен";
                 uiDisp.SetAccentColor(AccentColor.Disconnected);
+                ErrVis = true;
+                ConnVis = false;
+                RunVis = false;
             }
             else
             {
@@ -74,16 +77,22 @@ namespace HwdgGui.ViewModels
                 {
                     CanRunButton = true;
                     CanEditSettings = false;
-                    RunButtonText = "Остановить монитроинг";
+                    RunButtonText = "Остановить мониторинг";
                     uiDisp.SetAccentColor(AccentColor.Running);
+                    ErrVis = false;
+                    ConnVis = false;
+                    RunVis = true;
                 }
                 // If hwdg is not run we can edit settings.
                 if ((HwStatus.State & WatchdogState.IsRunning) == 0)
                 {
                     CanRunButton = true;
                     CanEditSettings = true;
-                    RunButtonText = "Запустить монитринг";
+                    RunButtonText = "Запустить мониторинг";
                     uiDisp.SetAccentColor(AccentColor.Connected);
+                    ErrVis = false;
+                    ConnVis = true;
+                    RunVis = false;
                 }
                 // Update view controls.
                 settings.HwdgStatus = HwStatus;
@@ -92,6 +101,16 @@ namespace HwdgGui.ViewModels
                 SoftResetCount = status.SoftResetAttempts;
                 RebootTimeout = status.RebootTimeout / 1000;
                 ResponseTimeout = status.ResponseTimeout / 1000;
+                if ((HwStatus.RawData & 0x80000000) == 0)
+                {
+                    HwdgVersion = true;
+                    MaxResp = 320;
+                }
+                else
+                {
+                    HwdgVersion = false;
+                    MaxResp = 60;
+                }                
             }
         }
 
@@ -101,7 +120,7 @@ namespace HwdgGui.ViewModels
         /// <param name="st">Hwdg status.</param>
         private void OnConnected(Status st)
         {
-            if (AutoMonitor)
+            if (settings.Automonitor)
             {
                 hwdg.RestoreStatus(settings.HwdgStatus);
                 hwdg.Start();
@@ -112,7 +131,7 @@ namespace HwdgGui.ViewModels
                 HwStatus = st;
             }
         }
-
+        public Boolean HwdgVersion { get; set; }
         /// <summary>
         /// Hwdg disconnected event handler.
         /// </summary>
@@ -124,21 +143,24 @@ namespace HwdgGui.ViewModels
         /// <summary>
         /// Hard reset binding.
         /// </summary>
-        public Boolean HardReset
+        public Boolean HardReset { get; set; }
+
+        /// <summary>
+        /// Executes when WPF SoftResetCount slider value changes.
+        /// </summary>
+        public void OnHwdgHrChecked()
         {
-            get => (HwStatus.State & WatchdogState.HardRersetEnabled) != 0;
-            set
-            {
-                if (value)
-                {
-                    hwdg.EnableHardReset();
-                }
-                else
-                {
-                    hwdg.DisableHardReset();
-                }
-                status = hwdg.GetStatus();
-            }
+            hwdg.EnableHardReset();
+            HwStatus = hwdg.GetStatus();
+        }
+
+        /// <summary>
+        /// Executes when WPF SoftResetCount slider value changes.
+        /// </summary>
+        public void OnHwdgHrUnchecked()
+        {
+            hwdg.DisableHardReset();
+            HwStatus = hwdg.GetStatus();
         }
 
         /// <summary>
@@ -167,10 +189,11 @@ namespace HwdgGui.ViewModels
         /// <param name="timeout">Slider value.</param>
         public void OnRebootTimeoutChanged(Int32 timeout)
         {
-            hwdg.SetRebootTimeout(timeout * 1000);
+            if ((HwStatus.RawData & 0x80000000) == 0)
+                hwdg.SetRebootTimeout(timeout * 1000);
             HwStatus = hwdg.GetStatus();
         }
-
+        public Int32 MaxResp { get; set; }
         /// <summary>
         /// Executes when WPF RebootTimeout slider value changes.
         /// </summary>
@@ -207,24 +230,6 @@ namespace HwdgGui.ViewModels
         public Boolean CanEditSettings { get; set; }
 
         /// <summary>
-        /// Hwdg client autorun state.
-        /// </summary>
-        public Boolean Autorun
-        {
-            get => settings.Autorun;
-            set => settings.Autorun = value;
-        }
-
-        /// <summary>
-        /// Hwdg client autorun state.
-        /// </summary>
-        public Boolean AutoMonitor
-        {
-            get => settings.Automonitor;
-            set => settings.Automonitor = value;
-        }
-
-        /// <summary>
         /// Main button text. Value and action depends on hwdg state.
         /// </summary>
         public String RunButtonText { get; set; }
@@ -240,20 +245,28 @@ namespace HwdgGui.ViewModels
             if ((status.State & WatchdogState.IsRunning) != 0)
             {
                 uiDisp.SetAccentColor(AccentColor.Connected);
-                RunButtonText = "Запустить монитроинг";
+                ErrVis = false;
+                ConnVis = true;
+                RunVis = false;
+                RunButtonText = "Запустить мониторинг";
                 CanEditSettings = true;
                 await hwdg.StopAsync();
             }
             else
             {
-                RunButtonText = "Остановить монитроинг";
+                RunButtonText = "Остановить мониторинг";
                 uiDisp.SetAccentColor(AccentColor.Running);
+                ErrVis = false;
+                ConnVis = false;
+                RunVis = true;
                 CanEditSettings = false;
                 await hwdg.StartAsync();
             }
             CanRunButton = true;
         }
-
+        public Boolean ErrVis { get; set; }
+        public Boolean ConnVis { get; set; }
+        public Boolean RunVis { get; set; }
         /// <summary>
         /// Enable / disable RunMonitor button.
         /// </summary>

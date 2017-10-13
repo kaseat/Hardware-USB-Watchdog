@@ -41,7 +41,7 @@
 // Response timeout elapsed
 #define LED_STARDED            ((uint8_t)(1U << 3U))
 // Output bit
-#define OUTPUT_BIT             ((uint8_t)(1U << 7U))
+#define OUTPUT_BIT             ((uint8_t)(0U << 7U))
 
 
 // Mask applied to extract attempts value
