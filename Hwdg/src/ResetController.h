@@ -4,6 +4,7 @@
 #include "Rebooter.h"
 #include "Timer.h"
 #include "LedController.h"
+#include "Response.h"
 
 #ifdef __IAR_SYSTEMS_ICC__
 #define _virtual
@@ -12,21 +13,6 @@
 #define _virtual virtual
 #define _override override
 #endif
-
-enum Response
-{
-	SetRebootTimeoutOk = 0x21,
-	SetResponseTimeoutOk = 0x22,
-	SetSoftResetAttemptsOk = 0x23,
-	SetHardResetAttemptsOk = 0x24,
-	DisableHardResetOk = 0x25,
-	EnableHardResetOk = 0x26,
-	StartOk = 0x27,
-	StopOk = 0x28,
-	PingOk = 0x29,
-	Busy = 0x2A,
-	Error = 0x2B,
-};
 
 /**
  * \brief Reset controller assumes Callback() calls every 1 ms.

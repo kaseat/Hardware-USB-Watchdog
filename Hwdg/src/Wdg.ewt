@@ -2163,6 +2163,15 @@
             </file>
         </group>
         <group>
+            <name>Exti</name>
+            <file>
+                <name>$PROJ_DIR$\Exti.cpp</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\Exti.h</name>
+            </file>
+        </group>
+        <group>
             <name>Gpio</name>
             <file>
                 <name>$PROJ_DIR$\GpioDriver.cpp</name>

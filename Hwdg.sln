@@ -9,7 +9,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HwdgTests", "HwdgTests\Hwdg
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HwdgWrapper", "HwdgWrapper\HwdgWrapper.csproj", "{FE87243D-38FD-41FD-A72A-DF645840CFE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HwdgWrapperCore", "HwdgWrapperCore\HwdgWrapperCore.csproj", "{2A8216CC-340A-4059-9609-36ED21B22A8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HwdgWrapperCore", "HwdgWrapperCore\HwdgWrapperCore.csproj", "{2A8216CC-340A-4059-9609-36ED21B22A8C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HwdgWrapperTests", "HwdgWrapperTests\HwdgWrapperTests.csproj", "{0C540370-817A-4AED-A855-01C09B51CBFB}"
 EndProject
@@ -26,16 +26,19 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{D09EB86B-FDFF-416B-98AB-7CFD19B91AC8}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{D09EB86B-FDFF-416B-98AB-7CFD19B91AC8}.Debug|Any CPU.Build.0 = Debug|Win32
 		{D09EB86B-FDFF-416B-98AB-7CFD19B91AC8}.Debug|x64.ActiveCfg = Debug|x64
 		{D09EB86B-FDFF-416B-98AB-7CFD19B91AC8}.Debug|x64.Build.0 = Debug|x64
 		{D09EB86B-FDFF-416B-98AB-7CFD19B91AC8}.Debug|x86.ActiveCfg = Debug|Win32
 		{D09EB86B-FDFF-416B-98AB-7CFD19B91AC8}.Debug|x86.Build.0 = Debug|Win32
 		{D09EB86B-FDFF-416B-98AB-7CFD19B91AC8}.Release|Any CPU.ActiveCfg = Release|Win32
+		{D09EB86B-FDFF-416B-98AB-7CFD19B91AC8}.Release|Any CPU.Build.0 = Release|Win32
 		{D09EB86B-FDFF-416B-98AB-7CFD19B91AC8}.Release|x64.ActiveCfg = Release|x64
 		{D09EB86B-FDFF-416B-98AB-7CFD19B91AC8}.Release|x64.Build.0 = Release|x64
 		{D09EB86B-FDFF-416B-98AB-7CFD19B91AC8}.Release|x86.ActiveCfg = Release|Win32
 		{D09EB86B-FDFF-416B-98AB-7CFD19B91AC8}.Release|x86.Build.0 = Release|Win32
 		{CD3C1FA2-48C9-4A0E-85DA-B5A006B3F123}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{CD3C1FA2-48C9-4A0E-85DA-B5A006B3F123}.Debug|Any CPU.Build.0 = Debug|Win32
 		{CD3C1FA2-48C9-4A0E-85DA-B5A006B3F123}.Debug|x64.ActiveCfg = Debug|x64
 		{CD3C1FA2-48C9-4A0E-85DA-B5A006B3F123}.Debug|x64.Build.0 = Debug|x64
 		{CD3C1FA2-48C9-4A0E-85DA-B5A006B3F123}.Debug|x86.ActiveCfg = Debug|Win32

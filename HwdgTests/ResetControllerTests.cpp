@@ -1012,7 +1012,7 @@ namespace HwdgTests
 
 			ResetController rc(timer, rebooter.get(), ledController.get());
 			// Act & Assert
-			Assert::IsTrue(0x0048049C == rc.GetStatus());
+			Assert::IsTrue(0x0048041C == rc.GetStatus());
 		}
 
 

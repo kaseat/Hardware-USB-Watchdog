@@ -4,7 +4,7 @@
 #include "ResetController.h"
 #include "CommandManager.h"
 #include "GpioDriver.h"
-
+#include "Exti.h"
 
 
 int main()
@@ -12,6 +12,7 @@ int main()
 	// Hardware init.
 	Clock::SetCpuFreq(Freq16Mhz);
 	Uart uart(9600);
+	Exti exti;
 	//uart.SendByte(0x33);
 	Timer timer;
 	timer.Run();

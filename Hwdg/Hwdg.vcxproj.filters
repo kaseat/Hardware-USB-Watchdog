@@ -48,6 +48,12 @@
     <Filter Include="App\Crc">
       <UniqueIdentifier>{98928fb6-f295-462a-bc24-f31ab5866119}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Drivers\Exti">
+      <UniqueIdentifier>{26b54125-8002-43dc-90f4-f1864e636bd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\HddController">
+      <UniqueIdentifier>{7fa31b61-4520-48ff-9ef2-92d2a481caa3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Clock.cpp">
@@ -80,6 +86,12 @@
     <ClCompile Include="src\Crc.cpp">
       <Filter>App\Crc</Filter>
     </ClCompile>
+    <ClCompile Include="src\Exti.cpp">
+      <Filter>Drivers\Exti</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HddController.cpp">
+      <Filter>App\HddController</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Clock.h">
@@ -106,14 +118,23 @@
     <ClInclude Include="src\GpioDriver.h">
       <Filter>Drivers\Gpio</Filter>
     </ClInclude>
-    <ClInclude Include="src\STM8S003F3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\LedController.h">
       <Filter>App\LedController</Filter>
     </ClInclude>
     <ClInclude Include="src\Crc.h">
       <Filter>App\Crc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Exti.h">
+      <Filter>Drivers\Exti</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HddController.h">
+      <Filter>App\HddController</Filter>
+    </ClInclude>
+    <ClInclude Include="src\STM8S003F3.h">
+      <Filter>Drivers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Response.h">
+      <Filter>App\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
