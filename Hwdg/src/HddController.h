@@ -5,6 +5,9 @@
 #include "Rebooter.h"
 #include "Response.h"
 
+#define __disableInterrupts
+#define __enablrInterrupts
+
 class HddController :ISubscriber
 {
 public:
@@ -29,6 +32,16 @@ public:
 	_virtual Response StopHddMonitor();
 
 	/**
+	 * \brief Pause Hdd monitoring.
+	 */
+	_virtual void PauseHddMonitor();
+
+	/**
+	 * \brief Resume Hdd monitoring.
+	 */
+	_virtual void ResumeHddMonitor();
+
+	/**
 	 * \brief 
 	 * \return Returns HDD monitor state.
 	 */
@@ -41,6 +54,8 @@ public:
 	 */
 	_virtual Response SetTimeout(uint8_t command);
 
+	_virtual Response SetRebootAttempts(uint8_t command);
+
 	/**
 	 * \brief Dispose HddController.
 	 */
@@ -52,5 +67,6 @@ private:
 	Rebooter & rebooter;
 	uint32_t counter;
 	uint32_t hddTimeout;
+	uint8_t hddAttempt;
 	uint8_t status;
 };

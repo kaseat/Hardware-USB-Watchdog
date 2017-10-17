@@ -15,4 +15,5 @@ enum Response
 	EnableHddMonitorOk = 0x2C,
 	DisableHddMonitorOk = 0x2D,
 	SetHddTimeoutOk = 0x2E,
+	SetHddAttemptsOk = 0x2E,
 };

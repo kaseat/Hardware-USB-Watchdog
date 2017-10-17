@@ -64,13 +64,15 @@ public:
 
 	/**
 	 * \brief Set response timeout.
-	 * \param timeout Timeout (0-63).
+	 * \param timeout Timeout (0-59).
+	 * \remarks see https://hwdg.ru/hardware-watchdog-api/setresponsetimeout/ for more details.
 	 */
 	_virtual Response SetResponseTimeout(uint8_t timeout);
 
 	/**
 	* \brief Set reset timeout.
-	* \param timeout Timeout(0-127).
+	* \param timeout Timeout(0-118).
+	* \remarks see https://hwdg.ru/hardware-watchdog-api/setreboottimeout/ for more details.
 	*/
 	_virtual Response SetRebootTimeout(uint8_t timeout);
 
