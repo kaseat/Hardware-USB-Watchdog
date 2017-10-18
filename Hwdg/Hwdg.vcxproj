@@ -118,7 +118,6 @@
     <ClCompile Include="src\Crc.cpp" />
     <ClCompile Include="src\Exti.cpp" />
     <ClCompile Include="src\GpioDriver.cpp" />
-    <ClCompile Include="src\HddController.cpp" />
     <ClCompile Include="src\LedController.cpp" />
     <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\Clock.cpp" />
@@ -132,7 +131,8 @@
     <ClInclude Include="src\Crc.h" />
     <ClInclude Include="src\Exti.h" />
     <ClInclude Include="src\GpioDriver.h" />
-    <ClInclude Include="src\HddController.h" />
+    <ClInclude Include="src\IExtiInterruptable.h" />
+    <ClInclude Include="src\IResetControllerEventHandler.h" />
     <ClInclude Include="src\LedController.h" />
     <ClInclude Include="src\Response.h" />
     <ClInclude Include="src\STM8S003F3.h" />

@@ -162,7 +162,6 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="HddControllerTests.cpp" />
     <ClCompile Include="LedControllerTests.cpp" />
     <ClCompile Include="RebooterTests.cpp" />
     <ClCompile Include="ResetControllerTests.cpp" />

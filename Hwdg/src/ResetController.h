@@ -5,6 +5,8 @@
 #include "Timer.h"
 #include "LedController.h"
 #include "Response.h"
+#include "IExtiInterruptable.h"
+#include "Exti.h"
 
 #ifdef __IAR_SYSTEMS_ICC__
 #define _virtual
@@ -14,10 +16,12 @@
 #define _override override
 #endif
 
+class IResetControllerEventHandler;
+
 /**
  * \brief Reset controller assumes Callback() calls every 1 ms.
  */
-class ResetController : ISubscriber
+class ResetController : ISubscriber, IExtiInterruptable
 {
 public:
 
@@ -25,8 +29,7 @@ public:
 	 * \brief Create istnce of Reset controller.
 	 * \param rb Rebooter reference.
 	 */
-	ResetController(Timer & timer, Rebooter & rb, LedController & ledController);
-
+	ResetController(Timer & timer, Rebooter & rb, LedController & ledController, Exti & exti);
 	/**
 	 * \brief Dispose reset controller.
 	 */
@@ -46,6 +49,18 @@ public:
 	 * \brief Disable watchdog restart computer via reset button.
 	 */
 	_virtual Response Stop();
+
+	/**
+	* \brief Starts Hdd monitoring.
+	* \return Returns command response.
+	*/
+	_virtual Response EnableHddMonitor();
+
+	/**
+	* \brief Stops Hdd monitoring.
+	* \return Returns command response.
+	*/
+	_virtual Response DisableHddMonitor();
 
 	/**
 	* \brief Allow watchdog restart computer via reset button.
@@ -87,11 +102,25 @@ public:
 	 * \param attempts Attempts count.
 	 */
 	_virtual Response SetHardResetAttempts(uint8_t attempts);
+
+	/**
+	 * \brief Subscribe event handler.
+	 * \param eventHandler Event handler to subscribe.
+	 */
+	_virtual void SubscribeOnEvents(ISubscriber & eventHandler);
+
+	/**
+	 * \brief Unsubscribe all event handlers.
+	 */
+	_virtual void UnSubscribeOnEvents();
 private:
 	void Callback(uint8_t data) _override;
+	void OnExtiInterrupt() _override;
+	ISubscriber * eventHandler;
 	Timer & timer;
 	Rebooter & rebooter;
 	LedController & ledController;
+	Exti & exti;
 	uint32_t counter;
 	uint_least8_t state;
 	uint32_t responseTimeout;

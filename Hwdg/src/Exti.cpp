@@ -1,6 +1,6 @@
 #include "Exti.h"
 
-ISubscriber* Exti::subscriber = nullptr;
+IExtiInterruptable* Exti::subscriber = nullptr;
 #define HDD_PIN ((uint8_t)(1 << 7))
 #define HDD_PORT GPIOC
 Exti::Exti()
@@ -12,7 +12,7 @@ Exti::Exti()
 #endif
 }
 
-void Exti::SubscribeOnExti(ISubscriber& sbcr)
+void Exti::SubscribeOnExti(IExtiInterruptable& sbcr)
 {
 	subscriber = &sbcr;
 #ifdef __IAR_SYSTEMS_ICC__
@@ -34,5 +34,5 @@ void Exti::UnsubscribeOnExti()
 __interrupt void Exti::OnExti()
 {
 	if (subscriber == nullptr) return;
-	subscriber->Callback(1);
+	subscriber->OnExtiInterrupt();
 }
