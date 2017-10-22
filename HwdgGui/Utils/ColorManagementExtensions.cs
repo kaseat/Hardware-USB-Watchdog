@@ -20,7 +20,7 @@ namespace HwdgGui.Utils
         /// </summary>
         /// <param name="dsp">Dispatcher.</param>
         /// <param name="color">Accent color.</param>
-        public static void SetAccentColor(this Dispatcher dsp,AccentColor color)
+        public static void SetAccentColor(this Dispatcher dsp, AccentColor color)
         {
             switch (color)
             {

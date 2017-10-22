@@ -1,5 +1,5 @@
 #include "Exti.h"
-
+#include <stdint.h>
 IExtiInterruptable* Exti::subscriber = nullptr;
 #define HDD_PIN ((uint8_t)(1 << 7))
 #define HDD_PORT GPIOC

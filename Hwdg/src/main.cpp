@@ -14,6 +14,7 @@ int main()
 
 	Exti exti;
 	Timer timer;
+	timer.Run();
 	GpioDriver drw;
 	Uart uart(9600);
 	LedController ldCtr(timer, drw);
@@ -21,7 +22,7 @@ int main()
 	ResetController controller(timer, rebooter, ldCtr, exti);
 	CommandManager mgr(uart, controller);
 
-	timer.Run();
+
 	ldCtr.Glow();
 #ifdef __IAR_SYSTEMS_ICC__
 	asm("RIM");

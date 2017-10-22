@@ -3,12 +3,13 @@
 #include "ISubscriber.h"
 #include  "ResetController.h"
 #include "Uart.h"
+#include "IResetControllerEventHandler.h"
 #ifdef __IAR_SYSTEMS_ICC__
 #define _override
 #else
 #define _override override
 #endif
-class CommandManager :ISubscriber
+class CommandManager :ISubscriber,IResetControllerEventHandler
 {
 public:
 	/**
@@ -25,6 +26,11 @@ public:
 private:
 	Uart& uart;
 	ResetController& resetController;
-	void Callback(uint8_t data) _override;
-	void CmdSelector(uint8_t data) const;
+	inline void Callback(uint8_t data) _override;
+	inline void OnUpdted(uint8_t reason) _override;
+	inline void GetStatus();
+	inline void TestHardReset();
+	inline void TestSoftReset();
+	inline void EnableEvents();
+	inline void DisableEvents();
 };

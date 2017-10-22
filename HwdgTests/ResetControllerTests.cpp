@@ -3,6 +3,7 @@
 #include "CppUnitTest.h"
 
 #include "../Hwdg/src/Timer.h"
+#include "../Hwdg/src/IResetControllerEventHandler.h"
 #include "../Hwdg/src/ResetController.h"
 
 #define RESPONSE_DEF_TIMEOUT 10000U
@@ -1125,8 +1126,8 @@ namespace HwdgTests
 			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
-			Mock<ISubscriber> sbscr;
-			When(Method(sbscr, Callback)).AlwaysReturn();
+			Mock<IResetControllerEventHandler> sbscr;
+			When(Method(sbscr, OnUpdted)).AlwaysReturn();
 
 			ResetController rc(timer, rebooter.get(), ledController.get(), exti);
 
@@ -1138,22 +1139,22 @@ namespace HwdgTests
 
 			// Act & Assert
 			Wait(5000);
-			Verify(Method(sbscr, Callback).Using(0x30)).Once();
+			Verify(Method(sbscr, OnUpdted).Using(0x30)).Once();
 			VerifyNoOtherInvocations(sbscr);
 			Wait(10000);
-			Verify(Method(sbscr, Callback).Using(0x31)).Once();
+			Verify(Method(sbscr, OnUpdted).Using(0x31)).Once();
 			VerifyNoOtherInvocations(sbscr);
 			Wait(10000);
-			Verify(Method(sbscr, Callback).Using(0x31)).Twice();
+			Verify(Method(sbscr, OnUpdted).Using(0x31)).Twice();
 			VerifyNoOtherInvocations(sbscr);
 			Wait(10000);
-			Verify(Method(sbscr, Callback).Using(0x32)).Once();
+			Verify(Method(sbscr, OnUpdted).Using(0x32)).Once();
 			VerifyNoOtherInvocations(sbscr);
 			Wait(10000);
-			Verify(Method(sbscr, Callback).Using(0x32)).Twice();
+			Verify(Method(sbscr, OnUpdted).Using(0x32)).Twice();
 			VerifyNoOtherInvocations(sbscr);
 			Wait(10000);
-			Verify(Method(sbscr, Callback).Using(0x32)).Exactly(3);
+			Verify(Method(sbscr, OnUpdted).Using(0x32)).Exactly(3);
 			VerifyNoOtherInvocations(sbscr);
 
 			rc.Stop();

@@ -4,9 +4,7 @@
 class IResetControllerEventHandler
 {
 public:
-	virtual void OnSoftReset() = 0;
-	virtual void OnHardReset() = 0;
-	virtual void OnUpdted() = 0;
+	virtual void OnUpdted(uint8_t reason) = 0;
 
 protected:
 	virtual ~IResetControllerEventHandler() {}

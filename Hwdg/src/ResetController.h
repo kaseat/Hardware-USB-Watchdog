@@ -107,16 +107,20 @@ public:
 	 * \brief Subscribe event handler.
 	 * \param eventHandler Event handler to subscribe.
 	 */
-	_virtual void SubscribeOnEvents(ISubscriber & eventHandler);
+	_virtual void SubscribeOnEvents(IResetControllerEventHandler & eventHandler);
 
 	/**
 	 * \brief Unsubscribe all event handlers.
 	 */
 	_virtual void UnSubscribeOnEvents();
+	/**
+	 * \brief Get rebooter reference.
+	 */
+	_virtual Rebooter& GetRebooter();
 private:
 	void Callback(uint8_t data) _override;
 	void OnExtiInterrupt() _override;
-	ISubscriber * eventHandler;
+	IResetControllerEventHandler * eventHandler;
 	Timer & timer;
 	Rebooter & rebooter;
 	LedController & ledController;

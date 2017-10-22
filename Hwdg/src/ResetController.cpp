@@ -181,7 +181,7 @@ Response ResetController::SetHardResetAttempts(uint8_t attempts)
 	return SetHardResetAttemptsOk;
 }
 
-void ResetController::SubscribeOnEvents(ISubscriber& eventHandler)
+void ResetController::SubscribeOnEvents(IResetControllerEventHandler& eventHandler)
 {
 	ResetController::eventHandler = &eventHandler;
 }
@@ -189,6 +189,11 @@ void ResetController::SubscribeOnEvents(ISubscriber& eventHandler)
 void ResetController::UnSubscribeOnEvents()
 {
 	eventHandler = nullptr;
+}
+
+Rebooter& ResetController::GetRebooter()
+{
+	return rebooter;
 }
 
 void ResetController::Callback(uint8_t data)
@@ -206,7 +211,7 @@ void ResetController::Callback(uint8_t data)
 		state |= RESPONSE_ELAPSED;
 		exti.UnsubscribeOnExti();
 		if (eventHandler != nullptr)
-			eventHandler->Callback(FIRST_RESET_OCCURED);
+			eventHandler->OnUpdted(FIRST_RESET_OCCURED);
 	}
 	else if (state & RESPONSE_ELAPSED && counter >= rebootTimeout)
 	{
@@ -216,7 +221,7 @@ void ResetController::Callback(uint8_t data)
 			sAttempt--;
 			rebooter.SoftReset();
 			if (eventHandler != nullptr)
-				eventHandler->Callback(SOFT_RESET_OCCURED);
+				eventHandler->OnUpdted(SOFT_RESET_OCCURED);
 		}
 		else if (state & HR_ENABLED && hAttempt > 0)
 		{
@@ -228,7 +233,7 @@ void ResetController::Callback(uint8_t data)
 			}
 			rebooter.HardReset();
 			if (eventHandler != nullptr)
-				eventHandler->Callback(HARD_RESET_OCCURED);
+				eventHandler->OnUpdted(HARD_RESET_OCCURED);
 		}
 		else
 		{

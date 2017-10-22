@@ -2,6 +2,7 @@
 #include "ISubscriber.h"
 #include "GpioDriver.h"
 #include "Timer.h"
+#include "Response.h"
 
 #ifdef __IAR_SYSTEMS_ICC__
 #define _override
@@ -30,12 +31,12 @@ public:
 	/**
 	 * \brief Satrt hard reset sequence.
 	 */
-	virtual void HardReset();
+	virtual Response HardReset();
 
 	/**
 	 * \brief Start soft reset sequence.
 	 */
-	virtual void SoftReset();
+	virtual Response SoftReset();
 
 private:
 	Timer& timer;

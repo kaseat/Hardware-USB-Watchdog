@@ -38,20 +38,22 @@ Rebooter::~Rebooter()
 	timer.UnsubscribeOnElapse(*this);
 }
 
-void Rebooter::HardReset()
+Response Rebooter::HardReset()
 {
-	if (state & IN_PROCESS) return;
+	if (state & IN_PROCESS) return Busy;
 	state = IN_PROCESS | HARD_RESET;
 	driver.DrivePowerLow();
 	counter = INITIAL;
+	return TestHardResetOk;
 }
  
-void Rebooter::SoftReset()
+Response Rebooter::SoftReset()
 {
-	if (state & IN_PROCESS) return;
+	if (state & IN_PROCESS) return Busy;
 	state = IN_PROCESS | SOFT_RESET;
 	driver.DriveResetLow();
 	counter = INITIAL;
+	return TestSoftResetOk;
 }
 
 void Rebooter::Callback(uint8_t data)
