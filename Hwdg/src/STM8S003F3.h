@@ -1,3 +1,28 @@
+// Copyright (c) 2017, Oleg Petrochenko
+// All rights reserved.
+// 
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above copyright
+//       notice, this list of conditions and the following disclaimer in the
+//       documentation and/or other materials provided with the distribution.
+//     * Neither the name of the HWDG nor the
+//       names of its contributors may be used to endorse or promote products
+//       derived from this software without specific prior written permission.
+// 
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+// IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+// INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+// NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+// PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+// WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
+// OF SUCH DAMAGE.
+
 #ifndef _STM8S003F3_DEF_
 #define _STM8S003F3_DEF_
 
@@ -82,7 +107,7 @@ typedef struct
 	volatile unsigned char DDR;
 	volatile unsigned char CR1;
 	volatile unsigned char CR2;
-}GpioTypedef;
+} GpioTypedef;
 
 #define GPIOA_BASE            (0x005000)
 #define GPIOB_BASE            (0x005005)
@@ -105,7 +130,7 @@ typedef struct
 {
 	volatile unsigned char CR1;
 	volatile unsigned char CR2;
-}ExtiTypedef;
+} ExtiTypedef;
 
 #define EXTI_BASE                (0x0050A0)
 
@@ -146,7 +171,7 @@ typedef struct
 typedef struct
 {
 	volatile unsigned char GCR;
-}CfgTypedef;
+} CfgTypedef;
 
 #define CFG_BASE                 (0x007F60)
 
@@ -196,7 +221,7 @@ typedef struct
 	volatile unsigned char BKR;
 	volatile unsigned char DTR;
 	volatile unsigned char OISR;
-}Tim1Typedef;
+} Tim1Typedef;
 
 #define TIM1_BASE                (0x005250)
 #define TIM1                     ((Tim1Typedef *) TIM1_BASE)
@@ -728,7 +753,7 @@ typedef struct
 	volatile unsigned char CCR2L;
 	volatile unsigned char CCR3H;
 	volatile unsigned char CCR3L;
-}Tim2Typedef;
+} Tim2Typedef;
 
 #define TIM2_BASE                (0x005300)
 #define TIM2                     ((Tim2Typedef *) TIM2_BASE)
@@ -967,7 +992,7 @@ typedef struct
 	volatile unsigned char CNTR;
 	volatile unsigned char PSCR;
 	volatile unsigned char ARR;
-}Tim4Typedef;
+} Tim4Typedef;
 
 #define TIM4_BASE                (0x005340)
 #define TIM4                     ((Tim4Typedef *) TIM4_BASE)
@@ -1068,7 +1093,7 @@ typedef struct
 	volatile unsigned char : 8;
 	volatile unsigned char HSITRIMR;
 	volatile unsigned char SWIMCCR;
-}ClkTypedef;
+} ClkTypedef;
 
 #define CLK_BASE                (0x0050C0)
 #define CLK                     ((ClkTypedef *) CLK_BASE)
@@ -1282,7 +1307,7 @@ typedef struct
 typedef struct
 {
 	volatile unsigned char CSR;
-}BeeperTypedef;
+} BeeperTypedef;
 
 #define BEEP_BASE                (0x0050F3)
 #define BEEP                     ((BeeperTypedef *) BEEP_BASE)
@@ -1328,7 +1353,7 @@ typedef struct
 	volatile unsigned char CR5;
 	volatile unsigned char GTR;
 	volatile unsigned char PSCR;
-}UartTypedef;
+} UartTypedef;
 
 #define UART1_BASE                (0x005230)
 #define UART1                     ((UartTypedef *) UART1_BASE)

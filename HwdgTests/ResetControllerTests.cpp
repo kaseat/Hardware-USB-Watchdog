@@ -1,3 +1,28 @@
+// Copyright (c) 2017, Oleg Petrochenko
+// All rights reserved.
+// 
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above copyright
+//       notice, this list of conditions and the following disclaimer in the
+//       documentation and/or other materials provided with the distribution.
+//     * Neither the name of the HWDG nor the
+//       names of its contributors may be used to endorse or promote products
+//       derived from this software without specific prior written permission.
+// 
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+// IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+// INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+// NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+// PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+// WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
+// OF SUCH DAMAGE.
+
 #include "stdafx.h"
 #include "fakeit.hpp"
 #include "CppUnitTest.h"
@@ -109,7 +134,7 @@ namespace HwdgTests
 			for (auto i = 0; i < 3; i++)
 			{
 				// Act
-				if (i == 0)  Wait(RESPONSE_DEF_TIMEOUT - 1);
+				if (i == 0) Wait(RESPONSE_DEF_TIMEOUT - 1);
 				else Wait(REBOOT_DEF_TIMEOUT - 1);
 
 				// Assert
@@ -157,7 +182,7 @@ namespace HwdgTests
 			for (auto i = 0; i < 6; i++)
 			{
 				// Act
-				if (i == 0)  Wait(RESPONSE_DEF_TIMEOUT - 1);
+				if (i == 0) Wait(RESPONSE_DEF_TIMEOUT - 1);
 				else Wait(REBOOT_DEF_TIMEOUT - 1);
 
 				// Assert
@@ -381,7 +406,7 @@ namespace HwdgTests
 			for (auto i = 0; i < 3; i++)
 			{
 				// Act
-				if (i == 0)  Wait(RESPONSE_DEF_TIMEOUT - 1);
+				if (i == 0) Wait(RESPONSE_DEF_TIMEOUT - 1);
 				else Wait(REBOOT_DEF_TIMEOUT - 1);
 
 				// Assert
@@ -471,7 +496,7 @@ namespace HwdgTests
 			for (auto i = 0; i < 8; i++)
 			{
 				// Act
-				if (i == 0)  Wait(RESPONSE_DEF_TIMEOUT - 1);
+				if (i == 0) Wait(RESPONSE_DEF_TIMEOUT - 1);
 				else Wait(REBOOT_DEF_TIMEOUT - 1);
 
 				// Assert
@@ -519,7 +544,7 @@ namespace HwdgTests
 			for (auto i = 0; i < 6; i++)
 			{
 				// Act
-				if (i == 0)  Wait(RESPONSE_DEF_TIMEOUT - 1);
+				if (i == 0) Wait(RESPONSE_DEF_TIMEOUT - 1);
 				else Wait(REBOOT_DEF_TIMEOUT - 1);
 
 				// Assert
@@ -567,7 +592,7 @@ namespace HwdgTests
 			for (auto i = 0; i < 6; i++)
 			{
 				// Act
-				if (i == 0)  Wait(RESPONSE_DEF_TIMEOUT - 1);
+				if (i == 0) Wait(RESPONSE_DEF_TIMEOUT - 1);
 				else Wait(REBOOT_DEF_TIMEOUT - 1);
 
 				// Assert
@@ -623,7 +648,7 @@ namespace HwdgTests
 			for (auto i = 0; i < 4; i++)
 			{
 				// Act
-				if (i == 0)  Wait(RESPONSE_DEF_TIMEOUT - 1);
+				if (i == 0) Wait(RESPONSE_DEF_TIMEOUT - 1);
 				else Wait(REBOOT_DEF_TIMEOUT - 1);
 
 				// Assert
@@ -679,7 +704,7 @@ namespace HwdgTests
 			for (auto i = 0; i < 4; i++)
 			{
 				// Act
-				if (i == 0)  Wait(RESPONSE_DEF_TIMEOUT - 1);
+				if (i == 0) Wait(RESPONSE_DEF_TIMEOUT - 1);
 				else Wait(REBOOT_DEF_TIMEOUT - 1);
 
 				// Assert
@@ -735,7 +760,7 @@ namespace HwdgTests
 			for (auto i = 0; i < 8; i++)
 			{
 				// Act
-				if (i == 0)  Wait(RESPONSE_DEF_TIMEOUT - 1);
+				if (i == 0) Wait(RESPONSE_DEF_TIMEOUT - 1);
 				else Wait(REBOOT_DEF_TIMEOUT - 1);
 
 				// Assert
@@ -794,7 +819,7 @@ namespace HwdgTests
 			for (auto i = 0; i < 6; i++)
 			{
 				// Act
-				if (i == 0)  Wait(80000 - 1);
+				if (i == 0) Wait(80000 - 1);
 				else Wait(190000 - 1);
 
 				// Assert
@@ -836,7 +861,7 @@ namespace HwdgTests
 			for (auto i = 0; i < 6; i++)
 			{
 				// Act
-				if (i == 0)  Wait(80000 - 1);
+				if (i == 0) Wait(80000 - 1);
 				else Wait(60000 - 1);
 
 				// Assert
@@ -887,7 +912,7 @@ namespace HwdgTests
 			for (auto i = 0; i < 4; i++)
 			{
 				// Act
-				if (i == 0)  Wait(RESPONSE_DEF_TIMEOUT - 1);
+				if (i == 0) Wait(RESPONSE_DEF_TIMEOUT - 1);
 				else Wait(REBOOT_DEF_TIMEOUT - 1);
 
 				// Assert
@@ -951,7 +976,7 @@ namespace HwdgTests
 			for (auto i = 0; i < 7; i++)
 			{
 				// Act
-				if (i == 0)  Wait(RESPONSE_DEF_TIMEOUT - 1);
+				if (i == 0) Wait(RESPONSE_DEF_TIMEOUT - 1);
 				else Wait(REBOOT_DEF_TIMEOUT - 1);
 
 				// Assert
@@ -984,7 +1009,6 @@ namespace HwdgTests
 					Verify(Method(ledController, BlinkFast)).Once();
 					Verify(Method(ledController, BlinkMid)).Once();
 				}
-
 			}
 
 			// Act
@@ -1015,7 +1039,7 @@ namespace HwdgTests
 			// Act & Assert
 			Assert::AreEqual(uint32_t(0x0048041C), rc.GetStatus());
 
-			rc.EnableHddMonitor();
+			rc.EnableHddLedMonitor();
 			Assert::AreEqual(uint32_t(0x004A041C), rc.GetStatus());
 
 			rc.EnableHardReset();
@@ -1072,8 +1096,8 @@ namespace HwdgTests
 
 			// Act & Assert
 			rc.Start();
-			
-			Wait(RESPONSE_DEF_TIMEOUT-1);
+
+			Wait(RESPONSE_DEF_TIMEOUT - 1);
 			Verify(Method(rebooter, SoftReset)).Never();
 			Verify(Method(rebooter, HardReset)).Never();
 
@@ -1082,25 +1106,25 @@ namespace HwdgTests
 			Verify(Method(rebooter, HardReset)).Never();
 
 			rc.Stop();
-			rc.EnableHddMonitor();
+			rc.EnableHddLedMonitor();
 			rc.Start();
 
 			Wait(RESPONSE_DEF_TIMEOUT - 1);
 			VerifyNoOtherInvocations(rebooter);
 			Exti::OnExti();
-			
+
 			Wait(1);
 			VerifyNoOtherInvocations(rebooter);
-			
+
 			Wait(RESPONSE_DEF_TIMEOUT - 2);
 			VerifyNoOtherInvocations(rebooter);
-			
+
 			Wait(1);
 			Verify(Method(rebooter, SoftReset)).Exactly(2);
 			Verify(Method(rebooter, HardReset)).Never();
-			
+
 			rc.Stop();
-			rc.DisableHddMonitor();
+			rc.DisableHddLedMonitor();
 			rc.Start();
 			Wait(RESPONSE_DEF_TIMEOUT - 50);
 			Exti::OnExti();
@@ -1130,8 +1154,8 @@ namespace HwdgTests
 			When(Method(sbscr, OnUpdted)).AlwaysReturn();
 
 			ResetController rc(timer, rebooter.get(), ledController.get(), exti);
-
-			rc.SubscribeOnEvents(sbscr.get());
+			auto& sb = sbscr.get();
+			rc.SubscribeOnEvents(sb);
 			rc.EnableHardReset();
 			rc.SetRebootTimeout(0);
 			rc.SetResponseTimeout(0);
@@ -1139,28 +1163,45 @@ namespace HwdgTests
 
 			// Act & Assert
 			Wait(5000);
-			Verify(Method(sbscr, OnUpdted).Using(0x30)).Once();
+			Verify(Method(sbscr, OnUpdted).Using(Response::FirstResetOccured)).Once();
+			Verify(Method(sbscr, OnUpdted).Using(Response::WatchdogOk)).Exactly(5);
 			VerifyNoOtherInvocations(sbscr);
 			Wait(10000);
-			Verify(Method(sbscr, OnUpdted).Using(0x31)).Once();
+			Verify(Method(sbscr, OnUpdted).Using(Response::SoftResetOccured)).Once();
+			Verify(Method(sbscr, OnUpdted).Using(Response::WatchdogOk)).Exactly(15);
 			VerifyNoOtherInvocations(sbscr);
 			Wait(10000);
-			Verify(Method(sbscr, OnUpdted).Using(0x31)).Twice();
+			Verify(Method(sbscr, OnUpdted).Using(Response::SoftResetOccured)).Twice();
+			Verify(Method(sbscr, OnUpdted).Using(Response::WatchdogOk)).Exactly(25);
 			VerifyNoOtherInvocations(sbscr);
 			Wait(10000);
-			Verify(Method(sbscr, OnUpdted).Using(0x32)).Once();
+			Verify(Method(sbscr, OnUpdted).Using(HardResetOccured)).Once();
+			Verify(Method(sbscr, OnUpdted).Using(Response::WatchdogOk)).Exactly(35);
 			VerifyNoOtherInvocations(sbscr);
 			Wait(10000);
-			Verify(Method(sbscr, OnUpdted).Using(0x32)).Twice();
+			Verify(Method(sbscr, OnUpdted).Using(HardResetOccured)).Twice();
+			Verify(Method(sbscr, OnUpdted).Using(Response::WatchdogOk)).Exactly(45);
 			VerifyNoOtherInvocations(sbscr);
 			Wait(10000);
-			Verify(Method(sbscr, OnUpdted).Using(0x32)).Exactly(3);
+			Verify(Method(sbscr, OnUpdted).Using(HardResetOccured)).Exactly(3);
+			Verify(Method(sbscr, OnUpdted).Using(Response::WatchdogOk)).Exactly(55);
+			VerifyNoOtherInvocations(sbscr);
+			Wait(10000);
+			Verify(Method(sbscr, OnUpdted).Using(Response::MovedToIdle)).Once();
+			Verify(Method(sbscr, OnUpdted).Using(Response::WatchdogOk)).Exactly(65);
 			VerifyNoOtherInvocations(sbscr);
 
 			rc.Stop();
 			rc.UnSubscribeOnEvents();
 			rc.Start();
-			Wait(55000);
+			Wait(65000);
+			VerifyNoOtherInvocations(sbscr);
+
+			sbscr.ClearInvocationHistory();
+			rc.SubscribeOnEvents(sb);
+
+			Wait(15000);
+			Verify(Method(sbscr, OnUpdted).Using(Response::WatchdogOk)).Exactly(15);
 			VerifyNoOtherInvocations(sbscr);
 		}
 	};

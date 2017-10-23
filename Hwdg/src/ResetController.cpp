@@ -1,3 +1,28 @@
+// Copyright (c) 2017, Oleg Petrochenko
+// All rights reserved.
+// 
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above copyright
+//       notice, this list of conditions and the following disclaimer in the
+//       documentation and/or other materials provided with the distribution.
+//     * Neither the name of the HWDG nor the
+//       names of its contributors may be used to endorse or promote products
+//       derived from this software without specific prior written permission.
+// 
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+// IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+// INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+// NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+// PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+// WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
+// OF SUCH DAMAGE.
+
 #include "ResetController.h"
 #include "Timer.h"
 #include "IResetControllerEventHandler.h"
@@ -56,25 +81,24 @@
 // Reset value
 #define INITIAL                ((uint8_t)0x00U)
 
+// hwdg event WatchdogOk elapse timeout
+#define EVENT_HWDGOK_TIMEOUT   ((uint16_t)1000)
 
-// Reset value
-#define FIRST_RESET_OCCURED                ((uint8_t)0x30U)
-#define SOFT_RESET_OCCURED                ((uint8_t)0x31U)
-#define HARD_RESET_OCCURED                ((uint8_t)0x32U)
 
-ResetController::ResetController(Timer & timer, Rebooter & rb, LedController & ledController, Exti & exti)
+ResetController::ResetController(Timer& timer, Rebooter& rb, LedController& ledController, Exti& exti)
 	: timer(timer)
-	, rebooter(rb)
-	, ledController(ledController)
-	, exti(exti)
-	, counter(INITIAL)
-	, state(INITIAL)
-	, responseTimeout(RESPONSE_DEF_TIMEOUT)
-	, rebootTimeout(REBOOT_DEF_TIMEOUT)
-	, sAttempt(SR_ATTEMPTS)
-	, hAttempt(HR_ATTEMPTS)
-	, sAttemptCurr(SR_ATTEMPTS)
-	, hAttemptCurr(HR_ATTEMPTS)
+	  , rebooter(rb)
+	  , ledController(ledController)
+	  , exti(exti)
+	  , counter(INITIAL)
+	  , counterms(INITIAL)
+	  , state(INITIAL)
+	  , responseTimeout(RESPONSE_DEF_TIMEOUT)
+	  , rebootTimeout(REBOOT_DEF_TIMEOUT)
+	  , sAttempt(SR_ATTEMPTS)
+	  , hAttempt(HR_ATTEMPTS)
+	  , sAttemptCurr(SR_ATTEMPTS)
+	  , hAttemptCurr(HR_ATTEMPTS)
 {
 	eventHandler = nullptr;
 	ResetController::timer.SubscribeOnElapse(*this);
@@ -88,7 +112,7 @@ ResetController::~ResetController()
 
 uint32_t ResetController::GetStatus()
 {
-	uint32_t result = 0;
+	uint32_t result = INITIAL;
 	uint8_t* rs = reinterpret_cast<uint8_t*>(&result);
 	rs[0] = (rebootTimeout - REBOOT_MIN_TIMEOUT) / HR_TIMEBASE | OUTPUT_BIT;
 	rs[1] = (responseTimeout / SR_TIMEBASE - 1) << 2 | state & 0x03;
@@ -98,7 +122,7 @@ uint32_t ResetController::GetStatus()
 
 Response ResetController::Start()
 {
-  if (state & ENABLED) return Busy;
+	if (state & ENABLED) return Busy;
 	counter = INITIAL;
 	state &= ~(ENABLED | RESPONSE_ELAPSED | LED_STARDED);
 	state |= ENABLED;
@@ -115,7 +139,7 @@ Response ResetController::Stop()
 	return StopOk;
 }
 
-Response ResetController::EnableHddMonitor()
+Response ResetController::EnableHddLedMonitor()
 {
 	if (state & ENABLED) return Busy;
 	exti.SubscribeOnExti(*this);
@@ -124,7 +148,7 @@ Response ResetController::EnableHddMonitor()
 	return EnableHddMonitorOk;
 }
 
-Response ResetController::DisableHddMonitor()
+Response ResetController::DisableHddLedMonitor()
 {
 	if (state & ENABLED) return Busy;
 	exti.UnsubscribeOnExti();
@@ -198,6 +222,13 @@ Rebooter& ResetController::GetRebooter()
 
 void ResetController::Callback(uint8_t data)
 {
+	if (eventHandler == nullptr) counterms = INITIAL;
+	else if (++counterms >= EVENT_HWDGOK_TIMEOUT)
+	{
+		counterms = INITIAL;
+		eventHandler->OnUpdted(Response::WatchdogOk);
+	}
+
 	if (!(state & ENABLED)) return;
 
 	counter++;
@@ -211,7 +242,7 @@ void ResetController::Callback(uint8_t data)
 		state |= RESPONSE_ELAPSED;
 		exti.UnsubscribeOnExti();
 		if (eventHandler != nullptr)
-			eventHandler->OnUpdted(FIRST_RESET_OCCURED);
+			eventHandler->OnUpdted(Response::FirstResetOccured);
 	}
 	else if (state & RESPONSE_ELAPSED && counter >= rebootTimeout)
 	{
@@ -221,7 +252,7 @@ void ResetController::Callback(uint8_t data)
 			sAttempt--;
 			rebooter.SoftReset();
 			if (eventHandler != nullptr)
-				eventHandler->OnUpdted(SOFT_RESET_OCCURED);
+				eventHandler->OnUpdted(Response::SoftResetOccured);
 		}
 		else if (state & HR_ENABLED && hAttempt > 0)
 		{
@@ -233,12 +264,14 @@ void ResetController::Callback(uint8_t data)
 			}
 			rebooter.HardReset();
 			if (eventHandler != nullptr)
-				eventHandler->OnUpdted(HARD_RESET_OCCURED);
+				eventHandler->OnUpdted(Response::HardResetOccured);
 		}
 		else
 		{
 			ledController.Glow();
 			state &= ~(ENABLED | RESPONSE_ELAPSED | LED_STARDED);
+			if (eventHandler != nullptr)
+				eventHandler->OnUpdted(Response::MovedToIdle);
 		}
 	}
 }
