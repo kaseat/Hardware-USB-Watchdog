@@ -163,6 +163,7 @@ private:
 	Exti& exti;
 	uint32_t counter;
 	uint16_t counterms;
+	uint16_t counterExti;
 	uint_least8_t state;
 	uint32_t responseTimeout;
 	uint32_t rebootTimeout;

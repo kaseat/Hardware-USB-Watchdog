@@ -44,9 +44,9 @@ enum Response
 	SetHardResetAttemptsOk = 0x2F,
 	UnknownCommand = 0x4F,
 
-	FirstResetOccured = 0x30,
-	SoftResetOccured = 0x31,
-	HardResetOccured = 0x32,
+	FirstResetOccurred = 0x30,
+	SoftResetOccurred = 0x31,
+	HardResetOccurred = 0x32,
 	MovedToIdle = 0x33,
 	WatchdogOk = 0x34,
 	SoftwareVersion = 0x55,

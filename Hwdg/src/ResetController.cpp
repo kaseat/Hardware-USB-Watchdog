@@ -68,8 +68,8 @@
 #define HDD_MONITOR            ((uint8_t)(1U << 3U))
 // Response timeout elapsed
 #define LED_STARDED            ((uint8_t)(1U << 4U))
-// Output bit
-#define OUTPUT_BIT             ((uint8_t)(0U << 7U))
+// EXTI occured
+#define EXTI_OCCURRED          ((uint8_t)(1U << 5U))
 
 
 // Mask applied to extract attempts value
@@ -83,6 +83,8 @@
 
 // hwdg event WatchdogOk elapse timeout
 #define EVENT_HWDGOK_TIMEOUT   ((uint16_t)1000)
+// The period of time we disable EXTI after first interrupt occurred
+#define EXTI_DISABLE_TIMEOUT   ((uint16_t)1000)
 
 
 ResetController::ResetController(Timer& timer, Rebooter& rb, LedController& ledController, Exti& exti)
@@ -92,6 +94,7 @@ ResetController::ResetController(Timer& timer, Rebooter& rb, LedController& ledC
 	  , exti(exti)
 	  , counter(INITIAL)
 	  , counterms(INITIAL)
+	  , counterExti(INITIAL)
 	  , state(INITIAL)
 	  , responseTimeout(RESPONSE_DEF_TIMEOUT)
 	  , rebootTimeout(REBOOT_DEF_TIMEOUT)
@@ -114,7 +117,7 @@ uint32_t ResetController::GetStatus()
 {
 	uint32_t result = INITIAL;
 	uint8_t* rs = reinterpret_cast<uint8_t*>(&result);
-	rs[0] = (rebootTimeout - REBOOT_MIN_TIMEOUT) / HR_TIMEBASE | OUTPUT_BIT;
+	rs[0] = (rebootTimeout - REBOOT_MIN_TIMEOUT) / HR_TIMEBASE;
 	rs[1] = (responseTimeout / SR_TIMEBASE - 1) << 2 | state & 0x03;
 	rs[2] = (sAttemptCurr - 1) << 5 | (hAttemptCurr - 1) << 2 | (state & 0x0C) >> 2;
 	return result;
@@ -144,6 +147,7 @@ Response ResetController::EnableHddLedMonitor()
 	if (state & ENABLED) return Busy;
 	exti.SubscribeOnExti(*this);
 	state |= HDD_MONITOR;
+	state &= ~EXTI_OCCURRED;
 	counter = INITIAL;
 	return EnableHddMonitorOk;
 }
@@ -152,7 +156,7 @@ Response ResetController::DisableHddLedMonitor()
 {
 	if (state & ENABLED) return Busy;
 	exti.UnsubscribeOnExti();
-	state &= ~HDD_MONITOR;
+	state &= ~(HDD_MONITOR | EXTI_OCCURRED);
 	return DisableHddMonitorOk;
 }
 
@@ -222,6 +226,7 @@ Rebooter& ResetController::GetRebooter()
 
 void ResetController::Callback(uint8_t data)
 {
+	// WatchdogOk event logic
 	if (eventHandler == nullptr) counterms = INITIAL;
 	else if (++counterms >= EVENT_HWDGOK_TIMEOUT)
 	{
@@ -229,6 +234,20 @@ void ResetController::Callback(uint8_t data)
 		eventHandler->OnUpdted(Response::WatchdogOk);
 	}
 
+	// EXTI logic (after EXTI interrupt occurred it would be
+	// better tî disable EXTI interrupts for a while in order
+	// prevent multiple EXTI handler call at short period of time.)
+	if (state & EXTI_OCCURRED)
+	{
+		if (++counterExti >= EXTI_DISABLE_TIMEOUT)
+		{
+			state &= ~EXTI_OCCURRED;
+			counterExti = INITIAL;
+			exti.SubscribeOnExti(*this);
+		}
+	}
+
+	// Reset controller FSM logic
 	if (!(state & ENABLED)) return;
 
 	counter++;
@@ -242,7 +261,7 @@ void ResetController::Callback(uint8_t data)
 		state |= RESPONSE_ELAPSED;
 		exti.UnsubscribeOnExti();
 		if (eventHandler != nullptr)
-			eventHandler->OnUpdted(Response::FirstResetOccured);
+			eventHandler->OnUpdted(Response::FirstResetOccurred);
 	}
 	else if (state & RESPONSE_ELAPSED && counter >= rebootTimeout)
 	{
@@ -252,7 +271,7 @@ void ResetController::Callback(uint8_t data)
 			sAttempt--;
 			rebooter.SoftReset();
 			if (eventHandler != nullptr)
-				eventHandler->OnUpdted(Response::SoftResetOccured);
+				eventHandler->OnUpdted(Response::SoftResetOccurred);
 		}
 		else if (state & HR_ENABLED && hAttempt > 0)
 		{
@@ -264,7 +283,7 @@ void ResetController::Callback(uint8_t data)
 			}
 			rebooter.HardReset();
 			if (eventHandler != nullptr)
-				eventHandler->OnUpdted(Response::HardResetOccured);
+				eventHandler->OnUpdted(Response::HardResetOccurred);
 		}
 		else
 		{
@@ -280,4 +299,6 @@ void ResetController::OnExtiInterrupt()
 {
 	if (!(state & ENABLED) || state & RESPONSE_ELAPSED) return;
 	counter = INITIAL;
+	state |= EXTI_OCCURRED;
+	exti.UnsubscribeOnExti();
 }

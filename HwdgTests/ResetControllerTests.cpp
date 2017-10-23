@@ -1163,27 +1163,27 @@ namespace HwdgTests
 
 			// Act & Assert
 			Wait(5000);
-			Verify(Method(sbscr, OnUpdted).Using(Response::FirstResetOccured)).Once();
+			Verify(Method(sbscr, OnUpdted).Using(Response::FirstResetOccurred)).Once();
 			Verify(Method(sbscr, OnUpdted).Using(Response::WatchdogOk)).Exactly(5);
 			VerifyNoOtherInvocations(sbscr);
 			Wait(10000);
-			Verify(Method(sbscr, OnUpdted).Using(Response::SoftResetOccured)).Once();
+			Verify(Method(sbscr, OnUpdted).Using(Response::SoftResetOccurred)).Once();
 			Verify(Method(sbscr, OnUpdted).Using(Response::WatchdogOk)).Exactly(15);
 			VerifyNoOtherInvocations(sbscr);
 			Wait(10000);
-			Verify(Method(sbscr, OnUpdted).Using(Response::SoftResetOccured)).Twice();
+			Verify(Method(sbscr, OnUpdted).Using(Response::SoftResetOccurred)).Twice();
 			Verify(Method(sbscr, OnUpdted).Using(Response::WatchdogOk)).Exactly(25);
 			VerifyNoOtherInvocations(sbscr);
 			Wait(10000);
-			Verify(Method(sbscr, OnUpdted).Using(HardResetOccured)).Once();
+			Verify(Method(sbscr, OnUpdted).Using(HardResetOccurred)).Once();
 			Verify(Method(sbscr, OnUpdted).Using(Response::WatchdogOk)).Exactly(35);
 			VerifyNoOtherInvocations(sbscr);
 			Wait(10000);
-			Verify(Method(sbscr, OnUpdted).Using(HardResetOccured)).Twice();
+			Verify(Method(sbscr, OnUpdted).Using(HardResetOccurred)).Twice();
 			Verify(Method(sbscr, OnUpdted).Using(Response::WatchdogOk)).Exactly(45);
 			VerifyNoOtherInvocations(sbscr);
 			Wait(10000);
-			Verify(Method(sbscr, OnUpdted).Using(HardResetOccured)).Exactly(3);
+			Verify(Method(sbscr, OnUpdted).Using(HardResetOccurred)).Exactly(3);
 			Verify(Method(sbscr, OnUpdted).Using(Response::WatchdogOk)).Exactly(55);
 			VerifyNoOtherInvocations(sbscr);
 			Wait(10000);
@@ -1203,6 +1203,46 @@ namespace HwdgTests
 			Wait(15000);
 			Verify(Method(sbscr, OnUpdted).Using(Response::WatchdogOk)).Exactly(15);
 			VerifyNoOtherInvocations(sbscr);
+		}
+
+		/**
+		* \brief ID:5000xx Verify ResetController EXTI disable logic works correctly
+		*/
+		TEST_METHOD(VerifyResetControllerExtiDisableLogic)
+		{
+			// Arrange
+			Mock<Rebooter> rebooter;
+			When(Method(rebooter, SoftReset)).AlwaysReturn();
+			When(Method(rebooter, HardReset)).AlwaysReturn();
+
+			Mock<LedController> ledController;
+			When(Method(ledController, Off)).AlwaysReturn();
+			When(Method(ledController, Glow)).AlwaysReturn();
+			When(Method(ledController, BlinkFast)).AlwaysReturn();
+			When(Method(ledController, BlinkMid)).AlwaysReturn();
+			When(Method(ledController, BlinkSlow)).AlwaysReturn();
+
+			Mock<IResetControllerEventHandler> sbscr;
+			When(Method(sbscr, OnUpdted)).AlwaysReturn();
+
+			ResetController rc(timer, rebooter.get(), ledController.get(), exti);
+			auto& sb = sbscr.get();
+			rc.SetRebootTimeout(0);
+			rc.SetResponseTimeout(0);
+			rc.EnableHddLedMonitor();
+			rc.Start();
+
+
+			// Act & Assert
+			Wait(3000);
+			Exti::OnExti();
+			Wait(500);
+			Exti::OnExti();
+			Wait(4500-1);
+			VerifyNoOtherInvocations(rebooter);
+			Wait(1);
+			Verify(Method(rebooter, SoftReset)).Once();
+			VerifyNoOtherInvocations(rebooter);
 		}
 	};
 }
