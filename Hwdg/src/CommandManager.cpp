@@ -55,10 +55,10 @@ inline void CommandManager::Callback(uint8_t data)
 		? uart.SendByte(resetController.EnableHardReset())
 		: data == 0xFD // DisableHardReset command
 		? uart.SendByte(resetController.DisableHardReset())
-		: data == 0xFE // EnableHddLedMonitor command
-		? uart.SendByte(resetController.EnableHddLedMonitor())
-		: data == 0xFF // DisableHddLedMonitor command
-		? uart.SendByte(resetController.DisableHddLedMonitor())
+		: data == 0xFE // Reserved command
+		? uart.SendByte(UnknownCommand)
+		: data == 0xFF // Reserved command
+		? uart.SendByte(UnknownCommand)
 		: data == 0x7E // TestHardReset command
 		? TestHardReset()
 		: data == 0x7F // TestSoftReset command

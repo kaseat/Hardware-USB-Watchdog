@@ -116,7 +116,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Crc.cpp" />
-    <ClCompile Include="src\Exti.cpp" />
     <ClCompile Include="src\GpioDriver.cpp" />
     <ClCompile Include="src\LedController.cpp" />
     <ClCompile Include="src\Timer.cpp" />
@@ -129,9 +128,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Crc.h" />
-    <ClInclude Include="src\Exti.h" />
     <ClInclude Include="src\GpioDriver.h" />
-    <ClInclude Include="src\IExtiInterruptable.h" />
     <ClInclude Include="src\IResetControllerEventHandler.h" />
     <ClInclude Include="src\LedController.h" />
     <ClInclude Include="src\Response.h" />

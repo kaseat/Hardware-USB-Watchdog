@@ -30,8 +30,6 @@
 #include "Timer.h"
 #include "LedController.h"
 #include "Response.h"
-#include "IExtiInterruptable.h"
-#include "Exti.h"
 
 #ifdef __IAR_SYSTEMS_ICC__
 #define _virtual
@@ -46,7 +44,7 @@ class IResetControllerEventHandler;
 /**
  * \brief Reset controller assumes Callback() calls every 1 ms.
  */
-class ResetController : ISubscriber, IExtiInterruptable
+class ResetController : ISubscriber
 {
 public:
 
@@ -54,7 +52,7 @@ public:
 	 * \brief Create istnce of Reset controller.
 	 * \param rb Rebooter reference.
 	 */
-	ResetController(Timer& timer, Rebooter& rb, LedController& ledController, Exti& exti);
+	ResetController(Timer& timer, Rebooter& rb, LedController& ledController);
 	/**
 	 * \brief Dispose reset controller.
 	 */
@@ -77,20 +75,6 @@ public:
 	 * \remarks see https://hwdg.ru/hardware-watchdog-api/stop/ for more details.
 	 */
 	_virtual Response Stop();
-
-	/**
-	* \brief Starts Hdd monitoring.
-	* \return Returns command response.
-	* \remarks see https://hwdg.ru/hardware-watchdog-api/enablehddledmonitor/ for more details.
-	*/
-	_virtual Response EnableHddLedMonitor();
-
-	/**
-	* \brief Stops Hdd monitoring.
-	* \return Returns command response.
-	* \remarks see https://hwdg.ru/hardware-watchdog-api/disablehddledmonitor/ for more details.
-	*/
-	_virtual Response DisableHddLedMonitor();
 
 	/**
 	* \brief Allow watchdog restart computer via reset button.
@@ -155,12 +139,10 @@ public:
 	_virtual Rebooter& GetRebooter();
 private:
 	void Callback(uint8_t data) _override;
-	void OnExtiInterrupt() _override;
 	IResetControllerEventHandler* eventHandler;
 	Timer& timer;
 	Rebooter& rebooter;
 	LedController& ledController;
-	Exti& exti;
 	uint32_t counter;
 	uint16_t counterms;
 	uint16_t counterExti;
