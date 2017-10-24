@@ -88,8 +88,8 @@ void Rebooter::Callback(uint8_t data)
 		if (++counter >= RST_TIM)
 		{
 			state & HR_HI_ELAPSED
-				? driver.DrivePowerHigh()
-				: driver.DriveResetHigh();
+				? driver.ReleasePower()
+				: driver.ReleaseReset();
 			state = INITIAL;
 			return;
 		}
@@ -99,7 +99,7 @@ void Rebooter::Callback(uint8_t data)
 	{
 		if (++counter >= HR_LO_TIM)
 		{
-			driver.DrivePowerHigh();
+			driver.ReleasePower();
 			state |= HR_LO_ELAPSED;
 			counter = INITIAL;
 			return;

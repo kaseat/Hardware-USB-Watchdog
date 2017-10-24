@@ -31,7 +31,7 @@
 #include "../Hwdg/src/IResetControllerEventHandler.h"
 #include "../Hwdg/src/ResetController.h"
 
-#define RESPONSE_DEF_TIMEOUT 10000U
+#define RESPONSE_DEF_TIMEOUT 30000U
 #define REBOOT_DEF_TIMEOUT 150000U
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace fakeit;
@@ -1037,21 +1037,21 @@ namespace HwdgTests
 
 			ResetController rc(timer, rebooter.get(), ledController.get(), exti);
 			// Act & Assert
-			Assert::AreEqual(uint32_t(0x0048041C), rc.GetStatus());
+			Assert::AreEqual(uint32_t(0x0048141C), rc.GetStatus());
 
 			rc.EnableHddLedMonitor();
-			Assert::AreEqual(uint32_t(0x004A041C), rc.GetStatus());
+			Assert::AreEqual(uint32_t(0x004A141C), rc.GetStatus());
 
 			rc.EnableHardReset();
-			Assert::AreEqual(uint32_t(0x004B041C), rc.GetStatus());
+			Assert::AreEqual(uint32_t(0x004B141C), rc.GetStatus());
 
 			rc.SetHardResetAttempts(0);
 			rc.SetSoftResetAttempts(0);
-			Assert::AreEqual(uint32_t(0x0003041C), rc.GetStatus());
+			Assert::AreEqual(uint32_t(0x0003141C), rc.GetStatus());
 
 			rc.SetHardResetAttempts(0xFF);
 			rc.SetSoftResetAttempts(0xFF);
-			Assert::AreEqual(uint32_t(0x00FF041C), rc.GetStatus());
+			Assert::AreEqual(uint32_t(0x00FF141C), rc.GetStatus());
 
 			rc.SetHardResetAttempts(0);
 			rc.SetSoftResetAttempts(0);
@@ -1226,7 +1226,6 @@ namespace HwdgTests
 			When(Method(sbscr, OnUpdted)).AlwaysReturn();
 
 			ResetController rc(timer, rebooter.get(), ledController.get(), exti);
-			auto& sb = sbscr.get();
 			rc.SetRebootTimeout(0);
 			rc.SetResponseTimeout(0);
 			rc.EnableHddLedMonitor();

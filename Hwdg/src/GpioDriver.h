@@ -52,15 +52,15 @@ public:
 	/**
 	 * \brief Release reset pin.
 	 */
-	_virtual void DriveResetHigh();
+	_virtual void ReleaseReset();
 	/**
 	 * \brief Drive power pin low.
 	 */
 	_virtual void DrivePowerLow();
 	/**
-	 * \brief Releare power pin.
+	 * \brief Release power pin.
 	 */
-	_virtual void DrivePowerHigh();
+	_virtual void ReleasePower();
 	/**
 	 * \brief Drive LED pin low.
 	 */

@@ -48,7 +48,7 @@ void GpioDriver::DriveResetLow()
 	GPIOD->ODR &= ~RST;
 }
 
-void GpioDriver::DriveResetHigh()
+void GpioDriver::ReleaseReset()
 {
 	GPIOD->ODR |= RST;
 }
@@ -58,7 +58,7 @@ void GpioDriver::DrivePowerLow()
 	GPIOD->ODR &= ~PWR;
 }
 
-void GpioDriver::DrivePowerHigh()
+void GpioDriver::ReleasePower()
 {
 	GPIOD->ODR |= PWR;
 }

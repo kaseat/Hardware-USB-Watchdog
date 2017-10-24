@@ -29,7 +29,7 @@
 
 #ifndef RESPONSE_DEF_TIMEOUT
 // Default response timeout, ms
-#define RESPONSE_DEF_TIMEOUT   ((uint32_t)10000UL)
+#define RESPONSE_DEF_TIMEOUT   ((uint32_t)30000UL)
 #endif
 #ifndef REBOOT_DEF_TIMEOUT
 // Default reboot timeout, ms

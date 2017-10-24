@@ -55,7 +55,7 @@ namespace HwdgTests
 			// Arrange
 			Mock<GpioDriver> driver;
 			When(Method(driver, DriveResetLow)).AlwaysReturn();
-			When(Method(driver, DriveResetHigh)).AlwaysReturn();
+			When(Method(driver, ReleaseReset)).AlwaysReturn();
 
 			auto& dr = driver.get();
 			Rebooter rebooter(timer, dr);
@@ -66,7 +66,7 @@ namespace HwdgTests
 
 			// Assert
 			Verify(Method(driver, DriveResetLow)).Never();
-			Verify(Method(driver, DriveResetHigh)).Never();
+			Verify(Method(driver, ReleaseReset)).Never();
 		}
 
 		/**
@@ -77,7 +77,7 @@ namespace HwdgTests
 			// Arrange
 			Mock<GpioDriver> driver;
 			When(Method(driver, DriveResetLow)).AlwaysReturn();
-			When(Method(driver, DriveResetHigh)).AlwaysReturn();
+			When(Method(driver, ReleaseReset)).AlwaysReturn();
 
 			auto& dr = driver.get();
 			Rebooter rebooter(timer, dr);
@@ -88,7 +88,7 @@ namespace HwdgTests
 				timer.OnElapse();
 
 			// Assert
-			Verify(Method(driver, DriveResetLow) + Method(driver, DriveResetHigh)).Once();
+			Verify(Method(driver, DriveResetLow) + Method(driver, ReleaseReset)).Once();
 		}
 
 		/**
@@ -99,7 +99,7 @@ namespace HwdgTests
 			// Arrange
 			Mock<GpioDriver> driver;
 			When(Method(driver, DriveResetLow)).AlwaysReturn();
-			When(Method(driver, DriveResetHigh)).AlwaysReturn();
+			When(Method(driver, ReleaseReset)).AlwaysReturn();
 
 			auto& dr = driver.get();
 			Rebooter rebooter(timer, dr);
@@ -110,7 +110,7 @@ namespace HwdgTests
 				timer.OnElapse();
 
 			// Assert
-			Verify(Method(driver, DriveResetLow) + Method(driver, DriveResetHigh)).Once();
+			Verify(Method(driver, DriveResetLow) + Method(driver, ReleaseReset)).Once();
 		}
 
 		/**
@@ -121,7 +121,7 @@ namespace HwdgTests
 			// Arrange
 			Mock<GpioDriver> driver;
 			When(Method(driver, DrivePowerLow)).AlwaysReturn();
-			When(Method(driver, DrivePowerHigh)).AlwaysReturn();
+			When(Method(driver, ReleasePower)).AlwaysReturn();
 
 			auto& dr = driver.get();
 			Rebooter rebooter(timer, dr);
@@ -133,9 +133,9 @@ namespace HwdgTests
 
 			// Assert
 			Verify(Method(driver, DrivePowerLow) +
-				Method(driver, DrivePowerHigh) +
+				Method(driver, ReleasePower) +
 				Method(driver, DrivePowerLow) +
-				Method(driver, DrivePowerHigh)).Once();
+				Method(driver, ReleasePower)).Once();
 		}
 
 		/**
@@ -146,7 +146,7 @@ namespace HwdgTests
 			// Arrange
 			Mock<GpioDriver> driver;
 			When(Method(driver, DrivePowerLow)).AlwaysReturn();
-			When(Method(driver, DrivePowerHigh)).AlwaysReturn();
+			When(Method(driver, ReleasePower)).AlwaysReturn();
 
 			auto& dr = driver.get();
 			Rebooter rebooter(timer, dr);
@@ -154,28 +154,28 @@ namespace HwdgTests
 			// Act & Assert
 			rebooter.HardReset();
 			Verify(Method(driver, DrivePowerLow)).Once();
-			Verify(Method(driver, DrivePowerHigh)).Never();
+			Verify(Method(driver, ReleasePower)).Never();
 
 			for (auto i = 0; i < HR_LO_TIM; i++)
 				timer.OnElapse();
 
 			Verify(Method(driver, DrivePowerLow) +
-				Method(driver, DrivePowerHigh)).Once();
+				Method(driver, ReleasePower)).Once();
 
 			for (auto i = 0; i < HR_HI_TIM; i++)
 				timer.OnElapse();
 
 			Verify(Method(driver, DrivePowerLow) +
-				Method(driver, DrivePowerHigh) +
+				Method(driver, ReleasePower) +
 				Method(driver, DrivePowerLow)).Once();
 
 			for (auto i = 0; i < RST_TIM; i++)
 				timer.OnElapse();
 
 			Verify(Method(driver, DrivePowerLow) +
-				Method(driver, DrivePowerHigh) +
+				Method(driver, ReleasePower) +
 				Method(driver, DrivePowerLow) +
-				Method(driver, DrivePowerHigh)).Once();
+				Method(driver, ReleasePower)).Once();
 		}
 
 		/**
@@ -186,9 +186,9 @@ namespace HwdgTests
 			// Arrange
 			Mock<GpioDriver> driver;
 			When(Method(driver, DriveResetLow)).AlwaysReturn();
-			When(Method(driver, DriveResetHigh)).AlwaysReturn();
+			When(Method(driver, ReleaseReset)).AlwaysReturn();
 			When(Method(driver, DrivePowerLow)).AlwaysReturn();
-			When(Method(driver, DrivePowerHigh)).AlwaysReturn();
+			When(Method(driver, ReleasePower)).AlwaysReturn();
 
 			auto& dr = driver.get();
 			Rebooter rebooter(timer, dr);
@@ -218,11 +218,11 @@ namespace HwdgTests
 
 			// Assert
 			Verify(Method(driver, DrivePowerLow) +
-				Method(driver, DrivePowerHigh) +
+				Method(driver, ReleasePower) +
 				Method(driver, DrivePowerLow) +
-				Method(driver, DrivePowerHigh) +
+				Method(driver, ReleasePower) +
 				Method(driver, DriveResetLow) +
-				Method(driver, DriveResetHigh)).Once();
+				Method(driver, ReleaseReset)).Once();
 		}
 	};
 }
