@@ -231,7 +231,7 @@ void ResetController::Callback(uint8_t data)
 	else if (++counterms >= EVENT_HWDGOK_TIMEOUT)
 	{
 		counterms = INITIAL;
-		eventHandler->OnUpdted(Response::WatchdogOk);
+		eventHandler->OnUpdted(WatchdogOk);
 	}
 
 	// EXTI logic (after EXTI interrupt occurred it would be
@@ -261,7 +261,7 @@ void ResetController::Callback(uint8_t data)
 		state |= RESPONSE_ELAPSED;
 		exti.UnsubscribeOnExti();
 		if (eventHandler != nullptr)
-			eventHandler->OnUpdted(Response::FirstResetOccurred);
+			eventHandler->OnUpdted(FirstResetOccurred);
 	}
 	else if (state & RESPONSE_ELAPSED && counter >= rebootTimeout)
 	{
@@ -271,7 +271,7 @@ void ResetController::Callback(uint8_t data)
 			sAttempt--;
 			rebooter.SoftReset();
 			if (eventHandler != nullptr)
-				eventHandler->OnUpdted(Response::SoftResetOccurred);
+				eventHandler->OnUpdted(SoftResetOccurred);
 		}
 		else if (state & HR_ENABLED && hAttempt > 0)
 		{
@@ -283,14 +283,14 @@ void ResetController::Callback(uint8_t data)
 			}
 			rebooter.HardReset();
 			if (eventHandler != nullptr)
-				eventHandler->OnUpdted(Response::HardResetOccurred);
+				eventHandler->OnUpdted(HardResetOccurred);
 		}
 		else
 		{
 			ledController.Glow();
 			state &= ~(ENABLED | RESPONSE_ELAPSED | LED_STARDED);
 			if (eventHandler != nullptr)
-				eventHandler->OnUpdted(Response::MovedToIdle);
+				eventHandler->OnUpdted(MovedToIdle);
 		}
 	}
 }

@@ -31,7 +31,6 @@ CommandManager::
 CommandManager(Uart& uart, ResetController& resetController): uart(uart), resetController(resetController)
 {
 	CommandManager::uart.SubscribeOnByteReceived(*this);
-	CommandManager::resetController.SubscribeOnEvents(*this);
 }
 
 CommandManager::~CommandManager()
