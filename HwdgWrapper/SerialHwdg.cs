@@ -26,7 +26,7 @@ namespace HwdgWrapper
 
         private void OnElapse(Object sender, ElapsedEventArgs e)
         {
-            wrapper.SendCommand(0x05);
+            wrapper.SendCommand(0xFB);
         }
 
         private Byte ConvertRebootTimeout(Int32 ms)
@@ -90,11 +90,14 @@ namespace HwdgWrapper
             }
         }
 
-        public void TestReset()
+        public void TestSoftReset()
         {
-            Stop();
-            SetResponseTimeout(5000);
-            wrapper.SendCommand(0x01);
+            wrapper.SendCommand(0x7F);
+        }
+
+        public void TestHardReset()
+        {
+            wrapper.SendCommand(0x7E);
         }
 
         public Response SetRebootTimeout(Int32 ms) => wrapper.SendCommand(ConvertRebootTimeout(ms));
@@ -108,19 +111,19 @@ namespace HwdgWrapper
         public Response EnableHardReset()
         {
             if (disposed) throw new ObjectDisposedException(nameof(SerialHwdg));
-            return wrapper.SendCommand(0x03);
+            return wrapper.SendCommand(0xFC);
         }
 
         public Response DisableHardReset()
         {
             if (disposed) throw new ObjectDisposedException(nameof(SerialHwdg));
-            return wrapper.SendCommand(0x04);
+            return wrapper.SendCommand(0xFD);
         }
 
         public Response Start()
         {
             if (disposed) throw new ObjectDisposedException(nameof(SerialHwdg));
-            var status = wrapper.SendCommand(0x01);
+            var status = wrapper.SendCommand(0xF9);
             timer.Enabled = status == Response.StartOk;
             return status;
         }
@@ -128,7 +131,7 @@ namespace HwdgWrapper
         public Response Stop()
         {
             if (disposed) throw new ObjectDisposedException(nameof(SerialHwdg));
-            var status = wrapper.SendCommand(0x02);
+            var status = wrapper.SendCommand(0xFA);
             if (status == Response.StopOk)
             {
                 timer.Enabled = false;
@@ -157,19 +160,19 @@ namespace HwdgWrapper
         public async Task<Response> EnableHardResetAsync()
         {
             if (disposed) throw new ObjectDisposedException(nameof(SerialHwdg));
-            return await wrapper.SendCommandAsync(0x03);
+            return await wrapper.SendCommandAsync(0xFC);
         }
 
         public async Task<Response> DisableHardResetAsync()
         {
             if (disposed) throw new ObjectDisposedException(nameof(SerialHwdg));
-            return await wrapper.SendCommandAsync(0x04);
+            return await wrapper.SendCommandAsync(0xFD);
         }
 
         public async Task<Response> StartAsync()
         {
             if (disposed) throw new ObjectDisposedException(nameof(SerialHwdg));
-            var status = await wrapper.SendCommandAsync(0x01);
+            var status = await wrapper.SendCommandAsync(0xF9);
             timer.Enabled = status == Response.StartOk;
             return status;
         }
@@ -177,7 +180,7 @@ namespace HwdgWrapper
         public async Task<Response> StopAsync()
         {
             if (disposed) throw new ObjectDisposedException(nameof(SerialHwdg));
-            var status = await wrapper.SendCommandAsync(0x02);
+            var status = await wrapper.SendCommandAsync(0xFA);
             if (status == Response.StopOk)
             {
                 timer.Enabled = false;

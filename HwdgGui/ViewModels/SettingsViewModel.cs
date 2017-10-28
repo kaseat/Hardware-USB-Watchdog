@@ -41,7 +41,7 @@ namespace HwdgGui.ViewModels
         }
         public void ResetTest()
         {
-            hwdg.TestReset();
+            hwdg.TestSoftReset();
         }
         public Boolean CanResetTest { get; set; }
     }
