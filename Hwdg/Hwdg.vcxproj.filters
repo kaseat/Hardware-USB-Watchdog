@@ -48,6 +48,9 @@
     <Filter Include="App\Crc">
       <UniqueIdentifier>{98928fb6-f295-462a-bc24-f31ab5866119}</UniqueIdentifier>
     </Filter>
+    <Filter Include="App\BootManager">
+      <UniqueIdentifier>{b0beaf46-d21c-4133-97f4-52a448f5aad3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Clock.cpp">
@@ -79,6 +82,9 @@
     </ClCompile>
     <ClCompile Include="src\Crc.cpp">
       <Filter>App\Crc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BootManager.cpp">
+      <Filter>App\BootManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -120,6 +126,9 @@
     </ClInclude>
     <ClInclude Include="src\IResetControllerEventHandler.h">
       <Filter>App\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BootManager.h">
+      <Filter>App\BootManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

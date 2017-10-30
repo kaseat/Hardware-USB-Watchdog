@@ -1,27 +1,16 @@
-// Copyright (c) 2017, Oleg Petrochenko
-// All rights reserved.
+// Copyright 2017 Oleg Petrochenko
 // 
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are met:
-//     * Redistributions of source code must retain the above copyright
-//       notice, this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above copyright
-//       notice, this list of conditions and the following disclaimer in the
-//       documentation and/or other materials provided with the distribution.
-//     * Neither the name of the HWDG nor the
-//       names of its contributors may be used to endorse or promote products
-//       derived from this software without specific prior written permission.
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 // 
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-// IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
-// INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-// NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-// PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-// WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
-// OF SUCH DAMAGE.
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 #include "stdafx.h"
 #include "fakeit.hpp"
@@ -30,7 +19,7 @@
 #define RST_TIM 10U
 #define HR_LO_TIM 60U
 #define HR_HI_TIM 20U
-#define INFINITE 10000U
+#define INFINITY_RB 10000U
 
 #include "../Hwdg/src/Timer.h"
 #include "../Hwdg/src/Rebooter.h"
@@ -42,10 +31,15 @@ using namespace fakeit;
 
 namespace HwdgTests
 {
+	extern Timer timer;
 	TEST_CLASS(RebooterTests)
 	{
 	public:
-		Timer timer = {};
+		static void Wait(uint32_t ms)
+		{
+			for (uint32_t i = 0; i < ms; i++)
+				timer.OnElapse();
+		}
 
 		/**
 		* \brief ID:
@@ -84,7 +78,7 @@ namespace HwdgTests
 
 			// Act
 			rebooter.SoftReset();
-			for (auto i = 0; i < INFINITE; i++)
+			for (auto i = 0; i < INFINITY_RB; i++)
 				timer.OnElapse();
 
 			// Assert
@@ -128,7 +122,7 @@ namespace HwdgTests
 
 			// Act
 			rebooter.HardReset();
-			for (auto i = 0; i < INFINITE; i++)
+			for (auto i = 0; i < INFINITY_RB; i++)
 				timer.OnElapse();
 
 			// Assert
@@ -223,6 +217,42 @@ namespace HwdgTests
 				Method(driver, ReleasePower) +
 				Method(driver, DriveResetLow) +
 				Method(driver, ReleaseReset)).Once();
+		}
+
+		/**
+		* \brief ID:
+		*/
+		TEST_METHOD(VerifyGpioDriverPwrPulseCorrectBehaviour)
+		{
+			// Arrange
+			Mock<GpioDriver> driver;
+			When(Method(driver, DriveResetLow)).AlwaysReturn();
+			When(Method(driver, ReleaseReset)).AlwaysReturn();
+			When(Method(driver, DrivePowerLow)).AlwaysReturn();
+			When(Method(driver, ReleasePower)).AlwaysReturn();
+
+			Rebooter rebooter(timer, driver.get());
+
+			// Act & assert
+			Assert::IsTrue(rebooter.PwrPulse() == PowerPulseOk);
+			Verify(Method(driver, DrivePowerLow)).Once();
+			Assert::IsTrue(rebooter.PwrPulse() == Busy);
+			Assert::IsTrue(rebooter.SoftReset() == Busy);
+			Assert::IsTrue(rebooter.HardReset() == Busy);
+			Wait(RST_TIM - 1);
+			VerifyNoOtherInvocations(driver);
+			Wait(1);
+			Verify(Method(driver, ReleasePower)).Once();
+			Wait(INFINITY_RB);
+			VerifyNoOtherInvocations(driver);
+			Assert::IsTrue(rebooter.SoftReset() == TestSoftResetOk);
+			Verify(Method(driver, DriveResetLow)).Once();
+			Wait(RST_TIM - 1);
+			VerifyNoOtherInvocations(driver);
+			Wait(1);
+			Verify(Method(driver, ReleaseReset)).Once();
+			Wait(INFINITY_RB);
+			VerifyNoOtherInvocations(driver);
 		}
 	};
 }

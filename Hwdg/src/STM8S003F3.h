@@ -1,36 +1,32 @@
-// Copyright (c) 2017, Oleg Petrochenko
-// All rights reserved.
+// Copyright 2017 Oleg Petrochenko
 // 
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are met:
-//     * Redistributions of source code must retain the above copyright
-//       notice, this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above copyright
-//       notice, this list of conditions and the following disclaimer in the
-//       documentation and/or other materials provided with the distribution.
-//     * Neither the name of the HWDG nor the
-//       names of its contributors may be used to endorse or promote products
-//       derived from this software without specific prior written permission.
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 // 
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-// IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
-// INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-// NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-// PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-// WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
-// OF SUCH DAMAGE.
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 #ifndef _STM8S003F3_DEF_
 #define _STM8S003F3_DEF_
 
 #ifndef __IAR_SYSTEMS_ICC__
 #define __interrupt
+#define __no_init
+#define __eeprom
+#define __near
+#define PointerAttr
 #else
 #define nullptr 0
+#define PointerAttr NEAR
 #endif
+
+#define MemoryAddressCast uint16_t
 
 /*======================================================================
 *      Interrupt vector table
@@ -130,11 +126,128 @@ typedef struct
 {
 	volatile unsigned char CR1;
 	volatile unsigned char CR2;
+	volatile unsigned char NCR2;
+	volatile unsigned char FPR;
+	volatile unsigned char NFPR;
+	volatile unsigned char IAPSR;
+	volatile unsigned short : 16;
+	volatile unsigned char PUKR;
+	volatile unsigned char : 8;
+	volatile unsigned char DUKR;
+} FlashTypedef;
+
+#define FLASH_BASE                (0x00505A)
+
+#define FLASH                     ((FlashTypedef *) FLASH_BASE)
+
+/*-------------------------------------------------------------------------
+*      Flash control register 1 (FLASH_CR1)
+*-----------------------------------------------------------------------*/
+
+// Fixed Byte programming time
+#define FLASH_CR1_FIX_Pos         (0U)
+#define FLASH_CR1_FIX_Msk         (0x1U << FLASH_CR1_FIX_Pos)
+#define FLASH_CR1_FIX             FLASH_CR1_FIX_Msk
+// Flash Interrupt enable
+#define FLASH_CR1_IE_Pos          (1U)
+#define FLASH_CR1_IE_Msk          (0x1U << FLASH_CR1_IE_Pos)
+#define FLASH_CR1_IE              FLASH_CR1_IE_Msk
+// Power-down in Active-halt mode
+#define FLASH_CR1_AHALT_Pos       (2U)
+#define FLASH_CR1_AHALT_Msk       (0x1U << FLASH_CR1_AHALT_Pos)
+#define FLASH_CR1_AHALT           FLASH_CR1_AHALT_Msk
+// Power-down in Halt mode
+#define FLASH_CR1_HALT_Pos        (3U)
+#define FLASH_CR1_HALT_Msk        (0x1U << FLASH_CR1_HALT_Pos)
+#define FLASH_CR1_HALT            FLASH_CR1_HALT_Msk
+
+/*-------------------------------------------------------------------------
+*      Flash control register 2 (FLASH_CR2)
+*-----------------------------------------------------------------------*/
+
+// Standard block programming
+#define FLASH_CR2_PRG_Pos         (0U)
+#define FLASH_CR2_PRG_Msk         (0x1U << FLASH_CR2_PRG_Pos)
+#define FLASH_CR2_PRG             FLASH_CR2_PRG_Msk
+// Fast block programming
+#define FLASH_CR2_FPRG_Pos        (4U)
+#define FLASH_CR2_FPRG_Msk        (0x1U << FLASH_CR2_FPRG_Pos)
+#define FLASH_CR2_FPRG            FLASH_CR2_FPRG_Msk
+// Block erasing
+#define FLASH_CR2_ERASE_Pos       (5U)
+#define FLASH_CR2_ERASE_Msk       (0x1U << FLASH_CR2_ERASE_Pos)
+#define FLASH_CR2_ERASE           FLASH_CR2_ERASE_Msk
+// Word programming
+#define FLASH_CR2_WPRG_Pos        (6U)
+#define FLASH_CR2_WPRG_Msk        (0x1U << FLASH_CR2_WPRG_Pos)
+#define FLASH_CR2_WPRG            FLASH_CR2_WPRG_Msk
+// Write option bytes
+#define FLASH_CR2_OPT_Pos         (7U)
+#define FLASH_CR2_OPT_Msk         (0x1U << FLASH_CR2_OPT_Pos)
+#define FLASH_CR2_OPT             FLASH_CR2_OPT_Msk
+
+/*-------------------------------------------------------------------------
+*      Flash complementary control register 2 (FLASH_NCR2)
+*-----------------------------------------------------------------------*/
+
+// Block programming
+#define FLASH_NCR2_NPRG_Pos        (0U)
+#define FLASH_NCR2_NPRG_Msk        (0x1U << FLASH_NCR2_NPRG_Pos)
+#define FLASH_NCR2_NPRG            FLASH_NCR2_NPRG_Msk
+// Fast block programming
+#define FLASH_NCR2_NFPRG_Pos       (4U)
+#define FLASH_NCR2_NFPRG_Msk       (0x1U << FLASH_NCR2_NFPRG_Pos)
+#define FLASH_NCR2_NFPRG           FLASH_NCR2_NFPRG_Msk
+// Block erase
+#define FLASH_NCR2_NERASE_Pos      (5U)
+#define FLASH_NCR2_NERASE_Msk      (0x1U << FLASH_NCR2_NERASE_Pos)
+#define FLASH_NCR2_NERASE          FLASH_NCR2_NERASE_Msk
+// Word programming
+#define FLASH_NCR2_NWPRG_Pos       (6U)
+#define FLASH_NCR2_NWPRG_Msk       (0x1U << FLASH_NCR2_NWPRG_Pos)
+#define FLASH_NCR2_NWPRG           FLASH_NCR2_NWPRG_Msk
+// Write option bytes
+#define FLASH_NCR2_NOPT_Pos        (7U)
+#define FLASH_NCR2_NOPT_Msk        (0x1U << FLASH_NCR2_NOPT_Pos)
+#define FLASH_NCR2_NOPT            FLASH_NCR2_NOPT_Msk
+
+/*-------------------------------------------------------------------------
+*      Flash status register (FLASH_IAPSR)
+*-----------------------------------------------------------------------*/
+
+// Write attempted to protected page flag
+#define FLASH_IAPSR_WR_PG_DIS_Pos        (0U)
+#define FLASH_IAPSR_WR_PG_DIS_Msk        (0x1U << FLASH_IAPSR_WR_PG_DIS_Pos)
+#define FLASH_IAPSR_WR_PG_DIS            FLASH_IAPSR_WR_PG_DIS_Msk
+// Flash Program memory unlocked flag
+#define FLASH_IAPSR_PUL_Pos              (1U)
+#define FLASH_IAPSR_PUL_Msk              (0x1U << FLASH_IAPSR_PUL_Pos)
+#define FLASH_IAPSR_PUL                  FLASH_IAPSR_PUL_Msk
+// End of programming (write or erase operation) flag
+#define FLASH_IAPSR_EOP_Pos              (2U)
+#define FLASH_IAPSR_EOP_Msk              (0x1U << FLASH_IAPSR_EOP_Pos)
+#define FLASH_IAPSR_EOP                  FLASH_IAPSR_EOP_Msk
+// Data EEPROM area unlocked flag
+#define FLASH_IAPSR_DUL_Pos              (3U)
+#define FLASH_IAPSR_DUL_Msk              (0x1U << FLASH_IAPSR_DUL_Pos)
+#define FLASH_IAPSR_DUL                  FLASH_IAPSR_DUL_Msk
+// End of high voltage flag
+#define FLASH_IAPSR_HVOFF_Pos            (6U)
+#define FLASH_IAPSR_HVOFF_Msk            (0x1U << FLASH_IAPSR_HVOFF_Pos)
+#define FLASH_IAPSR_HVOFF                FLASH_IAPSR_HVOFF_Msk
+
+/*======================================================================
+*      External interrupts (EXTI)
+*=======================================================================*/
+typedef struct
+{
+	volatile unsigned char CR1;
+	volatile unsigned char CR2;
 } ExtiTypedef;
 
 #define EXTI_BASE                (0x0050A0)
 
-#define EXTI               ((ExtiTypedef *) EXTI_BASE)
+#define EXTI                     ((ExtiTypedef *) EXTI_BASE)
 
 #define EXTI_CR1_PAIS_Pos        (0U)
 #define EXTI_CR1_PAIS_Msk        (0x3U << EXTI_CR1_PAIS_Pos)

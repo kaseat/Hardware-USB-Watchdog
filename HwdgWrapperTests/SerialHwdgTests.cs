@@ -14,7 +14,7 @@ namespace HwdgWrapperTests
             using (var hwdg = new SerialHwdg(wrapper))
             {
                 hwdg.EnableHardReset();
-                wrapper.AssertWasCalled(x => x.SendCommand(0x03), z => z.Repeat.Once());
+                wrapper.AssertWasCalled(x => x.SendCommand(0xFC), z => z.Repeat.Once());
             }
         }
 
@@ -25,7 +25,7 @@ namespace HwdgWrapperTests
             using (var hwdg = new SerialHwdg(wrapper))
             {
                 hwdg.DisableHardReset();
-                wrapper.AssertWasCalled(x => x.SendCommand(0x04), z => z.Repeat.Once());
+                wrapper.AssertWasCalled(x => x.SendCommand(0xFD), z => z.Repeat.Once());
             }
         }
 

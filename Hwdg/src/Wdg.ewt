@@ -2100,6 +2100,15 @@
     <group>
         <name>Apps</name>
         <group>
+            <name>BootManager</name>
+            <file>
+                <name>$PROJ_DIR$\BootManager.cpp</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\BootManager.h</name>
+            </file>
+        </group>
+        <group>
             <name>CommandManager</name>
             <file>
                 <name>$PROJ_DIR$\CommandManager.cpp</name>
@@ -2189,6 +2198,9 @@
                 <name>$PROJ_DIR$\Uart.h</name>
             </file>
         </group>
+        <file>
+            <name>$PROJ_DIR$\Eeprom.c</name>
+        </file>
     </group>
     <file>
         <name>$PROJ_DIR$\main.cpp</name>

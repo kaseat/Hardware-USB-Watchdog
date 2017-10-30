@@ -115,6 +115,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\BootManager.cpp" />
     <ClCompile Include="src\Crc.cpp" />
     <ClCompile Include="src\GpioDriver.cpp" />
     <ClCompile Include="src\LedController.cpp" />
@@ -127,6 +128,7 @@
     <ClCompile Include="src\Uart.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\BootManager.h" />
     <ClInclude Include="src\Crc.h" />
     <ClInclude Include="src\GpioDriver.h" />
     <ClInclude Include="src\IResetControllerEventHandler.h" />
