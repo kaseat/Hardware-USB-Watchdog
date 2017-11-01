@@ -172,7 +172,7 @@
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 28 6 11 52 13 22 7 26 44 30 4 64 12 46 8 16 23 21 25 35 90</file>
+                    <file> 28 8 6 11 52 7 26 13 44 30 4 64 12 46 22 23 21 16 25 35 90</file>
                 </tool>
             </inputs>
         </file>
@@ -226,7 +226,7 @@
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 90 52 13 28 8 11 18 23 4 25 26 35 44 30 64 12 46 6 22 16 21 66</file>
+                    <file> 44 28 35 12 6 25 13 26 30 64 46 22 16 18 23 90 52 4 8 11 21 66</file>
                 </tool>
             </inputs>
         </file>
@@ -307,7 +307,7 @@
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 46 22 8 13 28 35 6 44 30 4 64 12 25 52 16 11 26</file>
+                    <file> 46 22 8 16 28 35 6 44 30 4 64 12 13 25 52 11 26</file>
                 </tool>
             </inputs>
         </file>
@@ -388,7 +388,7 @@
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 13 12 8 44 30 64 46 16 25 28 52 4 22 11</file>
+                    <file> 13 28 52 4 8 46 16 25 44 30 64 12 22 11</file>
                 </tool>
             </inputs>
         </file>
@@ -485,7 +485,7 @@
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 13 44 6 12 26 30 4 64 28 22 46 8 25 52 16 11 90</file>
+                    <file> 28 26 13 25 8 52 16 11 6 22 44 30 4 64 12 46 90</file>
                 </tool>
             </inputs>
         </file>

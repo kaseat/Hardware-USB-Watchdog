@@ -32,12 +32,17 @@ enum Response
 	SetSoftResetAttemptsOk = 0x2E,
 	SetHardResetAttemptsOk = 0x2F,
 
-	PwrPulseOnStartupEnableOk = 0x40,
-	PwrPulseOnStartupDisableOk = 0x41,
-	RstPulseOnStartupEnableOk = 0x42,
-	RstPulseOnStartupDisableOk = 0x43,
-	SaveSettingsError = 0x44,
-	PowerPulseOk = 0x45,
+	SaveCurrentSettingsOk = 0x40,
+	LoadDefaultSettingsAtStartupOk = 0x41,
+	ApplyUserSettingsAtStartupOk = 0x42,
+
+	PwrPulseOnStartupEnableOk = 0x43,
+	PwrPulseOnStartupDisableOk = 0x44,
+	RstPulseOnStartupEnableOk = 0x45,
+	RstPulseOnStartupDisableOk = 0x46,
+
+	SaveSettingsError = 0x47,
+	PowerPulseOk = 0x48,
 
 	UnknownCommand = 0x4F,
 

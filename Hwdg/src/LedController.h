@@ -48,6 +48,10 @@ public:
 	*/
 	_virtual Response Enable();
 	/**
+	* \brief Get current enable status.
+	*/
+	_virtual bool IsEnabled();
+	/**
 	* \brief Disable LED.
 	*/
 	_virtual Response Disable();

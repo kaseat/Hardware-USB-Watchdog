@@ -13,16 +13,33 @@
 // limitations under the License.
 
 #include "CommandManager.h"
-#include "Uart.h"
 #include "Crc.h"
 
-CommandManager::
-CommandManager(Uart& uart, ResetController& resetController, BootManager& btmgr) :
+// RSM enabled
+#define LED_DISABLED                   ((uint8_t)(1U << 0U))
+#define EVENTS_ENABLED                ((uint8_t)(1U << 1U))
+
+
+CommandManager::CommandManager(Uart& uart, ResetController& rstController, BootManager& btmgr) :
 	uart(uart),
-	resetController(resetController),
-	bootManager(btmgr)
+	resetController(rstController),
+	bootManager(btmgr),
+	status(0)
 {
 	CommandManager::uart.SubscribeOnByteReceived(*this);
+
+	// Exit if we're not going to apply user settings.
+	if (!bootManager.IsUserSettingsAppliedAtStartup()) return;
+
+	uint8_t settings[4];
+	*reinterpret_cast<uint32_t*>(settings) = bootManager.FetchUserSettings();
+	resetController.SetRebootTimeout(settings[0]);
+	resetController.SetResponseTimeout(settings[1] >> 2);
+	resetController.SetSoftResetAttempts(settings[2] >> 5);
+	resetController.SetHardResetAttempts(settings[2] >> 2);
+
+	if (settings[2] & 1) resetController.EnableHardReset();
+	if (settings[3] & EVENTS_ENABLED) EnableEvents();
 }
 
 CommandManager::~CommandManager()
@@ -69,6 +86,13 @@ inline void CommandManager::Callback(uint8_t data)
 		: data == 0x3C // PwrPulseOnStartupEnable command
 		? uart.SendByte(bootManager.PwrPulseOnStartupEnable())
 
+		: data == 0x3B // ApplyUserSettingsAtStartup command
+		? uart.SendByte(bootManager.ApplyUserSettingsAtStartup())
+		: data == 0x3A // LoadDefaultSettingsAtStartup command
+		? uart.SendByte(bootManager.LoadDefaultSettingsAtStartup())
+		: data == 0x39 // SaveCurrentSettings command
+		? uart.SendByte(SaveCurrentSettings())
+
 		: data == 0xF7 // Reserved command
 		? uart.SendByte(UnknownCommand)
 		: data >> 7 == 1 // SetRebootTimeout command
@@ -110,11 +134,33 @@ inline void CommandManager::TestSoftReset()
 inline void CommandManager::EnableEvents()
 {
 	resetController.SubscribeOnEvents(*this);
+	status |= EVENTS_ENABLED;
 	uart.SendByte(EnableEventsOk);
 }
 
 inline void CommandManager::DisableEvents()
 {
 	resetController.UnSubscribeOnEvents();
+	status &= ~EVENTS_ENABLED;
 	uart.SendByte(DisableEventsOk);
+}
+
+Response CommandManager::SaveCurrentSettings()
+{
+	// Get ResetController status
+	uint8_t buffer[4];
+	*reinterpret_cast<uint32_t*>(buffer) = resetController.GetStatus();
+
+	// Get LED status.
+	resetController.GetLedController().IsEnabled()
+		? buffer[3] &= ~LED_DISABLED
+		: buffer[3] |= LED_DISABLED;
+
+	// Get Event status
+	buffer[3] |= status;
+
+	// Save all settings we got earlier
+	return bootManager.SaveUserSettings(*reinterpret_cast<uint32_t*>(buffer))
+		? SaveCurrentSettingsOk
+		: SaveSettingsError;
 }

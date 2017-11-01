@@ -140,6 +140,8 @@ typedef struct
 
 #define FLASH                     ((FlashTypedef *) FLASH_BASE)
 
+#define FLASH_RASS_KEY1           ((uint8_t)0xAE)
+#define FLASH_RASS_KEY2           ((uint8_t)0x56)
 /*-------------------------------------------------------------------------
 *      Flash control register 1 (FLASH_CR1)
 *-----------------------------------------------------------------------*/

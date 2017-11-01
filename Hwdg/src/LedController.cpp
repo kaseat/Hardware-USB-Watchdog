@@ -41,7 +41,7 @@ LedController::LedController(Timer& timer, GpioDriver& driver) :
 	timer(timer),
 	driver(driver),
 	disabled(false),
-	state(INITIAL),
+	state(GLOW),
 	counter(INITIAL)
 {
 	LedController::timer.SubscribeOnElapse(*this);
@@ -57,6 +57,11 @@ Response LedController::Enable()
 	disabled = false;
 	if (state & GLOW) driver.DriveLedHigh();
 	return EnableLedOk;
+}
+
+bool LedController::IsEnabled()
+{
+	return !disabled;
 }
 
 Response LedController::Disable()

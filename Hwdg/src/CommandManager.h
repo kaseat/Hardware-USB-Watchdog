@@ -15,7 +15,7 @@
 #pragma once
 #include <stdint.h>
 #include "ISubscriber.h"
-#include  "ResetController.h"
+#include "ResetController.h"
 #include "Uart.h"
 #include "IResetControllerEventHandler.h"
 #include "BootManager.h"
@@ -37,16 +37,18 @@ public:
 	 * \brief Dispose Reset controller.
 	 */
 	~CommandManager();
-
+	inline void Callback(uint8_t data) _override;
+	inline void OnUpdted(uint8_t reason) _override;
 private:
 	Uart& uart;
 	ResetController& resetController;
 	BootManager& bootManager;
-	inline void Callback(uint8_t data) _override;
-	inline void OnUpdted(uint8_t reason) _override;
+	uint8_t status;
+
 	inline void GetStatus();
 	inline void TestHardReset();
 	inline void TestSoftReset();
 	inline void EnableEvents();
 	inline void DisableEvents();
+	inline Response SaveCurrentSettings();
 };

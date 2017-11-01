@@ -23,7 +23,6 @@ GpioDriver::GpioDriver()
 {
 	GPIOD->ODR |= PWR | RST;
 	GPIOD->DDR |= PWR | RST;
-	GPIOC->ODR |= LED;
 	GPIOC->DDR |= LED;
 	GPIOC->CR1 |= LED;
 }

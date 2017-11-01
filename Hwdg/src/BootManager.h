@@ -32,7 +32,7 @@ public:
 	 * \brief Create boot manager instance
 	 * \param rebooter rebooter reference
 	 */
-	BootManager(Rebooter& rebooter, Timer& timer);
+	BootManager(ResetController& rctrl, Timer& timer);
 
 	/**
 	 * \brief Dispose CommandManager.
@@ -62,9 +62,39 @@ public:
 	 * \return Returns operation status.
 	 */
 	_virtual Response RstPulseOnStartupDisable();
+
+	/**
+	 * \brief Save user HWDG settings into EEPROM.
+	 * \param status Status to be saved.
+	 * \return Returns true if save operation succeeded, otherwise false.
+	 */
+	_virtual bool SaveUserSettings(uint32_t status);
+
+	/**
+	 * \brief Fetch user HWDG settings from EEPROM.
+	 * \return Returns user settings.
+	 */
+	_virtual uint32_t FetchUserSettings();
+
+	/**
+	 * \brief Apply user settings at startup.
+	 * \return Returns operation status.
+	 */
+	_virtual Response ApplyUserSettingsAtStartup();
+
+	/**
+	 * \brief Load default settings at startup.
+	 * \return Returns operation status.
+	 */
+	_virtual Response LoadDefaultSettingsAtStartup();
+
+	/**
+	 * \brief Determine whether user settings applied at startup.
+	 * \return Returns true if HWDG applies user settings at startup, otherwise returns false.
+	 */
+	_virtual bool IsUserSettingsAppliedAtStartup();
 private:
 	void Callback(uint8_t data) _override;
-	Rebooter& rebooter;
+	ResetController& rctrl;
 	uint32_t counter;
-	uint8_t lock;
 };

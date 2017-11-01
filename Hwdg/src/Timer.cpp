@@ -82,11 +82,22 @@ void Timer::SubscribeOnElapse(ISubscriber& sbcr)
 
 void Timer::UnsubscribeOnElapse(ISubscriber& sbcr)
 {
-#ifdef __IAR_SYSTEMS_ICC__
-	TIM4->IER &= ~TIM4_IER_UIE;
-#endif
+
 	for (uint_fast8_t i = 0; i < MAX_TIMER_SUBSCRIBERS; i++)
 		if (subscribers[i] == &sbcr) subscribers[i] = nullptr;
+	bool hasSubscribers = false;
+	for (uint_fast8_t i = 0; i < MAX_TIMER_SUBSCRIBERS; i++)
+		if (subscribers[i] != nullptr)
+		{
+			hasSubscribers = true;
+			break;
+		}
+	if (!hasSubscribers)
+	{
+#ifdef __IAR_SYSTEMS_ICC__
+		TIM4->IER &= ~TIM4_IER_UIE;
+#endif
+	}
 }
 
 #ifdef __IAR_SYSTEMS_ICC__

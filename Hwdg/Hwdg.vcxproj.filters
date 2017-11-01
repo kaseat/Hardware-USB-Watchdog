@@ -86,6 +86,9 @@
     <ClCompile Include="src\BootManager.cpp">
       <Filter>App\BootManager</Filter>
     </ClCompile>
+    <ClCompile Include="src\Eeprom.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Clock.h">

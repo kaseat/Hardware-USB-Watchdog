@@ -117,6 +117,7 @@
   <ItemGroup>
     <ClCompile Include="src\BootManager.cpp" />
     <ClCompile Include="src\Crc.cpp" />
+    <ClCompile Include="src\Eeprom.c" />
     <ClCompile Include="src\GpioDriver.cpp" />
     <ClCompile Include="src\LedController.cpp" />
     <ClCompile Include="src\Timer.cpp" />
