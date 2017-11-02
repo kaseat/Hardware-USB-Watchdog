@@ -110,7 +110,7 @@ namespace HwdgGui.ViewModels
                 {
                     HwdgVersion = false;
                     MaxResp = 60;
-                }                
+                }
             }
         }
 

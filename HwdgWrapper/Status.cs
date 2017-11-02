@@ -17,7 +17,7 @@ namespace HwdgWrapper
             //todo: repalce magic numbers!
             RebootTimeout = 10000 + (data[0] & 0x7F) * 5000;
             ResponseTimeout = (((data[1] & 0xFC) >> 2) + 1) * 5000;
-            State = (WatchdogState) ((data[1] & 0x03) | ((data[2] & 2) << 1));
+            State = (WatchdogState) ((data[1] & 0x03) | ((data[2] & 1) << 2));
             SoftResetAttempts = (Byte) ((data[2] >> 5) + 1);
             HardResetAttempts = (Byte) (((data[2] >> 2) & 0x07) + 1);
             RawData = data[0] << 24 | data[1] << 16 | data[2] << 8 | data[3];
@@ -101,13 +101,13 @@ namespace HwdgWrapper
         IsRunning = 1 << 0,
 
         /// <summary>
-        /// Is hard reset enabled.
-        /// </summary>
-        HardRersetEnabled = 1 << 1,
-
-        /// <summary>
         /// Is hwdg waiting for system reboot.
         /// </summary>
-        WaitingForReboot = 1 << 2,
+        WaitingForReboot = 1 << 1,
+
+        /// <summary>
+        /// Is hard reset enabled.
+        /// </summary>
+        HardRersetEnabled = 1 << 2,
     }
 }
