@@ -15,19 +15,6 @@
 #ifndef _STM8S003F3_DEF_
 #define _STM8S003F3_DEF_
 
-#ifndef __IAR_SYSTEMS_ICC__
-#define __interrupt
-#define __no_init
-#define __eeprom
-#define __near
-#define PointerAttr
-#else
-#define nullptr 0
-#define PointerAttr NEAR
-#endif
-
-#define MemoryAddressCast uint16_t
-
 /*======================================================================
 *      Interrupt vector table
 *=======================================================================*/

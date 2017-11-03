@@ -29,15 +29,15 @@ int main()
 	GpioDriver drw;
 	Rebooter rebooter(timer, drw);
 	LedController ldCtr(timer, drw);
-	ResetController controller(timer, rebooter, ldCtr);
+	ResetController controller(rebooter, ldCtr);
 
 #ifdef __IAR_SYSTEMS_ICC__
 	asm("RIM");
 #endif
 
-	BootManager bootManager(controller, timer);
+	SettingsManager settingsManager;
 	Uart uart(9600);
-	CommandManager mgr(uart, controller, bootManager);
+	CommandManager mgr(uart, controller, settingsManager);
 
 	for (;;);
 }

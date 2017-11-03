@@ -67,14 +67,12 @@
 #define RESPONSE_MASK          ((uint8_t)0x3FU)
 // Reset value
 #define INITIAL                ((uint8_t)0x00U)
-
 // hwdg event WatchdogOk elapse timeout
 #define EVENT_HWDGOK_TIMEOUT   ((uint16_t)1000)
 
 
-ResetController::ResetController(Timer& timer, Rebooter& rb, LedController& ledController)
-	: timer(timer)
-	  , rebooter(rb)
+ResetController::ResetController(Rebooter& rb, LedController& ledController)
+	: rebooter(rb)
 	  , ledController(ledController)
 	  , counter(INITIAL)
 	  , counterms(INITIAL)
@@ -88,12 +86,12 @@ ResetController::ResetController(Timer& timer, Rebooter& rb, LedController& ledC
 	  , hAttemptCurr(HR_ATTEMPTS)
 {
 	eventHandler = nullptr;
-	ResetController::timer.SubscribeOnElapse(*this);
+	rebooter.GetTimer().SubscribeOnElapse(*this);
 }
 
 ResetController::~ResetController()
 {
-	timer.UnsubscribeOnElapse(*this);
+	rebooter.GetTimer().UnsubscribeOnElapse(*this);
 }
 
 uint32_t ResetController::GetStatus()
@@ -172,6 +170,18 @@ Response ResetController::SetHardResetAttempts(uint8_t attempts)
 	if (state & ENABLED) return Busy;
 	hAttemptCurr = (attempts & ATTEMPTS_MASK) + 1;
 	return SetHardResetAttemptsOk;
+}
+
+Response ResetController::TestHardReset()
+{
+	Stop();
+	return rebooter.HardReset();
+}
+
+Response ResetController::TestSoftReset()
+{
+	Stop();
+	return rebooter.HardReset();
 }
 
 void ResetController::SubscribeOnEvents(IResetControllerEventHandler& eventHandler)

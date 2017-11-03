@@ -79,6 +79,12 @@ public:
 	* \brief Start slow LED blink.
 	*/
 	_virtual void BlinkSlow();
+
+	/**
+	* \brief Get timer reference.
+	* \return Returns timer reference.
+	*/
+	_virtual Timer& GetTimer();
 private:
 	Timer& timer;
 	GpioDriver& driver;

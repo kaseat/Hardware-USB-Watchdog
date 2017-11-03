@@ -35,8 +35,6 @@
 #define OFF                 ((uint8_t)0x20U)
 #define GLOW                ((uint8_t)0x40U)
 
-__no_init uint8_t __eeprom CorrectionValue;
-
 LedController::LedController(Timer& timer, GpioDriver& driver) :
 	timer(timer),
 	driver(driver),
@@ -99,6 +97,11 @@ void LedController::BlinkSlow()
 {
 	state = SLOW_BLINK;
 	if (!disabled) driver.DriveLedLow();
+}
+
+Timer& LedController::GetTimer()
+{
+	return timer;
 }
 
 void LedController::Callback(uint8_t data)

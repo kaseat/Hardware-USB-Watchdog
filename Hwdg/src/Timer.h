@@ -14,16 +14,10 @@
 
 #pragma once
 #include "ISubscriber.h"
-#include "STM8S003F3.h"
+#include "PlatformDefinitions.h"
 
 #ifndef MAX_TIMER_SUBSCRIBERS
 #define MAX_TIMER_SUBSCRIBERS 4
-#endif
-
-#ifdef __IAR_SYSTEMS_ICC__
-#define _virtual
-#else
-#define _virtual virtual
 #endif
 
 /**

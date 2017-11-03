@@ -28,7 +28,7 @@
                     <ColumnDefinition Width="22"></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" >Ожиание запуска системы:</Label>
+                <Label Grid.Column="0" >Ожидание запуска системы:</Label>
                 <Slider Grid.Column="1" x:Name="RebootTimeout" cal:Message.Attach="[Event LostMouseCapture] = [Action OnRebootTimeoutChanged($this)]" VerticalAlignment="Top"  Maximum="645" Minimum="10" SmallChange="5" LargeChange="30" TickFrequency="5" Value="50" IsSnapToTickEnabled="True" Focusable="False"/>
                 <Label Grid.Column="2" Content="{Binding Value, ElementName=RebootTimeout}"/>
                 <Label Grid.Column="3" Content="с."/>
@@ -40,7 +40,7 @@
                     <ColumnDefinition Width="22"></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" >Ожиание отклика системы:</Label>
+                <Label Grid.Column="0" >Ожидание отклика системы:</Label>
                 <Slider Grid.Column="1" x:Name="ResponseTimeout" cal:Message.Attach="[Event LostMouseCapture] = [Action OnResponseTimeoutChanged($this)]" VerticalAlignment="Top"  Maximum="{Binding MaxResp}" Minimum="5" SmallChange="5" LargeChange="30" TickFrequency="5" Value="50" IsSnapToTickEnabled="True" Focusable="False"/>
                 <Label Grid.Column="2" Content="{Binding Value, ElementName=ResponseTimeout}"/>
                 <Label Grid.Column="3" Content="с."/>

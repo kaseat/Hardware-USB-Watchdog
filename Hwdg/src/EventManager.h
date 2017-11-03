@@ -13,28 +13,45 @@
 // limitations under the License.
 
 #pragma once
-#include <stdint.h>
-#include "ISubscriber.h"
+#include "IResetControllerEventHandler.h"
 #include "ResetController.h"
-#include "SettingsManager.h"
-#include "EventManager.h"
+#include "Uart.h"
 
-class BootManager : ISubscriber
+class EventManager : IResetControllerEventHandler
 {
 public:
 	/**
-	 * \brief Create instance of boot manager.
-	 * \param rctr Reset controller.
-	 * \param smgr Settings manager.
-	 */
-	BootManager(ResetController& rctr, SettingsManager& smgr, EventManager& emgr);
+	* \brief Create instance of event manager.
+	*/
+	EventManager(Uart& uart, ResetController& rstController);
 
 	/**
 	* \brief Dispose Reset controller.
 	*/
-	~BootManager();
+	~EventManager();
 
+	/**
+	 * \brief Enable events.
+	 */
+	_virtual void EnableEvents();
+
+	/**
+	 * \brief Disable events.
+	 */
+	_virtual void DisableEvents();
+
+	/**
+	 * \brief Detect if events are enabled.
+	 */
+	_virtual bool IsEnabled();
 private:
-	void Callback(uint8_t data) _override;
+	/**
+	* \brief Fires when Reset Controller throws an event.
+	* \param cause Event cause.
+	*/
+	inline void OnUpdted(uint8_t cause) _override;
 	uint_fast16_t counter;
+	ResetController& rstController;
+	Uart& uart;
+	bool enabled;
 };

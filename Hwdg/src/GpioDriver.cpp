@@ -13,50 +13,113 @@
 // limitations under the License.
 
 #include "GpioDriver.h"
-#include "STM8S003F3.h"
 
-#define PWR (1 << 2)
-#define RST (1 << 3)
-#define LED (1 << 6)
+#ifdef __ICCSTM8__
+#include "STM8S003F3.h"
+#define PWR_PIN (1 << 2)
+#define RST_PIN (1 << 3)
+#define LED_PIN (1 << 6)
+#endif
+
+#ifdef __AVR__
+#include "Arduino.h"
+#ifndef PWR_PIN
+#define PWR_PIN 11
+#endif
+#ifndef RST_PIN
+#define RST_PIN 12
+#endif
+#ifndef LED_PIN
+#define LED_PIN LED_BUILTIN
+#endif
+#endif
 
 GpioDriver::GpioDriver()
 {
-	GPIOD->ODR |= PWR | RST;
-	GPIOD->DDR |= PWR | RST;
-	GPIOC->DDR |= LED;
-	GPIOC->CR1 |= LED;
+#ifdef __ICCSTM8__
+	GPIOD->ODR |= PWR_PIN | RST_PIN;
+	GPIOD->DDR |= PWR_PIN | RST_PIN;
+	GPIOC->DDR |= LED_PIN;
+	GPIOC->CR1 |= LED_PIN;
+#endif
+#ifdef __AVR__
+	pinMode(PWR_PIN, INPUT);
+	pinMode(RST_PIN, INPUT);
+	pinMode(LED_PIN, OUTPUT);
+#endif
 }
 
 GpioDriver::~GpioDriver()
 {
+#ifdef __ICCSTM8__
+	GPIOD->ODR &= ~(PWR_PIN | RST_PIN);
+	GPIOD->DDR &= ~(PWR_PIN | RST_PIN);
+	GPIOC->DDR &= ~LED_PIN;
+	GPIOC->CR1 &= ~LED_PIN;
+#endif
+#ifdef __AVR__
+	pinMode(PWR_PIN, INPUT);
+	pinMode(RST_PIN, INPUT);
+	pinMode(LED_PIN, INPUT);
+#endif
 }
 
 void GpioDriver::DriveResetLow()
 {
-	GPIOD->ODR &= ~RST;
+#ifdef __ICCSTM8__
+	GPIOD->ODR &= ~RST_PIN;
+#endif
+#ifdef __AVR__
+	pinMode(RST_PIN, OUTPUT);
+#endif
 }
 
 void GpioDriver::ReleaseReset()
 {
-	GPIOD->ODR |= RST;
+#ifdef __ICCSTM8__
+	GPIOD->ODR |= RST_PIN;
+#endif
+#ifdef __AVR__
+	pinMode(RST_PIN, INPUT);
+#endif
 }
 
 void GpioDriver::DrivePowerLow()
 {
-	GPIOD->ODR &= ~PWR;
+#ifdef __ICCSTM8__
+	GPIOD->ODR &= ~PWR_PIN;
+#endif
+#ifdef __AVR__
+	pinMode(PWR_PIN, OUTPUT);
+#endif
 }
 
 void GpioDriver::ReleasePower()
 {
-	GPIOD->ODR |= PWR;
+#ifdef __ICCSTM8__
+	GPIOD->ODR |= PWR_PIN;
+#endif
+#ifdef __AVR__
+	pinMode(PWR_PIN, INPUT);
+#endif
 }
 
 void GpioDriver::DriveLedLow()
 {
-	GPIOC->ODR &= ~LED;
+#ifdef __ICCSTM8__
+	GPIOC->ODR &= ~LED_PIN;
+#endif
+#ifdef __AVR__
+	digitalWrite(LED_PIN, LOW);
+#endif
 }
 
 void GpioDriver::DriveLedHigh()
 {
-	GPIOC->ODR |= LED;
+#ifdef __ICCSTM8__
+	GPIOC->ODR |= LED_PIN;
+#endif
+#ifdef __AVR__
+	digitalWrite(LED_PIN, HIGH);
+#endif
 }

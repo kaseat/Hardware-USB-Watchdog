@@ -16,17 +16,8 @@
 #include <stdint.h>
 #include "ISubscriber.h"
 #include "Rebooter.h"
-#include "Timer.h"
 #include "LedController.h"
 #include "Response.h"
-
-#ifdef __IAR_SYSTEMS_ICC__
-#define _virtual
-#define _override
-#else
-#define _virtual virtual
-#define _override override
-#endif
 
 class IResetControllerEventHandler;
 
@@ -41,7 +32,7 @@ public:
 	 * \brief Create istnce of Reset controller.
 	 * \param rb Rebooter reference.
 	 */
-	ResetController(Timer& timer, Rebooter& rb, LedController& ledController);
+	ResetController(Rebooter& rb, LedController& ledController);
 	/**
 	 * \brief Dispose reset controller.
 	 */
@@ -112,6 +103,16 @@ public:
 	_virtual Response SetHardResetAttempts(uint8_t attempts);
 
 	/**
+	 * \brief Test hard reset.
+	 */
+	_virtual Response TestHardReset();
+
+	/**
+	 * \brief Test soft reset.
+	 */
+	_virtual Response TestSoftReset();
+
+	/**
 	 * \brief Subscribe event handler.
 	 * \param eventHandler Event handler to subscribe.
 	 */
@@ -133,7 +134,6 @@ public:
 private:
 	void Callback(uint8_t data) _override;
 	IResetControllerEventHandler* eventHandler;
-	Timer& timer;
 	Rebooter& rebooter;
 	LedController& ledController;
 	uint32_t counter;

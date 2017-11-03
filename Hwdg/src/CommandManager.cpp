@@ -15,31 +15,13 @@
 #include "CommandManager.h"
 #include "Crc.h"
 
-// RSM enabled
-#define LED_DISABLED                   ((uint8_t)(1U << 0U))
-#define EVENTS_ENABLED                ((uint8_t)(1U << 1U))
-
-
-CommandManager::CommandManager(Uart& uart, ResetController& rstController, BootManager& btmgr) :
+CommandManager::CommandManager(Uart& uart, ResetController& rstController, SettingsManager& btmgr) :
 	uart(uart),
 	resetController(rstController),
-	bootManager(btmgr),
+	settingsManager(btmgr),
 	status(0)
 {
 	CommandManager::uart.SubscribeOnByteReceived(*this);
-
-	// Exit if we're not going to apply user settings.
-	if (!bootManager.IsUserSettingsAppliedAtStartup()) return;
-
-	uint8_t settings[4];
-	*reinterpret_cast<uint32_t*>(settings) = bootManager.FetchUserSettings();
-	resetController.SetRebootTimeout(settings[0]);
-	resetController.SetResponseTimeout(settings[1] >> 2);
-	resetController.SetSoftResetAttempts(settings[2] >> 5);
-	resetController.SetHardResetAttempts(settings[2] >> 2);
-
-	if (settings[2] & 1) resetController.EnableHardReset();
-	if (settings[3] & EVENTS_ENABLED) EnableEvents();
 }
 
 CommandManager::~CommandManager()
@@ -69,27 +51,27 @@ inline void CommandManager::Callback(uint8_t data)
 		: data == 0xFF // Disable LED
 		? uart.SendByte(resetController.GetLedController().Disable())
 		: data == 0x7E // TestHardReset command
-		? TestHardReset()
+		? uart.SendByte(resetController.TestHardReset())
 		: data == 0x7F // TestSoftReset command
-		? TestSoftReset()
+		? uart.SendByte(resetController.TestSoftReset())
 		: data == 0x02 // EnableEvents command
-		? EnableEvents()
+		? uart.SendByte(UnknownCommand)
 		: data == 0x03 // DisableEvents command
-		? DisableEvents()
+		? uart.SendByte(UnknownCommand)
 
 		: data == 0x3F // RstPulseOnStartupDisable command
-		? uart.SendByte(bootManager.RstPulseOnStartupDisable())
+		? uart.SendByte(settingsManager.RstPulseOnStartupDisable())
 		: data == 0x3E // RstPulseOnStartupEnable command
-		? uart.SendByte(bootManager.RstPulseOnStartupEnable())
+		? uart.SendByte(settingsManager.RstPulseOnStartupEnable())
 		: data == 0x3D // PwrPulseOnStartupDisable command
-		? uart.SendByte(bootManager.PwrPulseOnStartupDisable())
+		? uart.SendByte(settingsManager.PwrPulseOnStartupDisable())
 		: data == 0x3C // PwrPulseOnStartupEnable command
-		? uart.SendByte(bootManager.PwrPulseOnStartupEnable())
+		? uart.SendByte(settingsManager.PwrPulseOnStartupEnable())
 
 		: data == 0x3B // ApplyUserSettingsAtStartup command
-		? uart.SendByte(bootManager.ApplyUserSettingsAtStartup())
+		? uart.SendByte(settingsManager.ApplyUserSettingsAtStartup())
 		: data == 0x3A // LoadDefaultSettingsAtStartup command
-		? uart.SendByte(bootManager.LoadDefaultSettingsAtStartup())
+		? uart.SendByte(settingsManager.LoadDefaultSettingsAtStartup())
 		: data == 0x39 // SaveCurrentSettings command
 		? uart.SendByte(SaveCurrentSettings())
 
@@ -106,43 +88,14 @@ inline void CommandManager::Callback(uint8_t data)
 		: uart.SendByte(UnknownCommand);
 }
 
-inline void CommandManager::OnUpdted(uint8_t reason)
-{
-	uart.SendByte(reason);
-}
-
 inline void CommandManager::GetStatus()
 {
-	uint8_t buffer[4];
+	uint8_t buffer[5];
 	*reinterpret_cast<uint32_t*>(buffer) = resetController.GetStatus();
-	buffer[3] = CrcCalculator::GetCrc7(buffer, 3);
+	buffer[3] = settingsManager.GetBootSettings();
+
+	buffer[4] = CrcCalculator::GetCrc7(buffer, 4);
 	uart.SendData(buffer, 4);
-}
-
-inline void CommandManager::TestHardReset()
-{
-	resetController.Stop();
-	uart.SendByte(resetController.GetRebooter().HardReset());
-}
-
-inline void CommandManager::TestSoftReset()
-{
-	resetController.Stop();
-	uart.SendByte(resetController.GetRebooter().SoftReset());
-}
-
-inline void CommandManager::EnableEvents()
-{
-	resetController.SubscribeOnEvents(*this);
-	status |= EVENTS_ENABLED;
-	uart.SendByte(EnableEventsOk);
-}
-
-inline void CommandManager::DisableEvents()
-{
-	resetController.UnSubscribeOnEvents();
-	status &= ~EVENTS_ENABLED;
-	uart.SendByte(DisableEventsOk);
 }
 
 Response CommandManager::SaveCurrentSettings()
@@ -160,7 +113,7 @@ Response CommandManager::SaveCurrentSettings()
 	buffer[3] |= status;
 
 	// Save all settings we got earlier
-	return bootManager.SaveUserSettings(*reinterpret_cast<uint32_t*>(buffer))
-		? SaveCurrentSettingsOk
-		: SaveSettingsError;
+	return settingsManager.SaveUserSettings(*reinterpret_cast<uint32_t*>(buffer))
+		       ? SaveCurrentSettingsOk
+		       : SaveSettingsError;
 }

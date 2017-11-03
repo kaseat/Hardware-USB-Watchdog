@@ -12,29 +12,41 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#pragma once
-#include <stdint.h>
-#include "ISubscriber.h"
-#include "ResetController.h"
-#include "SettingsManager.h"
 #include "EventManager.h"
+#include "SettingsManager.h"
 
-class BootManager : ISubscriber
+EventManager::EventManager(Uart& uart, ResetController& rstController) :
+	counter(0),
+	rstController(rstController),
+	uart(uart),
+	enabled(false)
 {
-public:
-	/**
-	 * \brief Create instance of boot manager.
-	 * \param rctr Reset controller.
-	 * \param smgr Settings manager.
-	 */
-	BootManager(ResetController& rctr, SettingsManager& smgr, EventManager& emgr);
+}
 
-	/**
-	* \brief Dispose Reset controller.
-	*/
-	~BootManager();
+EventManager::~EventManager()
+{
+}
 
-private:
-	void Callback(uint8_t data) _override;
-	uint_fast16_t counter;
-};
+void EventManager::EnableEvents()
+{
+	rstController.SubscribeOnEvents(*this);
+	enabled = true;
+	uart.SendByte(EnableEventsOk);
+}
+
+void EventManager::DisableEvents()
+{
+	rstController.UnSubscribeOnEvents();
+	enabled = false;
+	uart.SendByte(DisableEventsOk);
+}
+
+bool EventManager::IsEnabled()
+{
+	return enabled;
+}
+
+void EventManager::OnUpdted(uint8_t cause)
+{
+	uart.SendByte(cause);
+}

@@ -15,13 +15,7 @@
 #pragma once
 #include <stdint.h>
 #include "ISubscriber.h"
-#include "STM8S003F3.h"
-
-#ifdef __IAR_SYSTEMS_ICC__
-#define _virtual
-#else
-#define _virtual virtual
-#endif
+#include "PlatformDefinitions.h"
 
 class Uart
 {
@@ -36,9 +30,7 @@ public:
 	/**
 	 * \brief Dispose UART
 	 */
-	_virtual ~Uart()
-	{
-	}
+	_virtual ~Uart();
 
 	/**
 	* \brief Add handler on byte recivied.
@@ -64,7 +56,10 @@ public:
 	*/
 	_virtual void SendData(uint8_t* data, uint8_t len);
 
-private:
+	/**
+	 * \brief Executes when new byte received.
+	 */
 	__interrupt static void OnByteReceived();
+private:
 	static ISubscriber* subscriber;
 };

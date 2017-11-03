@@ -116,6 +116,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\BootManager.cpp" />
+    <ClCompile Include="src\EventManager.cpp" />
+    <ClCompile Include="src\SettingsManager.cpp" />
     <ClCompile Include="src\Crc.cpp" />
     <ClCompile Include="src\Eeprom.c" />
     <ClCompile Include="src\GpioDriver.cpp" />
@@ -130,10 +132,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BootManager.h" />
+    <ClInclude Include="src\EventManager.h" />
+    <ClInclude Include="src\SettingsManager.h" />
     <ClInclude Include="src\Crc.h" />
     <ClInclude Include="src\GpioDriver.h" />
     <ClInclude Include="src\IResetControllerEventHandler.h" />
     <ClInclude Include="src\LedController.h" />
+    <ClInclude Include="src\PlatformDefinitions.h" />
     <ClInclude Include="src\Response.h" />
     <ClInclude Include="src\STM8S003F3.h" />
     <ClInclude Include="src\Timer.h" />

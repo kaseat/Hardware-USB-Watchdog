@@ -81,6 +81,11 @@ Response Rebooter::SoftReset()
 	return TestSoftResetOk;
 }
 
+Timer& Rebooter::GetTimer()
+{
+	return timer;
+}
+
 void Rebooter::Callback(uint8_t data)
 {
 	if (state & SOFT_RESET)

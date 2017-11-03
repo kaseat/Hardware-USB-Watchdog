@@ -15,14 +15,8 @@
 #pragma once
 #include "ISubscriber.h"
 #include "GpioDriver.h"
-#include "Timer.h"
 #include "Response.h"
-
-#ifdef __IAR_SYSTEMS_ICC__
-#define _override
-#else
-#define _override override
-#endif
+#include "Timer.h"
 
 /**
  * \brief Implements reboot logic
@@ -45,17 +39,23 @@ public:
 	/**
 	 * \brief Satrt hard reset sequence.
 	 */
-	virtual Response HardReset();
+	_virtual Response HardReset();
 
 	/**
 	 * \brief Send pulse on power pin.
 	 */
-	virtual Response PwrPulse();
+	_virtual Response PwrPulse();
 
 	/**
 	 * \brief Start soft reset sequence.
 	 */
-	virtual Response SoftReset();
+	_virtual Response SoftReset();
+
+	/**
+	 * \brief Get timer reference.
+	 * \return Returns timer reference.
+	 */
+	_virtual Timer& GetTimer();
 
 private:
 	Timer& timer;

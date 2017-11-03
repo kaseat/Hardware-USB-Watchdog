@@ -13,28 +13,24 @@
 // limitations under the License.
 
 #pragma once
-#include <stdint.h>
-#include "ISubscriber.h"
-#include "ResetController.h"
-#include "SettingsManager.h"
-#include "EventManager.h"
 
-class BootManager : ISubscriber
-{
-public:
-	/**
-	 * \brief Create instance of boot manager.
-	 * \param rctr Reset controller.
-	 * \param smgr Settings manager.
-	 */
-	BootManager(ResetController& rctr, SettingsManager& smgr, EventManager& emgr);
+#ifdef __ICCSTM8__
+#define _virtual
+#define _override
+#define nullptr 0
+#endif
 
-	/**
-	* \brief Dispose Reset controller.
-	*/
-	~BootManager();
+#ifdef _M_IX86
+#define _virtual virtual
+#define __interrupt
+#define __no_init
+#define __eeprom
+#define __near
+#define _override override
+#endif
 
-private:
-	void Callback(uint8_t data) _override;
-	uint_fast16_t counter;
-};
+#ifdef __AVR__
+#define _virtual
+#define _override
+#define __interrupt
+#endif

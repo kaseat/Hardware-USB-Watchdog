@@ -13,12 +13,7 @@
 // limitations under the License.
 
 #pragma once
-
-#ifdef __IAR_SYSTEMS_ICC__
-#define _virtual
-#else
-#define _virtual virtual
-#endif
+#include "PlatformDefinitions.h"
 
 /**
  * \brief Represents Low level GPIO driver.

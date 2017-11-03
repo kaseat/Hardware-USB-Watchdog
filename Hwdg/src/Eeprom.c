@@ -12,8 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#ifdef __ICCSTM8__
+
 #include <stdint.h>
 #include "STM8S003F3.h"
+#include "PlatformDefinitions.h"
 
 #define OPERATION_TIMEOUT   ((uint16_t)0xFFFF)
 
@@ -44,3 +47,4 @@ void __eeprom_program_long(unsigned char __near * dst, unsigned long v)
 	*(((__near uint8_t*)(uint16_t)dst) + 2) = *((uint8_t*)(&v) + 2);
 	*(((__near uint8_t*)(uint16_t)dst) + 3) = *((uint8_t*)(&v) + 3);
 }
+#endif

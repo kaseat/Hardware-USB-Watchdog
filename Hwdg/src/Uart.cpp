@@ -14,16 +14,27 @@
 
 #include "Uart.h"
 
-#ifdef __IAR_SYSTEMS_ICC__
+#ifdef __ICCSTM8__
 #include "Clock.h"
+#include "STM8S003F3.h"
 #endif
 
+#ifdef _M_IX86
 #define UART_REGISTER 5
+#endif
+
+#ifdef __AVR__
+#include "Arduino.h"
+#endif
+
 ISubscriber* Uart::subscriber = nullptr;
 
 Uart::Uart(uint32_t baudrate)
 {
-#ifdef __IAR_SYSTEMS_ICC__
+#ifdef __AVR__
+	Serial.begin(baudrate);
+#endif
+#ifdef __ICCSTM8__
 	// Configure GPIOs
 	GPIOD->ODR |= 1 << 5;
 	GPIOD->DDR |= 1 << 5;
@@ -44,10 +55,17 @@ Uart::Uart(uint32_t baudrate)
 #endif
 }
 
+Uart::~Uart()
+{
+#ifdef __AVR__
+	Serial.end();
+#endif
+}
+
 void Uart::SubscribeOnByteReceived(ISubscriber& sbcr)
 {
 	subscriber = &sbcr;
-#ifdef __IAR_SYSTEMS_ICC__
+#ifdef __ICCSTM8__
 	UART1->CR2 |= UART_CR2_RIEN;
 #endif
 }
@@ -55,34 +73,53 @@ void Uart::SubscribeOnByteReceived(ISubscriber& sbcr)
 void Uart::UnsubscribeOnByteReceived()
 {
 	subscriber = nullptr;
-#ifdef __IAR_SYSTEMS_ICC__
+#ifdef __ICCSTM8__
 	UART1->CR2 &= ~(UART_CR2_RIEN);
 #endif
 }
 
 void Uart::SendByte(uint8_t data)
 {
-#ifdef __IAR_SYSTEMS_ICC__
+#ifdef __ICCSTM8__
 	while (!(UART1->SR & UART_SR_TXE))
 		;
 	UART1->DR = data;
+#endif
+#ifdef __AVR__
+	Serial.write(data);
 #endif
 }
 
 void Uart::SendData(uint8_t* data, uint8_t len)
 {
+#ifdef __ICCSTM8__
 	while (len--) SendByte(*data++);
+#endif
+#ifdef __AVR__
+	Serial.write(data, len);
+#endif
 }
 
-#ifdef __IAR_SYSTEMS_ICC__
+
+#ifdef __AVR__
+void serialEvent()
+{
+	Uart::OnByteReceived();
+}
+#endif
+#ifdef __ICCSTM8__
 #pragma vector=UART1_R_RXNE_ISR
 #endif
 __interrupt void Uart::OnByteReceived()
 {
 	if (subscriber == nullptr) return;
-#ifdef __IAR_SYSTEMS_ICC__
+#ifdef __ICCSTM8__
 	subscriber->Callback(UART1->DR);
-#else
+#endif
+#ifdef _M_IX86
 	subscriber->Callback(UART_REGISTER);
+#endif
+#ifdef __AVR__
+	subscriber->Callback(Serial.read());
 #endif
 }
