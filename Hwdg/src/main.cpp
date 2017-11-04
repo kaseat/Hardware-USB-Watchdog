@@ -18,6 +18,7 @@
 #include "ResetController.h"
 #include "CommandManager.h"
 #include "GpioDriver.h"
+#include "BootManager.h"
 
 int main()
 {
@@ -29,15 +30,17 @@ int main()
 	GpioDriver drw;
 	Rebooter rebooter(timer, drw);
 	LedController ldCtr(timer, drw);
-	ResetController controller(rebooter, ldCtr);
+	Uart uart(9600);
+	ResetController controller(uart, rebooter, ldCtr);
 
 #ifdef __IAR_SYSTEMS_ICC__
 	asm("RIM");
 #endif
-
+	
 	SettingsManager settingsManager;
-	Uart uart(9600);
+	BootManager btmgr(controller, settingsManager);
 	CommandManager mgr(uart, controller, settingsManager);
 
-	for (;;);
+	for (;;)
+		;
 }

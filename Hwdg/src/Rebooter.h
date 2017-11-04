@@ -13,7 +13,6 @@
 // limitations under the License.
 
 #pragma once
-#include "ISubscriber.h"
 #include "GpioDriver.h"
 #include "Response.h"
 #include "Timer.h"

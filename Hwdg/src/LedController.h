@@ -13,18 +13,9 @@
 // limitations under the License.
 
 #pragma once
-#include "ISubscriber.h"
 #include "GpioDriver.h"
-#include "Timer.h"
 #include "Response.h"
-
-#ifdef __IAR_SYSTEMS_ICC__
-#define _virtual
-#define _override
-#else
-#define _virtual virtual
-#define _override override
-#endif
+#include "Timer.h"
 
 /**
  * \brief Represents LED controller (assumes callback called once per ms).

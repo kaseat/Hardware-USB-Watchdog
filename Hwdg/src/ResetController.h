@@ -13,13 +13,9 @@
 // limitations under the License.
 
 #pragma once
-#include <stdint.h>
-#include "ISubscriber.h"
-#include "Rebooter.h"
 #include "LedController.h"
-#include "Response.h"
-
-class IResetControllerEventHandler;
+#include "Rebooter.h"
+#include "Uart.h"
 
 /**
  * \brief Reset controller assumes Callback() calls every 1 ms.
@@ -32,7 +28,8 @@ public:
 	 * \brief Create istnce of Reset controller.
 	 * \param rb Rebooter reference.
 	 */
-	ResetController(Rebooter& rb, LedController& ledController);
+	ResetController(Uart& uart, Rebooter& rb, LedController& ledController);
+
 	/**
 	 * \brief Dispose reset controller.
 	 */
@@ -113,32 +110,37 @@ public:
 	_virtual Response TestSoftReset();
 
 	/**
-	 * \brief Subscribe event handler.
-	 * \param eventHandler Event handler to subscribe.
+	 * \brief Enable reset controller evets.
 	 */
-	_virtual void SubscribeOnEvents(IResetControllerEventHandler& eventHandler);
+	_virtual Response EnableEvents();
 
 	/**
-	 * \brief Unsubscribe all event handlers.
-	 */
-	_virtual void UnSubscribeOnEvents();
+	* \brief Disable reset controller evets.
+	*/
+	_virtual Response DisableEvents();
+
+	/**
+	* \brief Determine if reset controller evets enabled.
+	*/
+	_virtual bool IsEventsEnabled();
 
 	/**
 	 * \brief Get rebooter reference.
 	 */
 	_virtual Rebooter& GetRebooter();
+
 	/**
 	 * \brief Get LED controller reference.
 	 */
 	_virtual LedController& GetLedController();
 private:
 	void Callback(uint8_t data) _override;
-	IResetControllerEventHandler* eventHandler;
+	bool eventsEnabled;
+	Uart& uart;
 	Rebooter& rebooter;
 	LedController& ledController;
 	uint32_t counter;
 	uint16_t counterms;
-	uint16_t counterExti;
 	uint_least8_t state;
 	uint32_t responseTimeout;
 	uint32_t rebootTimeout;

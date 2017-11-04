@@ -14,8 +14,8 @@
 
 #pragma once
 #include <stdint.h>
-#include "ISubscriber.h"
 #include "PlatformDefinitions.h"
+#include "ISubscriber.h"
 
 class Uart
 {

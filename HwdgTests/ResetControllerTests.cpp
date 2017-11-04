@@ -17,7 +17,6 @@
 #include "CppUnitTest.h"
 
 #include "../Hwdg/src/Timer.h"
-#include "../Hwdg/src/IResetControllerEventHandler.h"
 #include "../Hwdg/src/ResetController.h"
 
 #define RESPONSE_DEF_TIMEOUT 90000U
@@ -57,7 +56,10 @@ namespace HwdgTests
 			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
-			ResetController rc(rebooter.get(), ledController.get());
+			Mock<Uart> uart;
+			When(Method(uart, SendByte)).AlwaysReturn();
+
+			ResetController rc(uart.get(), rebooter.get(), ledController.get());
 			Verify(Method(rebooter, GetTimer)).Once();
 
 			// Act
@@ -86,7 +88,10 @@ namespace HwdgTests
 			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
-			ResetController rc(rebooter.get(), ledController.get());
+			Mock<Uart> uart;
+			When(Method(uart, SendByte)).AlwaysReturn();
+
+			ResetController rc(uart.get(), rebooter.get(), ledController.get());
 			Verify(Method(rebooter, GetTimer)).Once();
 
 			// Act
@@ -119,7 +124,10 @@ namespace HwdgTests
 			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
-			ResetController rc(rebooter.get(), ledController.get());
+			Mock<Uart> uart;
+			When(Method(uart, SendByte)).AlwaysReturn();
+
+			ResetController rc(uart.get(), rebooter.get(), ledController.get());
 			Verify(Method(rebooter, GetTimer)).Once();
 
 			// Act
@@ -168,7 +176,10 @@ namespace HwdgTests
 			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
-			ResetController rc(rebooter.get(), ledController.get());
+			Mock<Uart> uart;
+			When(Method(uart, SendByte)).AlwaysReturn();
+
+			ResetController rc(uart.get(), rebooter.get(), ledController.get());
 			Verify(Method(rebooter, GetTimer)).Once();
 
 			// Act
@@ -225,7 +236,10 @@ namespace HwdgTests
 			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
-			ResetController rc(rebooter.get(), ledController.get());
+			Mock<Uart> uart;
+			When(Method(uart, SendByte)).AlwaysReturn();
+
+			ResetController rc(uart.get(), rebooter.get(), ledController.get());
 			Verify(Method(rebooter, GetTimer)).Once();
 
 			// Act
@@ -268,7 +282,10 @@ namespace HwdgTests
 			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
-			ResetController rc(rebooter.get(), ledController.get());
+			Mock<Uart> uart;
+			When(Method(uart, SendByte)).AlwaysReturn();
+
+			ResetController rc(uart.get(), rebooter.get(), ledController.get());
 			Verify(Method(rebooter, GetTimer)).Once();
 
 			// Act
@@ -313,7 +330,10 @@ namespace HwdgTests
 			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
-			ResetController rc(rebooter.get(), ledController.get());
+			Mock<Uart> uart;
+			When(Method(uart, SendByte)).AlwaysReturn();
+
+			ResetController rc(uart.get(), rebooter.get(), ledController.get());
 			Verify(Method(rebooter, GetTimer)).Once();
 
 			// Act
@@ -358,7 +378,10 @@ namespace HwdgTests
 			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
-			ResetController rc(rebooter.get(), ledController.get());
+			Mock<Uart> uart;
+			When(Method(uart, SendByte)).AlwaysReturn();
+
+			ResetController rc(uart.get(), rebooter.get(), ledController.get());
 			Verify(Method(rebooter, GetTimer)).Once();
 
 			// Act
@@ -403,7 +426,10 @@ namespace HwdgTests
 			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
-			ResetController rc(rebooter.get(), ledController.get());
+			Mock<Uart> uart;
+			When(Method(uart, SendByte)).AlwaysReturn();
+
+			ResetController rc(uart.get(), rebooter.get(), ledController.get());
 			Verify(Method(rebooter, GetTimer)).Once();
 
 			// Act
@@ -452,7 +478,10 @@ namespace HwdgTests
 			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
-			ResetController rc(rebooter.get(), ledController.get());
+			Mock<Uart> uart;
+			When(Method(uart, SendByte)).AlwaysReturn();
+
+			ResetController rc(uart.get(), rebooter.get(), ledController.get());
 			Verify(Method(rebooter, GetTimer)).Once();
 
 			// Act
@@ -496,7 +525,10 @@ namespace HwdgTests
 			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
-			ResetController rc(rebooter.get(), ledController.get());
+			Mock<Uart> uart;
+			When(Method(uart, SendByte)).AlwaysReturn();
+
+			ResetController rc(uart.get(), rebooter.get(), ledController.get());
 			Verify(Method(rebooter, GetTimer)).Once();
 
 			// Act
@@ -546,7 +578,10 @@ namespace HwdgTests
 			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
-			ResetController rc(rebooter.get(), ledController.get());
+			Mock<Uart> uart;
+			When(Method(uart, SendByte)).AlwaysReturn();
+
+			ResetController rc(uart.get(), rebooter.get(), ledController.get());
 			Verify(Method(rebooter, GetTimer)).Once();
 
 			// Act
@@ -596,7 +631,10 @@ namespace HwdgTests
 			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
-			ResetController rc(rebooter.get(), ledController.get());
+			Mock<Uart> uart;
+			When(Method(uart, SendByte)).AlwaysReturn();
+
+			ResetController rc(uart.get(), rebooter.get(), ledController.get());
 			Verify(Method(rebooter, GetTimer)).Once();
 
 			// Act
@@ -653,7 +691,10 @@ namespace HwdgTests
 			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
-			ResetController rc(rebooter.get(), ledController.get());
+			Mock<Uart> uart;
+			When(Method(uart, SendByte)).AlwaysReturn();
+
+			ResetController rc(uart.get(), rebooter.get(), ledController.get());
 			Verify(Method(rebooter, GetTimer)).Once();
 
 			// Act
@@ -711,7 +752,10 @@ namespace HwdgTests
 			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
-			ResetController rc(rebooter.get(), ledController.get());
+			Mock<Uart> uart;
+			When(Method(uart, SendByte)).AlwaysReturn();
+
+			ResetController rc(uart.get(), rebooter.get(), ledController.get());
 			Verify(Method(rebooter, GetTimer)).Once();
 
 			// Act
@@ -769,7 +813,10 @@ namespace HwdgTests
 			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
-			ResetController rc(rebooter.get(), ledController.get());
+			Mock<Uart> uart;
+			When(Method(uart, SendByte)).AlwaysReturn();
+
+			ResetController rc(uart.get(), rebooter.get(), ledController.get());
 			Verify(Method(rebooter, GetTimer)).Once();
 
 			// Act
@@ -827,7 +874,10 @@ namespace HwdgTests
 			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
-			ResetController rc(rebooter.get(), ledController.get());
+			Mock<Uart> uart;
+			When(Method(uart, SendByte)).AlwaysReturn();
+
+			ResetController rc(uart.get(), rebooter.get(), ledController.get());
 			Verify(Method(rebooter, GetTimer)).Once();
 
 			// Act
@@ -923,7 +973,10 @@ namespace HwdgTests
 			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
-			ResetController rc(rebooter.get(), ledController.get());
+			Mock<Uart> uart;
+			When(Method(uart, SendByte)).AlwaysReturn();
+
+			ResetController rc(uart.get(), rebooter.get(), ledController.get());
 			Verify(Method(rebooter, GetTimer)).Once();
 
 			// Act
@@ -988,7 +1041,10 @@ namespace HwdgTests
 			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
-			ResetController rc(rebooter.get(), ledController.get());
+			Mock<Uart> uart;
+			When(Method(uart, SendByte)).AlwaysReturn();
+
+			ResetController rc(uart.get(), rebooter.get(), ledController.get());
 			Verify(Method(rebooter, GetTimer)).Once();
 
 			// Act
@@ -1063,7 +1119,10 @@ namespace HwdgTests
 			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
-			ResetController rc(rebooter.get(), ledController.get());
+			Mock<Uart> uart;
+			When(Method(uart, SendByte)).AlwaysReturn();
+
+			ResetController rc(uart.get(), rebooter.get(), ledController.get());
 			Verify(Method(rebooter, GetTimer)).Once();
 
 			// Act & Assert
@@ -1120,61 +1179,59 @@ namespace HwdgTests
 			When(Method(ledController, BlinkMid)).AlwaysReturn();
 			When(Method(ledController, BlinkSlow)).AlwaysReturn();
 
-			Mock<IResetControllerEventHandler> sbscr;
-			When(Method(sbscr, OnUpdted)).AlwaysReturn();
+			Mock<Uart> uart;
+			When(Method(uart, SendByte)).AlwaysReturn();
 
-			ResetController rc(rebooter.get(), ledController.get());
+			ResetController rc(uart.get(), rebooter.get(), ledController.get());
 			Verify(Method(rebooter, GetTimer)).Once();
 
-			auto& sb = sbscr.get();
-			rc.SubscribeOnEvents(sb);
 			rc.EnableHardReset();
 			rc.SetRebootTimeout(0);
 			rc.SetResponseTimeout(0);
+			rc.EnableEvents();
 			rc.Start();
 
 			// Act & Assert
 			Wait(5000);
-			Verify(Method(sbscr, OnUpdted).Using(Response::FirstResetOccurred)).Once();
-			Verify(Method(sbscr, OnUpdted).Using(Response::WatchdogOk)).Exactly(5);
-			VerifyNoOtherInvocations(sbscr);
+			Verify(Method(uart, SendByte).Using(Response::FirstResetOccurred)).Once();
+			Verify(Method(uart, SendByte).Using(Response::WatchdogOk)).Exactly(5);
+			VerifyNoOtherInvocations(uart);
 			Wait(10000);
-			Verify(Method(sbscr, OnUpdted).Using(Response::SoftResetOccurred)).Once();
-			Verify(Method(sbscr, OnUpdted).Using(Response::WatchdogOk)).Exactly(15);
-			VerifyNoOtherInvocations(sbscr);
+			Verify(Method(uart, SendByte).Using(Response::SoftResetOccurred)).Once();
+			Verify(Method(uart, SendByte).Using(Response::WatchdogOk)).Exactly(15);
+			VerifyNoOtherInvocations(uart);
 			Wait(10000);
-			Verify(Method(sbscr, OnUpdted).Using(Response::SoftResetOccurred)).Twice();
-			Verify(Method(sbscr, OnUpdted).Using(Response::WatchdogOk)).Exactly(25);
-			VerifyNoOtherInvocations(sbscr);
+			Verify(Method(uart, SendByte).Using(Response::SoftResetOccurred)).Twice();
+			Verify(Method(uart, SendByte).Using(Response::WatchdogOk)).Exactly(25);
+			VerifyNoOtherInvocations(uart);
 			Wait(10000);
-			Verify(Method(sbscr, OnUpdted).Using(HardResetOccurred)).Once();
-			Verify(Method(sbscr, OnUpdted).Using(Response::WatchdogOk)).Exactly(35);
-			VerifyNoOtherInvocations(sbscr);
+			Verify(Method(uart, SendByte).Using(HardResetOccurred)).Once();
+			Verify(Method(uart, SendByte).Using(Response::WatchdogOk)).Exactly(35);
+			VerifyNoOtherInvocations(uart);
 			Wait(10000);
-			Verify(Method(sbscr, OnUpdted).Using(HardResetOccurred)).Twice();
-			Verify(Method(sbscr, OnUpdted).Using(Response::WatchdogOk)).Exactly(45);
-			VerifyNoOtherInvocations(sbscr);
+			Verify(Method(uart, SendByte).Using(HardResetOccurred)).Twice();
+			Verify(Method(uart, SendByte).Using(Response::WatchdogOk)).Exactly(45);
+			VerifyNoOtherInvocations(uart);
 			Wait(10000);
-			Verify(Method(sbscr, OnUpdted).Using(HardResetOccurred)).Exactly(3);
-			Verify(Method(sbscr, OnUpdted).Using(Response::WatchdogOk)).Exactly(55);
-			VerifyNoOtherInvocations(sbscr);
+			Verify(Method(uart, SendByte).Using(HardResetOccurred)).Exactly(3);
+			Verify(Method(uart, SendByte).Using(Response::WatchdogOk)).Exactly(55);
+			VerifyNoOtherInvocations(uart);
 			Wait(10000);
-			Verify(Method(sbscr, OnUpdted).Using(Response::MovedToIdle)).Once();
-			Verify(Method(sbscr, OnUpdted).Using(Response::WatchdogOk)).Exactly(65);
-			VerifyNoOtherInvocations(sbscr);
+			Verify(Method(uart, SendByte).Using(Response::MovedToIdle)).Once();
+			Verify(Method(uart, SendByte).Using(Response::WatchdogOk)).Exactly(65);
+			VerifyNoOtherInvocations(uart);
 
 			rc.Stop();
-			rc.UnSubscribeOnEvents();
+			rc.DisableEvents();
 			rc.Start();
 			Wait(65000);
-			VerifyNoOtherInvocations(sbscr);
+			VerifyNoOtherInvocations(uart);
 
-			sbscr.ClearInvocationHistory();
-			rc.SubscribeOnEvents(sb);
+			uart.ClearInvocationHistory();
+			rc.EnableEvents();
 
 			Wait(15000);
-			Verify(Method(sbscr, OnUpdted).Using(Response::WatchdogOk)).Exactly(15);
-			VerifyNoOtherInvocations(sbscr);
+			Verify(Method(uart, SendByte).Using(Response::WatchdogOk)).Exactly(15);
 		}
 	};
 }

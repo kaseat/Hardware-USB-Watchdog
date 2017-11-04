@@ -16,9 +16,7 @@
 #include "fakeit.hpp"
 #include "CppUnitTest.h"
 
-#define private public
 #include "../Hwdg/src/Uart.h"
-#include "../Hwdg/src/Uart.cpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

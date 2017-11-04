@@ -13,8 +13,20 @@
 // limitations under the License.
 
 #include "Clock.h"
+
+#ifdef __ICCSTM8__
 #include "STM8S003F3.h"
 CpuFreq curentFreq = Freq2Mhz;
+#endif
+
+#ifdef _M_IX86
+CpuFreq curentFreq = Freq16Mhz;
+#endif
+
+#ifdef __AVR__
+CpuFreq curentFreq = Freq16Mhz;
+#endif
+
 
 CpuFreq Clock::GetCpuFreq()
 {
@@ -23,6 +35,7 @@ CpuFreq Clock::GetCpuFreq()
 
 void Clock::SetCpuFreq(CpuFreq freq)
 {
+#ifdef __ICCSTM8__
 	curentFreq = freq;
 	switch (freq)
 	{
@@ -39,4 +52,8 @@ void Clock::SetCpuFreq(CpuFreq freq)
 		CLK->CKDIVR = 0;
 		break;
 	}
+#endif
+#ifdef _M_IX86
+	curentFreq = freq;
+#endif
 }

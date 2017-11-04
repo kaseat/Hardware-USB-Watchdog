@@ -18,8 +18,7 @@
 CommandManager::CommandManager(Uart& uart, ResetController& rstController, SettingsManager& btmgr) :
 	uart(uart),
 	resetController(rstController),
-	settingsManager(btmgr),
-	status(0)
+	settingsManager(btmgr)
 {
 	CommandManager::uart.SubscribeOnByteReceived(*this);
 }
@@ -27,7 +26,6 @@ CommandManager::CommandManager(Uart& uart, ResetController& rstController, Setti
 CommandManager::~CommandManager()
 {
 	uart.UnsubscribeOnByteReceived();
-	resetController.UnSubscribeOnEvents();
 }
 
 inline void CommandManager::Callback(uint8_t data)
@@ -55,9 +53,9 @@ inline void CommandManager::Callback(uint8_t data)
 		: data == 0x7F // TestSoftReset command
 		? uart.SendByte(resetController.TestSoftReset())
 		: data == 0x02 // EnableEvents command
-		? uart.SendByte(UnknownCommand)
+		? uart.SendByte(resetController.EnableEvents())
 		: data == 0x03 // DisableEvents command
-		? uart.SendByte(UnknownCommand)
+		? uart.SendByte(resetController.DisableEvents())
 
 		: data == 0x3F // RstPulseOnStartupDisable command
 		? uart.SendByte(settingsManager.RstPulseOnStartupDisable())
@@ -92,10 +90,19 @@ inline void CommandManager::GetStatus()
 {
 	uint8_t buffer[5];
 	*reinterpret_cast<uint32_t*>(buffer) = resetController.GetStatus();
-	buffer[3] = settingsManager.GetBootSettings();
+
+	buffer[3] = settingsManager.GetBootSettings() & 0xFC;
+	resetController.GetLedController().IsEnabled()
+		? buffer[3] &= ~LED_DISABLED
+		: buffer[3] |= LED_DISABLED;
+
+	// Get Event status
+	resetController.IsEventsEnabled()
+		? buffer[3] |= EVENTS_ENABLED
+		: buffer[3] &= ~EVENTS_ENABLED;
 
 	buffer[4] = CrcCalculator::GetCrc7(buffer, 4);
-	uart.SendData(buffer, 4);
+	uart.SendData(buffer, 5);
 }
 
 Response CommandManager::SaveCurrentSettings()
@@ -110,10 +117,12 @@ Response CommandManager::SaveCurrentSettings()
 		: buffer[3] |= LED_DISABLED;
 
 	// Get Event status
-	buffer[3] |= status;
+	resetController.IsEventsEnabled()
+		? buffer[3] |= EVENTS_ENABLED
+		: buffer[3] &= ~EVENTS_ENABLED;
 
 	// Save all settings we got earlier
 	return settingsManager.SaveUserSettings(*reinterpret_cast<uint32_t*>(buffer))
-		       ? SaveCurrentSettingsOk
-		       : SaveSettingsError;
+		? SaveCurrentSettingsOk
+		: SaveSettingsError;
 }

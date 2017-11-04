@@ -13,7 +13,9 @@
 // limitations under the License.
 
 #pragma once
-#include  "ResetController.h"
+#include "PlatformDefinitions.h"
+#include "Response.h"
+#include <stdint.h>
 
 #define LED_DISABLED                  ((uint8_t)(1U << 0U))
 #define EVENTS_ENABLED                ((uint8_t)(1U << 1U))
@@ -56,14 +58,14 @@ public:
 	_virtual Response RstPulseOnStartupDisable();
 
 	/**
-	 * \brief Save user HWDG settings into EEPROM.
+	 * \brief Save user HWDG settings into NVRAM.
 	 * \param status Status to be saved.
 	 * \return Returns true if save operation succeeded, otherwise false.
 	 */
 	_virtual bool SaveUserSettings(uint32_t status);
 
 	/**
-	 * \brief Fetch user HWDG settings from EEPROM.
+	 * \brief Fetch user HWDG settings from NVRAM.
 	 * \return Returns user settings.
 	 */
 	_virtual uint32_t ObtainUserSettings();

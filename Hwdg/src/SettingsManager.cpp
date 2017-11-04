@@ -148,23 +148,24 @@ bool SettingsManager::SaveUserSettings(uint32_t status)
 	if (settings0 == buffer[0] &&
 		settings1 == buffer[1] &&
 		settings2 == buffer[2] &&
-		settings3 == buffer[3])
+		settings3 & 0x03 == buffer[3])
 		return true;
 
+	
 	// Write data to EEPROM.
 	FLASH->DUKR = FLASH_RASS_KEY1;
 	FLASH->DUKR = FLASH_RASS_KEY2;
 	settings0 = buffer[0];
 	settings1 = buffer[1];
 	settings2 = buffer[2];
-	settings3 = buffer[3];
+	settings3 = settings3 & 0xFC | buffer[3];
 	FLASH->IAPSR = uint8_t(~FLASH_IAPSR_DUL);
 
 	// Verify write operation succeeded.
 	return settings0 == buffer[0] &&
 		settings1 == buffer[1] &&
-		settings2 == buffer[2] &&
-		settings3 == buffer[3];
+		settings2 == buffer[2]&&
+		(settings3 & 0x03) == buffer[3];
 #endif
 #ifdef _M_IX86
 	return true;

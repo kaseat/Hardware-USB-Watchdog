@@ -13,11 +13,8 @@
 // limitations under the License.
 
 #pragma once
-#include <stdint.h>
-#include "ISubscriber.h"
 #include "ResetController.h"
 #include "SettingsManager.h"
-#include "EventManager.h"
 
 class BootManager : ISubscriber
 {
@@ -27,13 +24,12 @@ public:
 	 * \param rctr Reset controller.
 	 * \param smgr Settings manager.
 	 */
-	BootManager(ResetController& rctr, SettingsManager& smgr, EventManager& emgr);
+	BootManager(ResetController& rctr, SettingsManager& smgr);
 
 	/**
 	* \brief Dispose Reset controller.
 	*/
 	~BootManager();
-
 private:
 	void Callback(uint8_t data) _override;
 	uint_fast16_t counter;

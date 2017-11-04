@@ -14,7 +14,6 @@
 
 #include "ResetController.h"
 #include "Timer.h"
-#include "IResetControllerEventHandler.h"
 
 #ifndef RESPONSE_DEF_TIMEOUT
 // Default response timeout, ms
@@ -71,21 +70,21 @@
 #define EVENT_HWDGOK_TIMEOUT   ((uint16_t)1000)
 
 
-ResetController::ResetController(Rebooter& rb, LedController& ledController)
-	: rebooter(rb)
-	  , ledController(ledController)
-	  , counter(INITIAL)
-	  , counterms(INITIAL)
-	  , counterExti(INITIAL)
-	  , state(INITIAL)
-	  , responseTimeout(RESPONSE_DEF_TIMEOUT)
-	  , rebootTimeout(REBOOT_DEF_TIMEOUT)
-	  , sAttempt(SR_ATTEMPTS)
-	  , hAttempt(HR_ATTEMPTS)
-	  , sAttemptCurr(SR_ATTEMPTS)
-	  , hAttemptCurr(HR_ATTEMPTS)
+ResetController::ResetController(Uart& uart, Rebooter& rb, LedController& ledController) :
+	eventsEnabled(false),
+	uart(uart),
+	rebooter(rb),
+	ledController(ledController),
+	counter(INITIAL),
+	counterms(INITIAL),
+	state(INITIAL),
+	responseTimeout(RESPONSE_DEF_TIMEOUT),
+	rebootTimeout(REBOOT_DEF_TIMEOUT),
+	sAttempt(SR_ATTEMPTS),
+	hAttempt(HR_ATTEMPTS),
+	sAttemptCurr(SR_ATTEMPTS),
+	hAttemptCurr(HR_ATTEMPTS)
 {
-	eventHandler = nullptr;
 	rebooter.GetTimer().SubscribeOnElapse(*this);
 }
 
@@ -184,14 +183,21 @@ Response ResetController::TestSoftReset()
 	return rebooter.HardReset();
 }
 
-void ResetController::SubscribeOnEvents(IResetControllerEventHandler& eventHandler)
+Response ResetController::EnableEvents()
 {
-	ResetController::eventHandler = &eventHandler;
+	eventsEnabled = true;
+	return EnableEventsOk;
 }
 
-void ResetController::UnSubscribeOnEvents()
+Response ResetController::DisableEvents()
 {
-	eventHandler = nullptr;
+	eventsEnabled = false;
+	return DisableEventsOk;
+}
+
+bool ResetController::IsEventsEnabled()
+{
+	return eventsEnabled;
 }
 
 Rebooter& ResetController::GetRebooter()
@@ -207,11 +213,13 @@ LedController& ResetController::GetLedController()
 void ResetController::Callback(uint8_t data)
 {
 	// WatchdogOk event logic
-	if (eventHandler == nullptr) counterms = INITIAL;
-	else if (++counterms >= EVENT_HWDGOK_TIMEOUT)
+	if (eventsEnabled)
 	{
-		counterms = INITIAL;
-		eventHandler->OnUpdted(WatchdogOk);
+		if (++counterms >= EVENT_HWDGOK_TIMEOUT)
+		{
+			counterms = INITIAL;
+			uart.SendByte(WatchdogOk);
+		}
 	}
 
 	// Reset controller FSM logic
@@ -226,8 +234,8 @@ void ResetController::Callback(uint8_t data)
 		rebooter.SoftReset();
 		ledController.BlinkMid();
 		state |= RESPONSE_ELAPSED;
-		if (eventHandler != nullptr)
-			eventHandler->OnUpdted(FirstResetOccurred);
+		if (eventsEnabled)
+			uart.SendByte(FirstResetOccurred);
 	}
 	else if (state & RESPONSE_ELAPSED && counter >= rebootTimeout)
 	{
@@ -236,8 +244,8 @@ void ResetController::Callback(uint8_t data)
 		{
 			sAttempt--;
 			rebooter.SoftReset();
-			if (eventHandler != nullptr)
-				eventHandler->OnUpdted(SoftResetOccurred);
+			if (eventsEnabled)
+				uart.SendByte(SoftResetOccurred);
 		}
 		else if (state & HR_ENABLED && hAttempt > 0)
 		{
@@ -248,15 +256,15 @@ void ResetController::Callback(uint8_t data)
 				ledController.BlinkFast();
 			}
 			rebooter.HardReset();
-			if (eventHandler != nullptr)
-				eventHandler->OnUpdted(HardResetOccurred);
+			if (eventsEnabled)
+				uart.SendByte(HardResetOccurred);
 		}
 		else
 		{
 			ledController.Glow();
 			state &= ~(ENABLED | RESPONSE_ELAPSED | LED_STARDED);
-			if (eventHandler != nullptr)
-				eventHandler->OnUpdted(MovedToIdle);
+			if (eventsEnabled)
+				uart.SendByte(MovedToIdle);
 		}
 	}
 }

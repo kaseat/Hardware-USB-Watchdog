@@ -2159,6 +2159,15 @@
                 <name>$PROJ_DIR$\ResetController.h</name>
             </file>
         </group>
+        <group>
+            <name>SettingsManager</name>
+            <file>
+                <name>$PROJ_DIR$\SettingsManager.cpp</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\SettingsManager.h</name>
+            </file>
+        </group>
     </group>
     <group>
         <name>Drivers</name>
@@ -2204,6 +2213,9 @@
     </group>
     <file>
         <name>$PROJ_DIR$\main.cpp</name>
+    </file>
+    <file>
+        <name>$PROJ_DIR$\PlatformDefinitions.h</name>
     </file>
     <file>
         <name>$PROJ_DIR$\STM8S003F3.h</name>

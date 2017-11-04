@@ -54,9 +54,6 @@
     <Filter Include="App\SettingsManager">
       <UniqueIdentifier>{f061f872-bd4e-4cbb-9b79-af47d622b4c6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="App\EventManager">
-      <UniqueIdentifier>{f6986aa6-b455-4121-a0ff-fa45858343a0}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Clock.cpp">
@@ -94,9 +91,6 @@
     </ClCompile>
     <ClCompile Include="src\BootManager.cpp">
       <Filter>App\BootManager</Filter>
-    </ClCompile>
-    <ClCompile Include="src\EventManager.cpp">
-      <Filter>App\EventManager</Filter>
     </ClCompile>
     <ClCompile Include="src\Eeprom.c">
       <Filter>IAR</Filter>
@@ -139,9 +133,6 @@
     <ClInclude Include="src\Response.h">
       <Filter>App\Common</Filter>
     </ClInclude>
-    <ClInclude Include="src\IResetControllerEventHandler.h">
-      <Filter>App\Common</Filter>
-    </ClInclude>
     <ClInclude Include="src\PlatformDefinitions.h">
       <Filter>Drivers</Filter>
     </ClInclude>
@@ -150,9 +141,6 @@
     </ClInclude>
     <ClInclude Include="src\BootManager.h">
       <Filter>App\BootManager</Filter>
-    </ClInclude>
-    <ClInclude Include="src\EventManager.h">
-      <Filter>App\EventManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

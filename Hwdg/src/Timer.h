@@ -13,8 +13,8 @@
 // limitations under the License.
 
 #pragma once
-#include "ISubscriber.h"
 #include "PlatformDefinitions.h"
+#include "ISubscriber.h"
 
 #ifndef MAX_TIMER_SUBSCRIBERS
 #define MAX_TIMER_SUBSCRIBERS 4

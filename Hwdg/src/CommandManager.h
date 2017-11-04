@@ -13,10 +13,7 @@
 // limitations under the License.
 
 #pragma once
-#include <stdint.h>
-#include "ISubscriber.h"
 #include "ResetController.h"
-#include "Uart.h"
 #include "SettingsManager.h"
 
 class CommandManager : ISubscriber
@@ -42,7 +39,6 @@ private:
 	Uart& uart;
 	ResetController& resetController;
 	SettingsManager& settingsManager;
-	uint8_t status;
 
 	inline void GetStatus();
 	inline Response SaveCurrentSettings();
