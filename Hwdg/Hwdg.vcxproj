@@ -149,6 +149,7 @@
   <ItemGroup>
     <None Include="ClassDependency.dgml" />
     <None Include="FileDependency.dgml" />
+    <None Include="src\src.ino" />
     <None Include="src\Wdg.dep" />
     <None Include="src\Wdg.ewd" />
     <None Include="src\Wdg.ewp" />

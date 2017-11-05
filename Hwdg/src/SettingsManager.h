@@ -29,6 +29,7 @@
 class SettingsManager
 {
 public:
+	SettingsManager();
 	_virtual ~SettingsManager()
 	{
 	}

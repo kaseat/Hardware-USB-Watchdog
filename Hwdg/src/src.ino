@@ -12,32 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#pragma once
-#include "ResetController.h"
-#include "SettingsManager.h"
+#include "CommandManager.h"
+#include "BootManager.h"
 
-class BootManager : ISubscriber
+#define BAUDRATE 9600
+
+Uart uart(BAUDRATE);
+Timer timer;
+GpioDriver drw;
+Rebooter rebooter(timer, drw);
+LedController ldCtr(timer, drw);
+ResetController controller(uart, rebooter, ldCtr);
+SettingsManager settingsManager;
+BootManager btmgr(controller, settingsManager);
+CommandManager mgr(uart, controller, settingsManager);
+
+void setup()
 {
-public:
-	/**
-	 * \brief Create instance of boot manager.
-	 * \param rctr Reset controller.
-	 * \param smgr Settings manager.
-	 */
-	BootManager(ResetController& rctr, SettingsManager& smgr);
+	timer.Run();
+	btmgr.ProceedBoot();
+	Serial.begin(BAUDRATE);
+}
 
-	/**
-	 * \brief Proceed boot.
-	 */
-	_virtual void ProceedBoot();
-
-	/**
-	* \brief Dispose Reset controller.
-	*/
-	~BootManager();
-private:
-	void Callback(uint8_t data) _override;
-	volatile uint_fast16_t counter;
-	ResetController& rctr;
-	SettingsManager& smgr;
-};
+void loop()
+{
+}

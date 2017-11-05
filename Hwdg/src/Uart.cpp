@@ -31,9 +31,6 @@ ISubscriber* Uart::subscriber = nullptr;
 
 Uart::Uart(uint32_t baudrate)
 {
-#ifdef __AVR__
-	Serial.begin(baudrate);
-#endif
 #ifdef __ICCSTM8__
 	// Configure GPIOs
 	GPIOD->ODR |= 1 << 5;
@@ -57,9 +54,6 @@ Uart::Uart(uint32_t baudrate)
 
 Uart::~Uart()
 {
-#ifdef __AVR__
-	Serial.end();
-#endif
 }
 
 void Uart::SubscribeOnByteReceived(ISubscriber& sbcr)

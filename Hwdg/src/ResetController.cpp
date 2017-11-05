@@ -180,7 +180,7 @@ Response ResetController::TestHardReset()
 Response ResetController::TestSoftReset()
 {
 	Stop();
-	return rebooter.HardReset();
+	return rebooter.SoftReset();
 }
 
 Response ResetController::EnableEvents()

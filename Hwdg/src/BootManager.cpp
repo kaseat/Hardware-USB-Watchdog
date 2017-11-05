@@ -19,7 +19,15 @@
 #define CMD_PULSE_TIMEOUT             ((uint_fast16_t)1000)
 #define INITIAL                       ((uint_fast16_t)0)
 
-BootManager::BootManager(ResetController& rctr, SettingsManager& smgr): counter(INITIAL)
+BootManager::BootManager(ResetController& rctr, SettingsManager& smgr) :
+	counter(INITIAL),
+	rctr(rctr),
+	smgr(smgr)
+{
+
+}
+
+void BootManager::ProceedBoot()
 {
 	uint8_t settings[4];
 	*reinterpret_cast<uint32_t*>(settings) = smgr.ObtainUserSettings();

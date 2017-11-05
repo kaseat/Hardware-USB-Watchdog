@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#if defined(__ICCSTM8__) || defined(_M_IX86)
+
 #include "Uart.h"
 #include "Clock.h"
 #include "Rebooter.h"
@@ -33,14 +35,16 @@ int main()
 	Uart uart(9600);
 	ResetController controller(uart, rebooter, ldCtr);
 
-#ifdef __IAR_SYSTEMS_ICC__
+#ifdef __ICCSTM8__
 	asm("RIM");
 #endif
 	
 	SettingsManager settingsManager;
 	BootManager btmgr(controller, settingsManager);
+	btmgr.ProceedBoot();
 	CommandManager mgr(uart, controller, settingsManager);
 
 	for (;;)
 		;
 }
+#endif
