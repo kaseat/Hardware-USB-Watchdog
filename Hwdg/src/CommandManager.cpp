@@ -14,6 +14,7 @@
 
 #include "CommandManager.h"
 #include "Crc.h"
+#include "ChipReset.h"
 
 CommandManager::CommandManager(Uart& uart, ResetController& rstController, SettingsManager& btmgr) :
 	uart(uart),
@@ -73,8 +74,11 @@ inline void CommandManager::Callback(uint8_t data)
 		: data == 0x39 // SaveCurrentSettings command
 		? uart.SendByte(SaveCurrentSettings())
 
-		: data == 0xF7 // Reserved command
-		? uart.SendByte(UnknownCommand)
+		: data == 0x00 // Reset microcntroller
+		? ChipReset::ResetImmediately()
+		: data == 0xF7 // Restore factory settings
+		? RestoreFactory()
+
 		: data >> 7 == 1 // SetRebootTimeout command
 		? uart.SendByte(resetController.SetRebootTimeout(data))
 		: data >> 6 == 1 // SetResponseTimeout command
@@ -125,4 +129,10 @@ Response CommandManager::SaveCurrentSettings()
 	return settingsManager.SaveUserSettings(*reinterpret_cast<uint32_t*>(buffer))
 		? SaveCurrentSettingsOk
 		: SaveSettingsError;
+}
+
+void CommandManager::RestoreFactory()
+{
+	settingsManager.RestoreFactory();
+	ChipReset::ResetImmediately();
 }

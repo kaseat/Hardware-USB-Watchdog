@@ -12,29 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "CommandManager.h"
-#include "BootManager.h"
-#include <avr/wdt.h>
+#include "ChipReset.h"
 
-#define BAUDRATE 9600
+#ifdef __ICCSTM8__
+#include "STM8S003F3.h"
+#endif
+#ifdef __AVR__
+#include <arduino.h>
+#define CHIP_RESET_PIN   ((uint8_t)10U)
+#endif
 
-Uart uart(BAUDRATE);
-Timer timer;
-GpioDriver drw;
-Rebooter rebooter(timer, drw);
-LedController ldCtr(timer, drw);
-ResetController controller(uart, rebooter, ldCtr);
-SettingsManager settingsManager;
-BootManager btmgr(controller, settingsManager);
-CommandManager mgr(uart, controller, settingsManager);
-
-void setup()
+void ChipReset::ResetImmediately()
 {
-	timer.Run();
-	btmgr.ProceedBoot();
-	Serial.begin(BAUDRATE);
-}
-
-void loop()
-{
+#ifdef __ICCSTM8__
+	WWDG->CR = WWDG_CR_WDGA;
+#endif
+#ifdef __AVR__
+	pinMode(CHIP_RESET_PIN, OUTPUT);
+#endif
 }

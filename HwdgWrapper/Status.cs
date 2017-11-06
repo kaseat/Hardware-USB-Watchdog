@@ -17,7 +17,7 @@ namespace HwdgWrapper
             //todo: repalce magic numbers!
             RebootTimeout = 10000 + (data[0] & 0x7F) * 5000;
             ResponseTimeout = (((data[1] & 0xFC) >> 2) + 1) * 5000;
-            State = (WatchdogState) ((data[1] & 0x03) | ((data[2] & 1) << 2));
+                    State = (WatchdogState) ((data[1] & 0x03) | ((data[2] & 1) << 2) | (data[3] << 3));
             SoftResetAttempts = (Byte) ((data[2] >> 5) + 1);
             HardResetAttempts = (Byte) (((data[2] >> 2) & 0x07) + 1);
             RawData = data[0] << 24 | data[1] << 16 | data[2] << 8 | data[3];
@@ -109,5 +109,30 @@ namespace HwdgWrapper
         /// Is hard reset enabled.
         /// </summary>
         HardRersetEnabled = 1 << 2,
+
+        /// <summary>
+        /// Is LED disabled.
+        /// </summary>
+        LedDisabled = 1 << 3,
+
+        /// <summary>
+        /// Are events enabled.
+        /// </summary>
+        EventsEnabled = 1 << 4,
+
+        /// <summary>
+        /// Does hwdg apply user settings at startup.
+        /// </summary>
+        LoadUserSettings = 1 << 5,
+
+        /// <summary>
+        /// Does RST pulse at startup enabled.
+        /// </summary>
+        RstPulseEnabled = 1 << 6,
+
+        /// <summary>
+        /// Does PWR pulse at startup enabled.
+        /// </summary>
+        PwrPulseEnabled = 1 << 7,
     }
 }

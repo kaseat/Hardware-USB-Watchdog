@@ -57,6 +57,9 @@
     <Filter Include="Arduino">
       <UniqueIdentifier>{0d6c3041-ec64-4da9-8e3b-a12a2988a402}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Drivers\ChipReset">
+      <UniqueIdentifier>{5b2f4c3d-375d-4a09-9183-38789854e442}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Clock.cpp">
@@ -97,6 +100,9 @@
     </ClCompile>
     <ClCompile Include="src\Uart.cpp">
       <Filter>Drivers\Uart</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ChipReset.cpp">
+      <Filter>Drivers\ChipReset</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -144,6 +150,9 @@
     </ClInclude>
     <ClInclude Include="src\BootManager.h">
       <Filter>App\BootManager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ChipReset.h">
+      <Filter>Drivers\ChipReset</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -13,34 +13,16 @@
 // limitations under the License.
 
 #pragma once
-#include "ResetController.h"
-#include "SettingsManager.h"
 
-class CommandManager : ISubscriber
+/**
+* \brief Represents microcontroller reset function.
+*/
+class ChipReset
 {
 public:
-	/**
-	 * \brief Create instance of command manager.
-	 * \param rctr Reset controller.
-	 */
-	CommandManager(Uart& uart, ResetController& rctr, SettingsManager& btmgr);
 
 	/**
-	 * \brief Dispose Reset controller.
+	 * \brief Reset chip immediately.
 	 */
-	~CommandManager();
-
-	/**
-	 * \brief Fires when UART byte received.
-	 * \param data UART data.
-	 */
-	inline void Callback(uint8_t data) _override;
-private:
-	Uart& uart;
-	ResetController& resetController;
-	SettingsManager& settingsManager;
-
-	inline void GetStatus();
-	inline Response SaveCurrentSettings();
-	inline void RestoreFactory();
+	static void ResetImmediately();
 };

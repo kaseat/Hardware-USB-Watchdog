@@ -286,6 +286,52 @@ typedef struct
 #define CFG_GCR_AL_Msk           (0x1U << CFG_GCR_AL_Pos)
 #define CFG_GCR_AL               CFG_GCR_AL_Msk
 
+
+/*======================================================================
+*      WWDG
+*=======================================================================*/
+typedef struct
+{
+	volatile unsigned char CR;
+	volatile unsigned char WR;
+} WwdgTypedef;
+
+#define WWDG_BASE              (0x0050D1)
+
+#define WWDG                   ((WwdgTypedef *) WWDG_BASE)
+
+#define WWDG_CR_WDGA_Pos       (7U)
+#define WWDG_CR_WDGA_Msk       (0x1U << WWDG_CR_WDGA_Pos)
+#define WWDG_CR_WDGA           WWDG_CR_WDGA_Msk
+
+#define WWDG_CR_T6_Pos         (6U)
+#define WWDG_CR_T6_Msk         (0x1U << WWDG_CR_T6_Pos)
+#define WWDG_CR_T6             WWDG_CR_T6_Msk
+
+#define WWDG_CR_T5_Pos         (5U)
+#define WWDG_CR_T5_Msk         (0x1U << WWDG_CR_T5_Pos)
+#define WWDG_CR_T5             WWDG_CR_T5_Msk
+
+#define WWDG_CR_T4_Pos         (4U)
+#define WWDG_CR_T4_Msk         (0x1U << WWDG_CR_T4_Pos)
+#define WWDG_CR_T4             WWDG_CR_T4_Msk
+
+#define WWDG_CR_T3_Pos         (3U)
+#define WWDG_CR_T3_Msk         (0x1U << WWDG_CR_T3_Pos)
+#define WWDG_CR_T3             WWDG_CR_T3_Msk
+
+#define WWDG_CR_T2_Pos         (2U)
+#define WWDG_CR_T2_Msk         (0x1U << WWDG_CR_T2_Pos)
+#define WWDG_CR_T2             WWDG_CR_T2_Msk
+
+#define WWDG_CR_T1_Pos         (1U)
+#define WWDG_CR_T1_Msk         (0x1U << WWDG_CR_T1_Pos)
+#define WWDG_CR_T1             WWDG_CR_T1_Msk
+
+#define WWDG_CR_T0_Pos         (0U)
+#define WWDG_CR_T0_Msk         (0x1U << WWDG_CR_T0_Pos)
+#define WWDG_CR_T0             WWDG_CR_T0_Msk
+
 /*======================================================================
 *      16-bit advanced control timer (TIM1)
 *=======================================================================*/

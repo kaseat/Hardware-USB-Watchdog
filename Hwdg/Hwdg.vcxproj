@@ -116,6 +116,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\BootManager.cpp" />
+    <ClCompile Include="src\ChipReset.cpp" />
     <ClCompile Include="src\SettingsManager.cpp" />
     <ClCompile Include="src\Crc.cpp" />
     <ClCompile Include="src\Eeprom.c" />
@@ -131,6 +132,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BootManager.h" />
+    <ClInclude Include="src\ChipReset.h" />
     <ClInclude Include="src\SettingsManager.h" />
     <ClInclude Include="src\Crc.h" />
     <ClInclude Include="src\GpioDriver.h" />

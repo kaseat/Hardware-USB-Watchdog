@@ -32,7 +32,7 @@ namespace HwdgWrapper
         private Byte ConvertRebootTimeout(Int32 ms)
         {
             if (disposed) throw new ObjectDisposedException(nameof(SerialHwdg));
-            if (ms > 645000) ms = 645000;
+            if (ms > 600000) ms = 600000;
             if (ms < 10000) ms = 10000;
             var trbi = (ms - 10000) / 5000;
             return (Byte) (trbi | 0x80);
@@ -41,7 +41,7 @@ namespace HwdgWrapper
         private Byte ConvertResponseTimeout(Int32 ms)
         {
             if (disposed) throw new ObjectDisposedException(nameof(SerialHwdg));
-            if (ms > 320000) ms = 320000;
+            if (ms > 300000) ms = 300000;
             if (ms < 5000) ms = 5000;
             var trsi = ms / 5000 - 1;
             return (Byte) (trsi | 0x40);

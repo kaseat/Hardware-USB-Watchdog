@@ -17,6 +17,11 @@
 #include "Response.h"
 #include <stdint.h>
 
+#define SETTINGS_DEFAULT_0            ((uint8_t)0x1C)
+#define SETTINGS_DEFAULT_1            ((uint8_t)0x44)
+#define SETTINGS_DEFAULT_2            ((uint8_t)0x48)
+#define SETTINGS_DEFAULT_3            ((uint8_t)0x00)
+
 #define LED_DISABLED                  ((uint8_t)(1U << 0U))
 #define EVENTS_ENABLED                ((uint8_t)(1U << 1U))
 #define APPLY_SETTINGS_AT_ATARTUP     ((uint8_t)(1U << 2U))
@@ -82,6 +87,12 @@ public:
 	 * \return Returns operation status.
 	 */
 	_virtual Response LoadDefaultSettingsAtStartup();
+
+	/**
+	 * \brief Restore factory settings.
+	 * \return Returns operation statuss.
+	 */
+	_virtual bool RestoreFactory();
 
 	/**
 	 * \brief Get boot settings.

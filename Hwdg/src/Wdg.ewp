@@ -1678,6 +1678,15 @@
     <group>
         <name>Drivers</name>
         <group>
+            <name>ChipReset</name>
+            <file>
+                <name>$PROJ_DIR$\ChipReset.cpp</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\ChipReset.h</name>
+            </file>
+        </group>
+        <group>
             <name>Clock</name>
             <file>
                 <name>$PROJ_DIR$\Clock.cpp</name>
