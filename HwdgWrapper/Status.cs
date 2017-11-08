@@ -14,12 +14,14 @@ namespace HwdgWrapper
         /// <param name="data">Data recived from watchdog.</param>
         public Status(IReadOnlyList<Byte> data)
         {
+            if (data.Count != 5) throw new ArgumentException("Malformed data array");
+
             //todo: repalce magic numbers!
             RebootTimeout = 10000 + (data[0] & 0x7F) * 5000;
             ResponseTimeout = (((data[1] & 0xFC) >> 2) + 1) * 5000;
-                    State = (WatchdogState) ((data[1] & 0x03) | ((data[2] & 1) << 2) | (data[3] << 3));
+            State = (WatchdogState) ((data[1] & 3) | ((data[2] & 1) << 2) | (data[3] << 3));
             SoftResetAttempts = (Byte) ((data[2] >> 5) + 1);
-            HardResetAttempts = (Byte) (((data[2] >> 2) & 0x07) + 1);
+            HardResetAttempts = (Byte) (((data[2] >> 2) & 7) + 1);
             RawData = data[0] << 24 | data[1] << 16 | data[2] << 8 | data[3];
         }
 
@@ -33,7 +35,8 @@ namespace HwdgWrapper
                 Convert.ToByte((data >> 24) & 0xFF),
                 Convert.ToByte((data >> 16) & 0xFF),
                 Convert.ToByte((data >> 8) & 0xFF),
-                Convert.ToByte(data & 0xFF)
+                Convert.ToByte(data & 0xFF),
+                Convert.ToByte(0xFF),
             })
         {
         }
@@ -67,6 +70,7 @@ namespace HwdgWrapper
         /// </summary>
         public Byte SoftResetAttempts { get; }
 
+        /// <inheritdoc />
         public override Boolean Equals(Object obj)
         {
             return obj is Status status &&
@@ -77,6 +81,7 @@ namespace HwdgWrapper
                    SoftResetAttempts == status.SoftResetAttempts;
         }
 
+        /// <inheritdoc />
         public override Int32 GetHashCode()
         {
             var hashCode = -1572781591;
@@ -87,6 +92,9 @@ namespace HwdgWrapper
             hashCode = hashCode * -1521134295 + SoftResetAttempts.GetHashCode();
             return hashCode;
         }
+
+        /// <inheritdoc />
+        public override String ToString() => RawData.ToString("X2");
     }
 
     /// <summary>

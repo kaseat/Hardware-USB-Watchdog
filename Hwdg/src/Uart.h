@@ -33,13 +33,13 @@ public:
 	_virtual ~Uart();
 
 	/**
-	* \brief Add handler on byte recivied.
+	* \brief Add handler on byte received.
 	* \param sbcr Subscriber.
 	*/
 	_virtual void SubscribeOnByteReceived(ISubscriber& sbcr);
 
 	/**
-	* \brief Remove handler on byte recivied.
+	* \brief Remove handler on byte received.
 	*/
 	_virtual void UnsubscribeOnByteReceived();
 

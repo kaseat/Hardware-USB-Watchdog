@@ -49,5 +49,8 @@ namespace HwdgWrapper
         MovedToIdle = 0x33,
         WatchdogOk = 0x34,
         SoftwareVersion = 0x55,
+
+        SendCommandNoHwdgResponse = 0x60,
+        SendCommandUnknownError = 0x61,
     }
 }

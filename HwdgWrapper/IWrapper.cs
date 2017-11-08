@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HwdgWrapper
@@ -42,14 +43,16 @@ namespace HwdgWrapper
         /// <summary>
         /// Gets hwdg status asynchronously.
         /// </summary>
+        /// <param name="ct">Cancellation token (optional).</param>
         /// <returns>Returns hwdg status.</returns>
-        Task<Status> GetStatusAsync();
+        Task<Status> GetStatusAsync(CancellationToken ct = default(CancellationToken));
 
         /// <summary>
         /// Send command to hwdg asynchronously.
         /// </summary>
         /// <param name="cmd">Command to be sent.</param>
+        /// <param name="ct">Cancellation token (optional).</param>
         /// <returns>Returns hwdg command response.</returns>
-        Task<Response> SendCommandAsync(Byte cmd);
+        Task<Response> SendCommandAsync(Byte cmd, CancellationToken ct = default(CancellationToken));
     }
 }

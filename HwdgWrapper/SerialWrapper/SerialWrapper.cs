@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO.Ports;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace HwdgWrapper
 {
-    public partial class SerialWrapper : IWrapper, IDisposable
+    public class SerialWrapper : IWrapper, IDisposable
     {
+        private const Int32 Baudrate = 9600;
         private readonly Object threadLock = new Object();
         private readonly Timer timer;
         private String lastSuccessedPortName;
@@ -15,11 +17,17 @@ namespace HwdgWrapper
 
         public SerialWrapper()
         {
-            timer = new Timer(OnElapse, null, 0, 1000);
-            lastStatus = GetStatus();
+            Trace.WriteLine($"SerialWrapper ctor at thread {Thread.CurrentThread.ManagedThreadId}");
+            const Int32 onElapseTimeout = 1000;
+            // Initialize timer that checks hwdg availability once per second.
+            timer = new Timer(OnElapse, null, onElapseTimeout, onElapseTimeout);
         }
 
-        private void OnElapse(Object stste) => GetStatus();
+        private void OnElapse(Object stste)
+        {
+            Trace.WriteLine($"OnElapse at thread {Thread.CurrentThread.ManagedThreadId}");
+            GetStatus();
+        }
 
         public Status GetStatus()
         {
@@ -27,11 +35,10 @@ namespace HwdgWrapper
             // need GetStatus operation to be atomic.
             lock (threadLock)
             {
-                var threadId = Thread.CurrentThread.ManagedThreadId;
-                logger.Trace($"Begin get status at {threadId} thread...");
+                Trace.WriteLine($"Enter GetStatus at {Thread.CurrentThread.ManagedThreadId} thread");
                 var result = SearchAndGetStatus();
 
-                // Last result present but not equal previous
+                // Last result is present but not equal previous one
                 if (lastStatus != null && result != null && !lastStatus.Equals(result))
                     OnUpdated(lastStatus = result);
 
@@ -44,6 +51,7 @@ namespace HwdgWrapper
                     lastStatus = null;
                     OnDisconnected();
                 }
+                Trace.WriteLine($"Exit GetStatus with {result} at {Thread.CurrentThread.ManagedThreadId} thread");
                 return result;
             }
         }
@@ -54,10 +62,8 @@ namespace HwdgWrapper
             // must use one SerialPort instance at the moment.
             lock (threadLock)
             {
-                var threadId = Thread.CurrentThread.ManagedThreadId;
-                logger.Trace($"Begin send command at {threadId} thread...");
+                Trace.WriteLine($"Enter SendCommand at {Thread.CurrentThread.ManagedThreadId} thread");
                 var result = SearchAndSendCommand(cmd);
-                if (result == Response.ErrorSendCmd) result = SearchAndSendCommand(cmd);
                 if (!isUpdated) return result;
                 isUpdated = false;
                 if (lastSuccessedPortName == null) OnDisconnected();
@@ -75,30 +81,31 @@ namespace HwdgWrapper
                     // Last status was not NULL but now connection lost
                     if (lastStatus != null && status == null)
                     {
-                        OnUpdated(lastStatus = null);
+                        lastStatus = null;
                         OnDisconnected();
                     }
                 }
+                Trace.WriteLine($"Exit SendCommand with {result} at {Thread.CurrentThread.ManagedThreadId} thread");
                 return result;
             }
         }
 
-        public async Task<Status> GetStatusAsync()
+        public async Task<Status> GetStatusAsync(CancellationToken ct = default(CancellationToken))
         {
-            var threadId = Thread.CurrentThread.ManagedThreadId;
-            // ReSharper disable once InconsistentlySynchronizedField
-            logger.Trace($"Begin get status async at {threadId} thread...");
-            return await Task.Run(() => GetStatus());
+            Trace.WriteLine($"Begin get status async at {Thread.CurrentThread.ManagedThreadId} thread...");
+            return await Task.Run(() => GetStatus(), ct);
         }
 
-        public async Task<Response> SendCommandAsync(Byte cmd)
+        public async Task<Response> SendCommandAsync(Byte cmd, CancellationToken ct = default(CancellationToken))
         {
-            var threadId = Thread.CurrentThread.ManagedThreadId;
-            // ReSharper disable once InconsistentlySynchronizedField
-            logger.Trace($"Begin send command async at {threadId} thread...");
-            return await Task.Run(() => SendCommand(cmd));
+            Trace.WriteLine($"Begin send command async at {Thread.CurrentThread.ManagedThreadId} thread...");
+            return await Task.Run(() => SendCommand(cmd), ct);
         }
 
+        /// <summary>
+        /// Trying to find serial port HWDG connected to and get status.
+        /// </summary>
+        /// <returns></returns>
         private Status SearchAndGetStatus()
         {
             Status result = null;
@@ -106,7 +113,7 @@ namespace HwdgWrapper
             // transmission we need to find serial port HWDG connected to.
             if (lastSuccessedPortName == null)
             {
-                logger.Trace("Trying to find a port with WDG connected...");
+                Trace.WriteLine("Trying to find a port with WDG connected...");
                 foreach (var portName in SerialPort.GetPortNames())
                 {
                     result = GetStatus(portName);
@@ -130,11 +137,11 @@ namespace HwdgWrapper
             // transmission we need to find serial port HWDG connected to.
             if (lastSuccessedPortName == null)
             {
-                logger.Trace("Trying to find a port with WDG connected...");
+                Trace.WriteLine("Trying to find a port with WDG connected...");
                 foreach (var portName in SerialPort.GetPortNames())
                 {
                     result = SendCommand(portName, cmd);
-                    if (result != Response.ErrorSendCmd)
+                    if (result != Response.SendCommandNoHwdgResponse || result != Response.SendCommandUnknownError)
                         return result;
                 }
             }
@@ -148,29 +155,44 @@ namespace HwdgWrapper
 
         private Status GetStatus(String portName)
         {
+            const Int32 readStatusTimeout = 80;
+            const Int32 statusLength = 5;
+            const Int32 inputBufferOffset = 0;
+            const Byte getStatusCommand = 0x01;
+
             // Trying to open port and get status.
-            using (var port = new SerialPort(portName, 9600))
+            using (var port = new SerialPort(portName, Baudrate))
             {
                 try
                 {
-                    logger.Trace($"Getting status from {portName}...");
-                    WriteToPort(port, 0x01);
+                    Trace.WriteLine($"Getting status from {portName}");
+                    WriteToPort(port, getStatusCommand);
 
-                    // As GetStatus command response 4 bytes long
-                    // we must read them all consistently.
-                    logger.Trace($"Reading response from {portName}...");
-                    var b = new Byte[4];
-                    b[0] = (Byte) port.ReadByte();
-                    b[1] = (Byte) port.ReadByte();
-                    b[2] = (Byte) port.ReadByte();
-                    b[3] = (Byte) port.ReadByte();
+                    // Wait until we get all bytes of response
+                    using (var source = new CancellationTokenSource(readStatusTimeout))
+                    {
+                        while (port.BytesToRead < statusLength && !source.IsCancellationRequested)
+                        {
+                        }
+                    }
+
+                    // Check that we received all bytes.
+                    if (port.BytesToRead != statusLength)
+                    {
+                        Trace.WriteLine($"No HWDG found on {portName} port");
+                        TransmissionFailed();
+                        return null;
+                    }
+
+                    //Read received data.
+                    var b = new Byte[statusLength];
+                    port.Read(b, inputBufferOffset, statusLength);
 
                     // If there is no exceptions during writing and reading that
                     // means HWDG is present on current port and responses. Update
                     // last successful connection port name if necessary.
-                    logger.Trace($"Reading response {b[0]}{b[1]}{b[2]}{b[3]} OK!");
+                    Trace.WriteLine($"Reading response {b[0]:X2} {b[1]:X2} {b[2]:X2} {b[3]:X2} {b[4]:X2} OK!");
                     TransmissionOk(port.PortName);
-                    logger.Trace("Get status OK!");
                     return new Status(b);
                 }
 
@@ -179,7 +201,7 @@ namespace HwdgWrapper
                 // Set lastSuccessedPortName to NULL if necessary.
                 catch (Exception ex)
                 {
-                    logger.Info($"Get status fail! Reason: {ex.Message}");
+                    Trace.WriteLine($"Get status fail! Reason: {ex.Message}");
                     TransmissionFailed();
                     return null;
                 }
@@ -188,19 +210,39 @@ namespace HwdgWrapper
 
         private Response SendCommand(String portName, Byte cmd)
         {
+            const Int32 readCmdResponseTimeout = 30;
+            const Int32 cmdResponseLength = 1;
+
             // Trying to open port and send the command.
-            using (var port = new SerialPort(portName, 9600))
+            using (var port = new SerialPort(portName, Baudrate))
             {
                 try
                 {
+                    Trace.WriteLine($"Sending command from {portName}");
                     WriteToPort(port, cmd);
-                    logger.Trace($"Reading from {portName}...");
+
+                    // Wait until we get all bytes of response
+                    using (var source = new CancellationTokenSource(readCmdResponseTimeout))
+                    {
+                        while (port.BytesToRead < cmdResponseLength && !source.IsCancellationRequested)
+                        {
+                        }
+                    }
+
+                    // Check that we received all bytes.
+                    if (port.BytesToRead != cmdResponseLength)
+                    {
+                        Trace.WriteLine($"No HWDG found on {portName} port");
+                        TransmissionFailed();
+                        return Response.SendCommandNoHwdgResponse;
+                    }
+
                     var rsp = (Response) port.ReadByte();
 
                     // If there is no exceptions during writing and reading that
                     // means HWDG is present on current port and responses. Update
                     // last successful connection port name if necessary.
-                    logger.Trace($"Reading {rsp} OK!");
+                    Trace.WriteLine($"Reading {rsp} OK!");
                     TransmissionOk(portName);
                     return rsp;
                 }
@@ -210,9 +252,9 @@ namespace HwdgWrapper
                 // Set lastSuccessedPortName to NULL if necessary.
                 catch (Exception ex)
                 {
-                    logger.Info($"Send command fail! Reason: {ex.Message}");
+                    Trace.WriteLine($"Send command fail! Reason: {ex.Message}");
                     TransmissionFailed();
-                    return Response.ErrorSendCmd;
+                    return Response.SendCommandUnknownError;
                 }
             }
         }
@@ -225,7 +267,7 @@ namespace HwdgWrapper
         {
             if (lastSuccessedPortName == portName) return;
             lastSuccessedPortName = portName;
-            logger.Trace($"lastSuccessedPortName set to {portName}");
+            Trace.WriteLine($"lastSuccessedPortName set to {portName}");
             isUpdated = true;
         }
 
@@ -236,26 +278,125 @@ namespace HwdgWrapper
         {
             if (lastSuccessedPortName == null) return;
             lastSuccessedPortName = null;
-            logger.Trace("lastSuccessedPortName set to NULL");
+            Trace.WriteLine("lastSuccessedPortName set to NULL");
             isUpdated = true;
         }
 
-        private void WriteToPort(SerialPort port, Byte data)
+        private static void WriteToPort(SerialPort port, Byte data)
         {
             port.ReadTimeout = 30;
             port.WriteTimeout = 30;
-            logger.Trace($"Opening {port.PortName} port...");
+            Trace.WriteLine($"Opening {port.PortName} port...");
             port.Open();
-            logger.Trace($"Writing {data} to the {port.PortName} port...");
+            Trace.WriteLine($"Writing {data:X2} to the {port.PortName} port...");
             port.BaseStream.WriteByte(data);
-            logger.Trace($"Write {data} OK!");
+            Trace.WriteLine($"Write {data:X2} OK!");
         }
 
         public void Dispose()
         {
             timer.Dispose();
             GC.SuppressFinalize(this);
-            logger.Trace("Serial Wrapper disposed");
+            Trace.WriteLine($"SerialWrapper disposed at thread {Thread.CurrentThread.ManagedThreadId}");
+        }
+
+        public event HwdgResult HwdgConnected;
+        public event Action HwdgDisconnected;
+        public event HwdgResult HwdgUpdated;
+
+        /// <summary>
+        /// Executes each HwdgConnected callback method in separate thread.
+        /// </summary>
+        /// <param name="status">Current hwdg status.</param>
+        private void OnConnected(Status status)
+        {
+            if (HwdgConnected == null) return;
+            foreach (var itemDelegate in HwdgConnected.GetInvocationList())
+            {
+                ThreadPool.QueueUserWorkItem(Callback);
+
+                void Callback(Object state)
+                {
+                    var threadId = Thread.CurrentThread.ManagedThreadId;
+                    try
+                    {
+                        Trace.WriteLine(
+                            $"Begin invoke OnConnected delegate {itemDelegate.Method.Name} in {threadId} thread.");
+                        ((HwdgResult) itemDelegate).Invoke(status);
+                        Trace.WriteLine(
+                            $"End invoke OnConnected delegate {itemDelegate.Method.Name} in {threadId} thread.");
+                    }
+                    catch (Exception e)
+                    {
+                        Trace.WriteLine(
+                            $"OnConnected delegate {itemDelegate.Method.Name} in {threadId} thread thrown exception: {e}.");
+                        throw;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Executes each HwdgDisconnected callback method in separate thread.
+        /// </summary>
+        private void OnDisconnected()
+        {
+            if (HwdgDisconnected == null) return;
+            foreach (var itemDelegate in HwdgDisconnected.GetInvocationList())
+            {
+                ThreadPool.QueueUserWorkItem(Callback);
+
+                void Callback(Object state)
+                {
+                    var threadId = Thread.CurrentThread.ManagedThreadId;
+                    try
+                    {
+                        Trace.WriteLine(
+                            $"Begin invoke OnDisconnected delegate {itemDelegate.Method.Name} in {threadId} thread.");
+                        ((Action) itemDelegate).Invoke();
+                        Trace.WriteLine(
+                            $"End invoke OnDisconnected delegate {itemDelegate.Method.Name} in {threadId} thread.");
+                    }
+                    catch (Exception e)
+                    {
+                        Trace.WriteLine(
+                            $"OnDisconnected delegate {itemDelegate.Method.Name} in {threadId} thread thrown exception: {e}.");
+                        throw;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Executes each HwdgUpdated callback method in separate thread.
+        /// </summary>
+        /// <param name="status">Current hwdg status.</param>
+        private void OnUpdated(Status status)
+        {
+            if (HwdgUpdated == null) return;
+            foreach (var itemDelegate in HwdgUpdated.GetInvocationList())
+            {
+                ThreadPool.QueueUserWorkItem(Callback);
+
+                void Callback(Object state)
+                {
+                    var threadId = Thread.CurrentThread.ManagedThreadId;
+                    try
+                    {
+                        Trace.WriteLine(
+                            $"Begin invoke OnUpdated delegate {itemDelegate.Method.Name} in {threadId} thread.");
+                        ((HwdgResult) itemDelegate).Invoke(status);
+                        Trace.WriteLine(
+                            $"End invoke OnUpdated delegate {itemDelegate.Method.Name} in {threadId} thread.");
+                    }
+                    catch (Exception e)
+                    {
+                        Trace.WriteLine(
+                            $"OnUpdated delegate {itemDelegate.Method.Name} in {threadId} thread thrown exception: {e}.");
+                        throw;
+                    }
+                }
+            }
         }
     }
 }
