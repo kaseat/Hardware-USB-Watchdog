@@ -188,6 +188,17 @@ namespace HwdgWrapper
                     var b = new Byte[statusLength];
                     port.Read(b, inputBufferOffset, statusLength);
 
+                    // Verify checksum.
+                    var checksum = b.CalcCrc7(statusLength - 1);
+                    if (checksum != b[statusLength - 1])
+                    {
+                        Trace.WriteLine(
+                            $"Checksum verification error. Calculated: {checksum}. Received: {b[statusLength - 1]}");
+                        TransmissionFailed();
+                        return null;
+                    }
+                    Trace.WriteLine("Checksum verification ok.");
+
                     // If there is no exceptions during writing and reading that
                     // means HWDG is present on current port and responses. Update
                     // last successful connection port name if necessary.

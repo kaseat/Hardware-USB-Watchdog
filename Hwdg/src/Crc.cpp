@@ -17,8 +17,8 @@
 uint8_t CrcCalculator::GetCrc7(uint8_t* buffer, uint8_t length)
 {
 	unsigned char crc = 0;
-	while (length--)
-		crc = GetCrc7Byte(crc, *buffer++);
+	while (length--) 
+		crc = crcTable[crc << 1 ^ *buffer++];
 	return crc;
 }
 
