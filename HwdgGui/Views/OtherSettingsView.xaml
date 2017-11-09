@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="HwdgGui.Views.OtherSettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:cal="http://www.caliburnproject.org"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+    </UserControl.Resources>
+    <Grid>
+        <StackPanel>
+            <StackPanel Margin="0,0,0,40">
+                <CheckBox Name="Autorun" Content="Запуск приложения при старте Windows" Focusable="False"/>
+                <CheckBox Name="AutoMonitor" Content="Автозапуск мониторинга при старте приложения" Focusable="False"/>
+            </StackPanel>
+            <StackPanel Visibility="{Binding HwdgSettingsVisible, Converter={StaticResource BoolToVis}}">
+                <CheckBox Name="PwrPulse" Content="Короткий импульс на PWR при подаче питания на материнскую плату" Focusable="False" cal:Message.Attach="[Event Checked] = [Action PwrPulseChecked];[Event Unchecked] = [Action PwrPulseUnchecked]" IsChecked="False"/>
+                <CheckBox Name="RstPulse" Content="Короткий импульс на RST при подаче питания на материнскую плату" Focusable="False" cal:Message.Attach="[Event Checked] = [Action RstPulseChecked];[Event Unchecked] = [Action RstPulseUnchecked]" IsChecked="False"/>
+            </StackPanel>
+        </StackPanel>
+
+    </Grid>
+</UserControl>

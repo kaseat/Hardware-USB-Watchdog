@@ -30,6 +30,10 @@ namespace HwdgWrapperTests
                 wrapper.HwdgConnected += Wrapper_HwdgConnected;
                 Trace.WriteLine($"Run GetStatusAsync at {Thread.CurrentThread.ManagedThreadId} thread ({sw.Elapsed.TotalMilliseconds})");
                 await wrapper.GetStatusAsync();
+                Trace.WriteLine($">>> Run SendCommand at {Thread.CurrentThread.ManagedThreadId} thread ({sw.Elapsed.TotalMilliseconds})");
+
+                var res= wrapper.SendCommand(0xF8);
+                Trace.WriteLine($"Exit SendCommand with {res} at {Thread.CurrentThread.ManagedThreadId} thread ({sw.Elapsed.TotalMilliseconds})");
                 Thread.Sleep(1500);
                 wrapper.HwdgConnected -= Wrapper_HwdgConnected;
             }

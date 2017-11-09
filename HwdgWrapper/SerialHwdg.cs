@@ -1,18 +1,27 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
-using System.Timers;
+using Timer = System.Timers.Timer;
 
 namespace HwdgWrapper
 {
     public class SerialHwdg : IHwdg, IDisposable
     {
         private Boolean disposed;
-        private readonly Timer timer = new Timer(3000);
         private readonly IWrapper wrapper;
+        private const Int32 OnElapseTimeout = 4000;
+        private readonly Timer timer = new Timer(OnElapseTimeout);
 
         public SerialHwdg(IWrapper wrapper)
         {
+            Trace.WriteLine($"SerialHwdg ctor at {Thread.CurrentThread.ManagedThreadId} thread");
             this.wrapper = wrapper ?? throw new ArgumentNullException(nameof(wrapper));
+
+            // Apply user settings at chip startup
+            wrapper.SendCommand(0x3B);
+
+            // Subscribe on HWDG events
             this.wrapper.HwdgConnected += OnConnected;
             this.wrapper.HwdgDisconnected += OnDisconnected;
             this.wrapper.HwdgUpdated += OnUpdated;
@@ -20,14 +29,9 @@ namespace HwdgWrapper
         }
 
         private void OnDisconnected() => Disconnected?.Invoke();
-
         private void OnConnected(Status status) => Connected?.Invoke(status);
         private void OnUpdated(Status status) => Updated?.Invoke(status);
-
-        private void OnElapse(Object sender, ElapsedEventArgs e)
-        {
-            wrapper.SendCommand(0xFB);
-        }
+        private void OnElapse(Object sender, System.Timers.ElapsedEventArgs e) => wrapper.SendCommand(0xFB);
 
         private Byte ConvertRebootTimeout(Int32 ms)
         {
@@ -65,40 +69,27 @@ namespace HwdgWrapper
             return (Byte) (nhi | 0x18);
         }
 
-        public void RestoreStatus(Status status)
-        {
-            if ((GetStatus()?.RawData & 0x80000000) == 0)
-            {
-                SetResponseTimeout(status.ResponseTimeout);
-                SetRebootTimeout(status.RebootTimeout);
-            }
-            else
-            {
-                SetResponseTimeout(status.ResponseTimeout > 60000 ? 60000 : status.ResponseTimeout);
-            }
+        public Status LastStatus { get; private set; }
 
+        public Response SaveCurrentState() => wrapper.SendCommand(0x39);
 
-            SetHardResetAttempts(status.HardResetAttempts);
-            SetSoftResetAttempts(status.SoftResetAttempts);
-            if ((status.State & WatchdogState.HardRersetEnabled) != 0)
-            {
-                EnableHardReset();
-            }
-            else
-            {
-                DisableHardReset();
-            }
-        }
+        public Response EnableLed() => wrapper.SendCommand(0xFE);
 
-        public void TestSoftReset()
-        {
-            wrapper.SendCommand(0x7F);
-        }
+        public Response DisableLed() => wrapper.SendCommand(0xFF);
 
-        public void TestHardReset()
-        {
-            wrapper.SendCommand(0x7E);
-        }
+        public Response RstPulseOnStartupEnable() => wrapper.SendCommand(0x3E);
+
+        public Response RstPulseOnStartupDisable() => wrapper.SendCommand(0x3F);
+
+        public Response PwrPulseOnStartupEnable() => wrapper.SendCommand(0x3C);
+
+        public Response PwrPulseOnStartupDisable() => wrapper.SendCommand(0x3D);
+
+        public void RestoreFactory() => wrapper.SendCommand(0xF7);
+
+        public void TestSoftReset() => wrapper.SendCommand(0x7F);
+
+        public void TestHardReset() => wrapper.SendCommand(0x7E);
 
         public Response SetRebootTimeout(Int32 ms) => wrapper.SendCommand(ConvertRebootTimeout(ms));
 
@@ -108,91 +99,88 @@ namespace HwdgWrapper
 
         public Response SetHardResetAttempts(Byte count) => wrapper.SendCommand(ConvertHardResetAttempts(count));
 
-        public Response EnableHardReset()
-        {
-            if (disposed) throw new ObjectDisposedException(nameof(SerialHwdg));
-            return wrapper.SendCommand(0xFC);
-        }
+        public Response EnableHardReset() => wrapper.SendCommand(0xFC);
 
-        public Response DisableHardReset()
-        {
-            if (disposed) throw new ObjectDisposedException(nameof(SerialHwdg));
-            return wrapper.SendCommand(0xFD);
-        }
+        public Response DisableHardReset() => wrapper.SendCommand(0xFD);
 
         public Response Start()
         {
-            if (disposed) throw new ObjectDisposedException(nameof(SerialHwdg));
-            var status = wrapper.SendCommand(0xF9);
-            timer.Enabled = status == Response.StartOk;
-            return status;
+            timer.Start();
+            return wrapper.SendCommand(0xF9);
         }
 
         public Response Stop()
         {
-            if (disposed) throw new ObjectDisposedException(nameof(SerialHwdg));
-            var status = wrapper.SendCommand(0xFA);
-            if (status == Response.StopOk)
-            {
-                timer.Enabled = false;
-            }
-            return status;
+            timer.Stop();
+            return wrapper.SendCommand(0xFA);
         }
 
         public Status GetStatus()
         {
-            if (disposed) throw new ObjectDisposedException(nameof(SerialHwdg));
-            return wrapper.GetStatus();
+            Trace.WriteLine($"> GetStatus at {Thread.CurrentThread.ManagedThreadId} thread");
+            return LastStatus = wrapper.GetStatus();
         }
 
-        public async Task<Response> SetRebootTimeoutAsync(Int32 ms) =>
-            await wrapper.SendCommandAsync(ConvertRebootTimeout(ms));
+        public Task<Response> SaveCurrentStateAsync(CancellationToken ct = default(CancellationToken))
+            => wrapper.SendCommandAsync(0x39, ct);
 
-        public async Task<Response> SetResponseTimeoutAsync(Int32 ms) =>
-            await wrapper.SendCommandAsync(ConvertResponseTimeout(ms));
+        public Task<Response> EnableLedAsync(CancellationToken ct = default(CancellationToken))
+            => wrapper.SendCommandAsync(0xFE, ct);
 
-        public async Task<Response> SetSoftResetAttemptsAsync(Byte count) =>
-            await wrapper.SendCommandAsync(ConvertSoftResetAttempts(count));
+        public Task<Response> DisableLedAsync(CancellationToken ct = default(CancellationToken))
+            => wrapper.SendCommandAsync(0xFF, ct);
 
-        public async Task<Response> SetHardResetAttemptsAsync(Byte count) =>
-            await wrapper.SendCommandAsync(ConvertHardResetAttempts(count));
+        public Task<Response> RstPulseOnStartupEnableAsync(CancellationToken ct = default(CancellationToken))
+            => wrapper.SendCommandAsync(0x3E, ct);
 
-        public async Task<Response> EnableHardResetAsync()
+        public Task<Response> RstPulseOnStartupDisableAsync(CancellationToken ct = default(CancellationToken))
+            => wrapper.SendCommandAsync(0x3F, ct);
+
+        public Task<Response> PwrPulseOnStartupEnableAsync(CancellationToken ct = default(CancellationToken))
+            => wrapper.SendCommandAsync(0x3C, ct);
+
+        public Task<Response> PwrPulseOnStartupDisableAsync(CancellationToken ct = default(CancellationToken))
+            => wrapper.SendCommandAsync(0x3D, ct);
+
+        public void RestoreFactoryAsync(CancellationToken ct = default(CancellationToken))
+            => wrapper.SendCommandAsync(0xF7, ct);
+
+        public async Task<Response>
+            SetRebootTimeoutAsync(Int32 ms, CancellationToken ct = default(CancellationToken)) =>
+            await wrapper.SendCommandAsync(ConvertRebootTimeout(ms), ct);
+
+        public async Task<Response>
+            SetResponseTimeoutAsync(Int32 ms, CancellationToken ct = default(CancellationToken)) =>
+            await wrapper.SendCommandAsync(ConvertResponseTimeout(ms), ct);
+
+        public async Task<Response> SetSoftResetAttemptsAsync(Byte count,
+            CancellationToken ct = default(CancellationToken)) =>
+            await wrapper.SendCommandAsync(ConvertSoftResetAttempts(count), ct);
+
+        public async Task<Response> SetHardResetAttemptsAsync(Byte count,
+            CancellationToken ct = default(CancellationToken)) =>
+            await wrapper.SendCommandAsync(ConvertHardResetAttempts(count), ct);
+
+        public async Task<Response> EnableHardResetAsync(CancellationToken ct = default(CancellationToken)) =>
+            await wrapper.SendCommandAsync(0xFC, ct);
+
+        public async Task<Response> DisableHardResetAsync(CancellationToken ct = default(CancellationToken)) =>
+            await wrapper.SendCommandAsync(0xFD, ct);
+
+        public async Task<Response> StartAsync(CancellationToken ct = default(CancellationToken))
         {
-            if (disposed) throw new ObjectDisposedException(nameof(SerialHwdg));
-            return await wrapper.SendCommandAsync(0xFC);
+            timer.Start();
+            return await wrapper.SendCommandAsync(0xF9, ct);
         }
 
-        public async Task<Response> DisableHardResetAsync()
+        public async Task<Response> StopAsync(CancellationToken ct = default(CancellationToken))
         {
-            if (disposed) throw new ObjectDisposedException(nameof(SerialHwdg));
-            return await wrapper.SendCommandAsync(0xFD);
+            timer.Stop();
+            return await wrapper.SendCommandAsync(0xFA, ct);
         }
 
-        public async Task<Response> StartAsync()
-        {
-            if (disposed) throw new ObjectDisposedException(nameof(SerialHwdg));
-            var status = await wrapper.SendCommandAsync(0xF9);
-            timer.Enabled = status == Response.StartOk;
-            return status;
-        }
-
-        public async Task<Response> StopAsync()
-        {
-            if (disposed) throw new ObjectDisposedException(nameof(SerialHwdg));
-            var status = await wrapper.SendCommandAsync(0xFA);
-            if (status == Response.StopOk)
-            {
-                timer.Enabled = false;
-            }
-            return status;
-        }
-
-        public async Task<Status> GetStatusAsync()
-        {
-            if (disposed) throw new ObjectDisposedException(nameof(SerialHwdg));
-            return await wrapper.GetStatusAsync();
-        }
+        public async Task<Status> GetStatusAsync(CancellationToken ct = default(CancellationToken)) =>
+            LastStatus = await wrapper.GetStatusAsync(ct);
 
         public event Action Disconnected;
         public event HwdgResult Connected;
@@ -202,10 +190,10 @@ namespace HwdgWrapper
         {
             if (disposed) return;
             disposed = true;
-            timer.Elapsed -= OnElapse;
             wrapper.HwdgConnected -= OnConnected;
             wrapper.HwdgDisconnected -= OnDisconnected;
             wrapper.HwdgUpdated -= OnUpdated;
+            timer.Elapsed -= OnElapse;
             timer.Dispose();
             GC.SuppressFinalize(this);
         }

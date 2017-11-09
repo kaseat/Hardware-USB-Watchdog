@@ -2,71 +2,19 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:HwdgGui.Views"
-             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="400">
     <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <ResourceDictionary>
+            <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <Button Grid.Row="1" Name="RunButtonAsync" Margin="5" Focusable="False" Content="{Binding RunButtonText}" Grid.ColumnSpan="2"/>
-        <StackPanel Grid.Row="2" IsEnabled="{Binding CanEditSettings}" Grid.ColumnSpan="2" Margin="0,5,0,8">
-
-            <Grid Visibility="{Binding HwdgVersion,Converter={StaticResource BoolToVis}}" Margin="0,0,0,5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition Width="22"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" >Ожидание запуска системы:</Label>
-                <Slider Grid.Column="1" x:Name="RebootTimeout" cal:Message.Attach="[Event LostMouseCapture] = [Action OnRebootTimeoutChanged($this)]" VerticalAlignment="Top"  Maximum="645" Minimum="10" SmallChange="5" LargeChange="30" TickFrequency="5" Value="50" IsSnapToTickEnabled="True" Focusable="False"/>
-                <Label Grid.Column="2" Content="{Binding Value, ElementName=RebootTimeout}"/>
-                <Label Grid.Column="3" Content="с."/>
-            </Grid>
-            <Grid Margin="0,0,0,5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition Width="22"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" >Ожидание отклика системы:</Label>
-                <Slider Grid.Column="1" x:Name="ResponseTimeout" cal:Message.Attach="[Event LostMouseCapture] = [Action OnResponseTimeoutChanged($this)]" VerticalAlignment="Top"  Maximum="{Binding MaxResp}" Minimum="5" SmallChange="5" LargeChange="30" TickFrequency="5" Value="50" IsSnapToTickEnabled="True" Focusable="False"/>
-                <Label Grid.Column="2" Content="{Binding Value, ElementName=ResponseTimeout}"/>
-                <Label Grid.Column="3" Content="с."/>
-            </Grid>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" >Количество попыток перезагрузки:</Label>
-                <Slider Grid.Column="1" x:Name="SoftResetCount" cal:Message.Attach="[Event LostMouseCapture] = [Action OnSoftResetCountChanged($this)]" VerticalAlignment="Top"  Maximum="8" Minimum="1" SmallChange="1" LargeChange="1" TickFrequency="1" Value="3" IsSnapToTickEnabled="True" Focusable="False"/>
-                <Label Grid.Column="2" Content="{Binding Value, ElementName=SoftResetCount}"/>
-            </Grid>
-            <CheckBox Name="HardReset" Content="Жёсткая перезагрузка" Focusable="False" cal:Message.Attach="[Event Checked] = [Action OnHwdgHrChecked];[Event Unchecked] = [Action OnHwdgHrUnchecked]" IsChecked="True"/>
-            <Grid Visibility="{Binding IsChecked, Converter={StaticResource BoolToVis}, ElementName=HardReset}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" >Количество попыток жёсткой перезагрузки:</Label>
-                <Slider Grid.Column="1" x:Name="HardResetCount" cal:Message.Attach="[Event LostMouseCapture] = [Action OnHardResetCountChanged($this)]" VerticalAlignment="Top"  Maximum="8" Minimum="1" SmallChange="1" LargeChange="1" TickFrequency="1" Value="3" IsSnapToTickEnabled="True" Focusable="False"/>
-                <Label Grid.Column="2" Content="{Binding Value, ElementName=HardResetCount}"/>
-            </Grid>
-        </StackPanel>
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Visibility="{Binding RunVis,Converter={StaticResource BoolToVis}}" >
             <Label FontSize="32" Foreground="#FF238FFF" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" FontFamily="Calibri Light">Мониторинг запущен</Label>
             <Canvas Width="25" Height="30" Margin="15,0,0,0">
@@ -85,5 +33,6 @@
                 <Path Width="36" Height="30" Stretch="Fill" Fill="#FF60A917" Data="F1 M 23.7501,33.25L 34.8334,44.3333L 52.2499,22.1668L 56.9999,26.9168L 34.8334,53.8333L 19.0001,38L 23.7501,33.25 Z "/>
             </Canvas>
         </StackPanel>
+        <Button FontSize="26" Width="150" Height="80" Grid.Row="1" Name="RunButtonAsync" Margin="5,30,5,5" Focusable="False" Content="{Binding RunButtonText}" Grid.ColumnSpan="2"/>
     </Grid>
 </UserControl>

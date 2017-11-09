@@ -52,5 +52,6 @@ namespace HwdgWrapper
 
         SendCommandNoHwdgResponse = 0x60,
         SendCommandUnknownError = 0x61,
+        SendCommandPortBusy = 0x61,
     }
 }

@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace HwdgGui.Views
 {
     /// <summary>
-    /// Interaction logic for SettingsView.xaml
+    /// Interaction logic for MainSettingsView.xaml
     /// </summary>
-    public partial class SettingsView : UserControl
+    public partial class MainSettingsView : UserControl
     {
-        public SettingsView()
+        public MainSettingsView()
         {
             InitializeComponent();
         }

@@ -12,14 +12,20 @@
         Title="ShellView" IsTitleVisible="False" Height="350" Width="525" Visibility="Visible"
                   cal:Message.Attach="[Event Closing] = [Action OnClose]">
     <mui:ModernWindow.MenuLinkGroups>
-        <mui:LinkGroup DisplayName="Панель управления">
+        <mui:LinkGroup DisplayName="Главная">
             <mui:LinkGroup.Links>
                 <mui:Link Source="/Views/StatusView.xaml"></mui:Link>
             </mui:LinkGroup.Links>
         </mui:LinkGroup>
         <mui:LinkGroup DisplayName="Настройки">
             <mui:LinkGroup.Links>
-                <mui:Link Source="/Views/SettingsView.xaml"></mui:Link>
+                <mui:Link DisplayName="Основные" Source="/Views/MainSettingsView.xaml"></mui:Link>
+                <mui:Link DisplayName="Дополнительные" Source="/Views/OtherSettingsView.xaml"></mui:Link>
+            </mui:LinkGroup.Links>
+        </mui:LinkGroup>
+        <mui:LinkGroup DisplayName="Тест">
+            <mui:LinkGroup.Links>
+                <mui:Link Source="/Views/TestView.xaml"></mui:Link>
             </mui:LinkGroup.Links>
         </mui:LinkGroup>
     </mui:ModernWindow.MenuLinkGroups>

@@ -19,7 +19,7 @@ namespace HwdgWrapper
         {
             Trace.WriteLine($"SerialWrapper ctor at thread {Thread.CurrentThread.ManagedThreadId}");
             const Int32 onElapseTimeout = 1000;
-            // Initialize timer that checks hwdg availability once per second.
+            // Initialize timer that checks hwdg availability once per onElapseTimeout.
             timer = new Timer(OnElapse, null, onElapseTimeout, onElapseTimeout);
         }
 
@@ -64,8 +64,9 @@ namespace HwdgWrapper
             {
                 Trace.WriteLine($"Enter SendCommand at {Thread.CurrentThread.ManagedThreadId} thread");
                 var result = SearchAndSendCommand(cmd);
-                if (!isUpdated) return result;
-                isUpdated = false;
+                Trace.Write($"Finish SearchAndSendCommand result: {result} ");
+                Trace.WriteLine($"at {Thread.CurrentThread.ManagedThreadId} thread");
+
                 if (lastSuccessedPortName == null) OnDisconnected();
                 else
                 {
@@ -85,7 +86,10 @@ namespace HwdgWrapper
                         OnDisconnected();
                     }
                 }
+                
                 Trace.WriteLine($"Exit SendCommand with {result} at {Thread.CurrentThread.ManagedThreadId} thread");
+                if (!isUpdated) return result;
+                isUpdated = false;
                 return result;
             }
         }
@@ -131,26 +135,39 @@ namespace HwdgWrapper
 
         private Response SearchAndSendCommand(Byte cmd)
         {
-            var result = Response.ErrorSendCmd;
 
             // If last transmission was unsuccessful or this is a first
             // transmission we need to find serial port HWDG connected to.
             if (lastSuccessedPortName == null)
             {
+                var result = Response.ErrorSendCmd;
                 Trace.WriteLine("Trying to find a port with WDG connected...");
                 foreach (var portName in SerialPort.GetPortNames())
                 {
+                    Trace.WriteLine($"Trying to sent cmd at {portName}");
                     result = SendCommand(portName, cmd);
-                    if (result != Response.SendCommandNoHwdgResponse || result != Response.SendCommandUnknownError)
-                        return result;
+                    Trace.WriteLine($"Cmd result {result}");
+                    if (result == Response.SendCommandNoHwdgResponse ||
+                        result == Response.SendCommandUnknownError ||
+                        result == Response.SendCommandPortBusy) continue;
+
+                    Trace.Write($" HWDG found at {portName} with status '{result}'");
+                    Trace.WriteLine($" at {Thread.CurrentThread.ManagedThreadId} thread");
+                    return result;
                 }
+
+                Trace.Write($"HWDG not found on any port. Exit with status '{result}'");
+                Trace.WriteLine($" at {Thread.CurrentThread.ManagedThreadId} thread");
+                return result;
             }
             // In case we already know port name just send the command.
             else
             {
-                result = SendCommand(lastSuccessedPortName, cmd);
+                Trace.Write($"Trying to sent cmd at {lastSuccessedPortName}");
+                var result = SendCommand(lastSuccessedPortName, cmd);
+                Trace.WriteLine($"Cmd result {result}");
+                return result;
             }
-            return result;
         }
 
         private Status GetStatus(String portName)
@@ -165,7 +182,7 @@ namespace HwdgWrapper
             {
                 try
                 {
-                    Trace.WriteLine($"Getting status from {portName}");
+                    Trace.WriteLine($"Getting status from {portName} at {Thread.CurrentThread.ManagedThreadId} thread");
                     WriteToPort(port, getStatusCommand);
 
                     // Wait until we get all bytes of response
@@ -192,12 +209,12 @@ namespace HwdgWrapper
                     var checksum = b.CalcCrc7(statusLength - 1);
                     if (checksum != b[statusLength - 1])
                     {
-                        Trace.WriteLine(
-                            $"Checksum verification error. Calculated: {checksum}. Received: {b[statusLength - 1]}");
+                        Trace.Write("Checksum verification error.");
+                        Trace.WriteLine($"Calculated: {checksum}. Received: {b[statusLength - 1]}");
                         TransmissionFailed();
                         return null;
                     }
-                    Trace.WriteLine("Checksum verification ok.");
+                    Trace.WriteLine($"Checksum verification ok. at {Thread.CurrentThread.ManagedThreadId} thread");
 
                     // If there is no exceptions during writing and reading that
                     // means HWDG is present on current port and responses. Update
@@ -206,13 +223,13 @@ namespace HwdgWrapper
                     TransmissionOk(port.PortName);
                     return new Status(b);
                 }
-
                 // If any exception occurred that means transmission has failed.
                 // So we need to set last succeeded port name to NULL.
                 // Set lastSuccessedPortName to NULL if necessary.
                 catch (Exception ex)
                 {
-                    Trace.WriteLine($"Get status fail! Reason: {ex.Message}");
+                    Trace.Write($"Get status fail at {Thread.CurrentThread.ManagedThreadId} thread! ");
+                    Trace.WriteLine($"Reason: {ex.Message}");
                     TransmissionFailed();
                     return null;
                 }
@@ -229,7 +246,8 @@ namespace HwdgWrapper
             {
                 try
                 {
-                    Trace.WriteLine($"Sending command from {portName}");
+                    Trace.Write($"Sending command from {portName} ");
+                    Trace.WriteLine($"at {Thread.CurrentThread.ManagedThreadId} thread");
                     WriteToPort(port, cmd);
 
                     // Wait until we get all bytes of response
@@ -243,7 +261,8 @@ namespace HwdgWrapper
                     // Check that we received all bytes.
                     if (port.BytesToRead != cmdResponseLength)
                     {
-                        Trace.WriteLine($"No HWDG found on {portName} port");
+                        Trace.Write($"No HWDG found on {portName} port ");
+                        Trace.WriteLine($"at {Thread.CurrentThread.ManagedThreadId} thread");
                         TransmissionFailed();
                         return Response.SendCommandNoHwdgResponse;
                     }
@@ -253,18 +272,26 @@ namespace HwdgWrapper
                     // If there is no exceptions during writing and reading that
                     // means HWDG is present on current port and responses. Update
                     // last successful connection port name if necessary.
-                    Trace.WriteLine($"Reading {rsp} OK!");
+                    Trace.WriteLine($"Reading {rsp} OK! at {Thread.CurrentThread.ManagedThreadId} thread");
                     TransmissionOk(portName);
                     return rsp;
                 }
 
-                // If any exception occurred that means transmission has failed.
+                // If any other exception occurred that means transmission has failed.
                 // So we need to set last succeeded port name to NULL.
                 // Set lastSuccessedPortName to NULL if necessary.
                 catch (Exception ex)
                 {
-                    Trace.WriteLine($"Send command fail! Reason: {ex.Message}");
+                    Trace.Write($"Send command fail! Hr:{ex.HResult:X2} Reason: {ex.Message}. ");
+                    Trace.WriteLine($"at {Thread.CurrentThread.ManagedThreadId} thread");
+
                     TransmissionFailed();
+                    if ((UInt32) ex.HResult == 0x80070005)
+                    {
+                        Trace.WriteLine($"Port busy at {Thread.CurrentThread.ManagedThreadId} thread");
+                        return Response.SendCommandPortBusy;
+                    }
+                    Trace.WriteLine("Other err");
                     return Response.SendCommandUnknownError;
                 }
             }
@@ -278,7 +305,8 @@ namespace HwdgWrapper
         {
             if (lastSuccessedPortName == portName) return;
             lastSuccessedPortName = portName;
-            Trace.WriteLine($"lastSuccessedPortName set to {portName}");
+            Trace.Write($"lastSuccessedPortName set to {portName} ");
+            Trace.WriteLine($"at {Thread.CurrentThread.ManagedThreadId} thread");
             isUpdated = true;
         }
 
@@ -289,7 +317,7 @@ namespace HwdgWrapper
         {
             if (lastSuccessedPortName == null) return;
             lastSuccessedPortName = null;
-            Trace.WriteLine("lastSuccessedPortName set to NULL");
+            Trace.WriteLine($"lastSuccessedPortName set to NULL at {Thread.CurrentThread.ManagedThreadId} thread");
             isUpdated = true;
         }
 
@@ -297,11 +325,13 @@ namespace HwdgWrapper
         {
             port.ReadTimeout = 30;
             port.WriteTimeout = 30;
-            Trace.WriteLine($"Opening {port.PortName} port...");
+            Trace.Write($"Opening {port.PortName} port ");
+            Trace.WriteLine($"at {Thread.CurrentThread.ManagedThreadId} thread");
             port.Open();
-            Trace.WriteLine($"Writing {data:X2} to the {port.PortName} port...");
+            Trace.Write($"Writing {data:X2} to the {port.PortName} port ");
+            Trace.WriteLine($"at {Thread.CurrentThread.ManagedThreadId} thread");
             port.BaseStream.WriteByte(data);
-            Trace.WriteLine($"Write {data:X2} OK!");
+            Trace.WriteLine($"Write {data:X2} OK! at {Thread.CurrentThread.ManagedThreadId} thread");
         }
 
         public void Dispose()
@@ -331,16 +361,16 @@ namespace HwdgWrapper
                     var threadId = Thread.CurrentThread.ManagedThreadId;
                     try
                     {
-                        Trace.WriteLine(
-                            $"Begin invoke OnConnected delegate {itemDelegate.Method.Name} in {threadId} thread.");
+                        Trace.Write("Begin invoke OnConnected delegate ");
+                        Trace.WriteLine($"{itemDelegate.Method.Name} in {threadId} thread.");
                         ((HwdgResult) itemDelegate).Invoke(status);
-                        Trace.WriteLine(
-                            $"End invoke OnConnected delegate {itemDelegate.Method.Name} in {threadId} thread.");
+                        Trace.Write("End invoke OnConnected delegate ");
+                        Trace.WriteLine($"{itemDelegate.Method.Name} in {threadId} thread.");
                     }
                     catch (Exception e)
                     {
-                        Trace.WriteLine(
-                            $"OnConnected delegate {itemDelegate.Method.Name} in {threadId} thread thrown exception: {e}.");
+                        Trace.Write($"OnConnected delegate {itemDelegate.Method.Name} ");
+                        Trace.WriteLine($"in {threadId} thread thrown exception: {e}.");
                         throw;
                     }
                 }
@@ -362,16 +392,16 @@ namespace HwdgWrapper
                     var threadId = Thread.CurrentThread.ManagedThreadId;
                     try
                     {
-                        Trace.WriteLine(
-                            $"Begin invoke OnDisconnected delegate {itemDelegate.Method.Name} in {threadId} thread.");
+                        Trace.Write("Begin invoke OnDisconnected delegate ");
+                        Trace.WriteLine($"{itemDelegate.Method.Name} in {threadId} thread.");
                         ((Action) itemDelegate).Invoke();
-                        Trace.WriteLine(
-                            $"End invoke OnDisconnected delegate {itemDelegate.Method.Name} in {threadId} thread.");
+                        Trace.Write("End invoke OnDisconnected delegate ");
+                        Trace.WriteLine($"{itemDelegate.Method.Name} in {threadId} thread.");
                     }
                     catch (Exception e)
                     {
-                        Trace.WriteLine(
-                            $"OnDisconnected delegate {itemDelegate.Method.Name} in {threadId} thread thrown exception: {e}.");
+                        Trace.Write($"OnDisconnected delegate {itemDelegate.Method.Name} ");
+                        Trace.WriteLine($"in {threadId} thread thrown exception: {e}.");
                         throw;
                     }
                 }
@@ -394,16 +424,16 @@ namespace HwdgWrapper
                     var threadId = Thread.CurrentThread.ManagedThreadId;
                     try
                     {
-                        Trace.WriteLine(
-                            $"Begin invoke OnUpdated delegate {itemDelegate.Method.Name} in {threadId} thread.");
+                        Trace.Write("Begin invoke OnUpdated delegate ");
+                        Trace.WriteLine($"{itemDelegate.Method.Name} in {threadId} thread.");
                         ((HwdgResult) itemDelegate).Invoke(status);
-                        Trace.WriteLine(
-                            $"End invoke OnUpdated delegate {itemDelegate.Method.Name} in {threadId} thread.");
+                        Trace.Write("End invoke OnUpdated delegate ");
+                        Trace.WriteLine($"{itemDelegate.Method.Name} in {threadId} thread.");
                     }
                     catch (Exception e)
                     {
-                        Trace.WriteLine(
-                            $"OnUpdated delegate {itemDelegate.Method.Name} in {threadId} thread thrown exception: {e}.");
+                        Trace.Write($"OnUpdated delegate {itemDelegate.Method.Name} ");
+                        Trace.WriteLine($"in {threadId} thread thrown exception: {e}.");
                         throw;
                     }
                 }

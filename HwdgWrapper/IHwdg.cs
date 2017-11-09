@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HwdgWrapper
@@ -9,10 +10,56 @@ namespace HwdgWrapper
     public interface IHwdg
     {
         /// <summary>
-        /// Restore hwdg ststus.
+        /// Last known HWDG status.
         /// </summary>
-        /// <param name="status">Status to be restored.</param>
-        void RestoreStatus(Status status);
+        Status LastStatus { get; }
+
+        /// <summary>
+        /// Save current HWDG state into internal memory.
+        /// </summary>
+        /// <returns>Returns operation status.</returns>
+        Response SaveCurrentState();
+
+        /// <summary>
+        /// Enable built in LED.
+        /// </summary>
+        /// <returns>Returns operation status.</returns>
+        Response EnableLed();
+
+        /// <summary>
+        /// Disable built in LED.
+        /// </summary>
+        /// <returns>Returns operation status.</returns>
+        Response DisableLed();
+
+        /// <summary>
+        /// Enable reset pulse on startup.
+        /// </summary>
+        /// <returns>Returns operation status.</returns>
+        Response RstPulseOnStartupEnable();
+
+        /// <summary>
+        /// Disable reset pulse on startup.
+        /// </summary>
+        /// <returns>Returns operation status.</returns>
+        Response RstPulseOnStartupDisable();
+
+        /// <summary>
+        /// Enable power pulse on startup.
+        /// </summary>
+        /// <returns>Returns operation status.</returns>
+        Response PwrPulseOnStartupEnable();
+
+        /// <summary>
+        /// Disable power pulse on startup.
+        /// </summary>
+        /// <returns>Returns operation status.</returns>
+        Response PwrPulseOnStartupDisable();
+
+        /// <summary>
+        /// Restore factory chip settings.
+        /// </summary>
+        void RestoreFactory();
 
         /// <summary>
         /// Execute sequence to test soft reset ability.
@@ -108,87 +155,151 @@ namespace HwdgWrapper
         Status GetStatus();
 
         /// <summary>
+        /// Save current HWDG state into internal memory asynchronously.
+        /// </summary>
+        /// <param name="ct">Cancellation token (optional).</param>
+        /// <returns>Returns operation status.</returns>
+        Task<Response> SaveCurrentStateAsync(CancellationToken ct = default(CancellationToken));
+
+        /// <summary>
+        /// Enable built in LED asynchronously.
+        /// </summary>
+        /// <param name="ct">Cancellation token (optional).</param>
+        /// <returns>Returns operation status.</returns>
+        Task<Response> EnableLedAsync(CancellationToken ct = default(CancellationToken));
+
+        /// <summary>
+        /// Disable built in LED asynchronously.
+        /// </summary>
+        /// <param name="ct">Cancellation token (optional).</param>
+        /// <returns>Returns operation status.</returns>
+        Task<Response> DisableLedAsync(CancellationToken ct = default(CancellationToken));
+
+        /// <summary>
+        /// Enable reset pulse on startup asynchronously.
+        /// </summary>
+        /// <param name="ct">Cancellation token (optional).</param>
+        /// <returns>Returns operation status.</returns>
+        Task<Response> RstPulseOnStartupEnableAsync(CancellationToken ct = default(CancellationToken));
+
+        /// <summary>
+        /// Disable reset pulse on startup asynchronously.
+        /// </summary>
+        /// <param name="ct">Cancellation token (optional).</param>
+        /// <returns>Returns operation status.</returns>
+        Task<Response> RstPulseOnStartupDisableAsync(CancellationToken ct = default(CancellationToken));
+
+        /// <summary>
+        /// Enable power pulse on startup asynchronously.
+        /// </summary>
+        /// <param name="ct">Cancellation token (optional).</param>
+        /// <returns>Returns operation status.</returns>
+        Task<Response> PwrPulseOnStartupEnableAsync(CancellationToken ct = default(CancellationToken));
+
+        /// <summary>
+        /// Disable power pulse on startup asynchronously.
+        /// </summary>
+        /// <param name="ct">Cancellation token (optional).</param>
+        /// <returns>Returns operation status.</returns>
+        Task<Response> PwrPulseOnStartupDisableAsync(CancellationToken ct = default(CancellationToken));
+
+        /// <summary>
+        /// Restore factory chip settings asynchronously.
+        /// </summary>
+        /// <param name="ct">Cancellation token (optional).</param>
+        void RestoreFactoryAsync(CancellationToken ct = default(CancellationToken));
+
+        /// <summary>
         /// Set reboot timeout asynchronously.
         /// </summary>
         /// <param name="ms">Timeout, ms. Range 10000-600000 ms.</param>
+        /// <param name="ct">Cancellation token (optional).</param>
         /// <returns>Returns <see cref="Response.SetRebootTimeoutOk"/> when operation succeeded,
         /// otherwise returns <see cref="Response.Busy"/></returns>
         /// <remarks>Even if input value goes beyond 10000-600000 ms range this value stays
         /// within specified range. Ex: input value 1 becomes 10000 before decoding proceed.
         /// See par.4.1 "Hardware watchdog V1 reference manual" for more details.</remarks>
-        Task<Response> SetRebootTimeoutAsync(Int32 ms);
+        Task<Response> SetRebootTimeoutAsync(Int32 ms, CancellationToken ct = default(CancellationToken));
 
         /// <summary>
         /// Set response timeout asynchronously.
         /// </summary>
         /// <param name="ms">Timeout, ms. Range 5000-300000 ms.</param>
+        /// <param name="ct">Cancellation token (optional).</param>
         /// <returns>Returns <see cref="Response.SetResponseTimeoutOk"/> when operation succeeded,
         /// otherwise returns <see cref="Response.Busy"/></returns>
         /// <remarks>Even if input value goes beyond 5000-300000 ms range this value stays
         /// within specified range. Ex: input value 999000 becomes 300000 before decoding proceed.
         /// See par.4.2 "Hardware watchdog V1 reference manual" for more details.</remarks>
-        Task<Response> SetResponseTimeoutAsync(Int32 ms);
+        Task<Response> SetResponseTimeoutAsync(Int32 ms, CancellationToken ct = default(CancellationToken));
 
         /// <summary>
         /// Set soft reset attempts count asynchronously.
         /// </summary>
         /// <param name="count">Attempts count (1-8).</param>
+        /// <param name="ct">Cancellation token (optional).</param>
         /// <returns>Returns <see cref="Response.SetSoftResetAttemptsOk"/> when operation succeeded,
         /// otherwise returns <see cref="Response.Busy"/></returns>
         /// <remarks>Even if input value goes beyond 1-8 range this value stays
         /// within specified range. Ex: input value 0 becomes 1 before decoding proceed.
         /// See par.4.3 "Hardware watchdog V1 reference manual" for more details.</remarks>
-        Task<Response> SetSoftResetAttemptsAsync(Byte count);
+        Task<Response> SetSoftResetAttemptsAsync(Byte count, CancellationToken ct = default(CancellationToken));
 
         /// <summary>
         /// Set hard reset attempts count asynchronously.
         /// </summary>
         /// <param name="count">Attempts count (1-8).</param>
+        /// <param name="ct">Cancellation token (optional).</param>
         /// <returns>Returns <see cref="Response.SetHardResetAttemptsOk"/> when operation succeeded,
         /// otherwise returns <see cref="Response.Busy"/></returns>
         /// <remarks>Even if input value goes beyond 1-8 range this value stays
         /// within specified range. Ex: input value 99 becomes 8 before decoding proceed.
         /// See par.4.4 "Hardware watchdog V1 reference manual" for more details.</remarks>
-        Task<Response> SetHardResetAttemptsAsync(Byte count);
+        Task<Response> SetHardResetAttemptsAsync(Byte count, CancellationToken ct = default(CancellationToken));
 
         /// <summary>
         /// Enable hard reset asynchronously.
         /// </summary>
+        /// <param name="ct">Cancellation token (optional).</param>
         /// <returns>Returns <see cref="Response.EnableHardResetOk"/> when operation succeeded,
         /// otherwise returns <see cref="Response.Busy"/></returns>
         /// <remarks>See par.4.5 "Hardware watchdog V1 reference manual" for more details.</remarks>
-        Task<Response> EnableHardResetAsync();
+        Task<Response> EnableHardResetAsync(CancellationToken ct = default(CancellationToken));
 
         /// <summary>
         /// Disable hard reset asynchronously.
         /// </summary>
+        /// <param name="ct">Cancellation token (optional).</param>
         /// <returns>Returns <see cref="Response.DisableHardResetOk"/> when operation succeeded,
         /// otherwise returns <see cref="Response.Busy"/></returns>
         /// <remarks>See par.4.6 "Hardware watchdog V1 reference manual" for more details.</remarks>
-        Task<Response> DisableHardResetAsync();
+        Task<Response> DisableHardResetAsync(CancellationToken ct = default(CancellationToken));
 
         /// <summary>
         /// Send 'Start' command asynchronously.
         /// </summary>
+        /// <param name="ct">Cancellation token (optional).</param>
         /// <returns>Returns <see cref="Response.StartOk"/> when operation succeeded,
         /// otherwise returns <see cref="Response.Busy"/></returns>
         /// <remarks>See par.4.7 "Hardware watchdog V1 reference manual" for more details.</remarks>
-        Task<Response> StartAsync();
+        Task<Response> StartAsync(CancellationToken ct = default(CancellationToken));
 
         /// <summary>
         /// Send 'Stop' command asynchronously.
         /// </summary>
+        /// <param name="ct">Cancellation token (optional).</param>
         /// <returns>Returns <see cref="Response.StopOk"/> when operation succeeded,
         /// otherwise returns <see cref="Response.Busy"/></returns>
         /// <remarks>See par.4.8 "Hardware watchdog V1 reference manual" for more details.</remarks>
-        Task<Response> StopAsync();
+        Task<Response> StopAsync(CancellationToken ct = default(CancellationToken));
 
         /// <summary>
         /// Get current hwdg status asynchronously.
         /// </summary>
+        /// <param name="ct">Cancellation token (optional).</param>
         /// <returns>Returns <see cref="Status"/></returns>
         /// <remarks>See par.4.10 "Hardware watchdog V1 reference manual" for more details.</remarks>
-        Task<Status> GetStatusAsync();
+        Task<Status> GetStatusAsync(CancellationToken ct = default(CancellationToken));
 
         /// <summary>
         /// Occurs when hwdg disconnects form host.
