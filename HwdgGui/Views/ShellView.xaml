@@ -11,6 +11,9 @@
                   ResizeMode="CanMinimize"
         Title="ShellView" IsTitleVisible="False" Height="350" Width="525" Visibility="Visible"
                   cal:Message.Attach="[Event Closing] = [Action OnClose]">
+    <mui:ModernWindow.TitleLinks>
+        <mui:Link DisplayName="О программе" Source="/Views/About.xaml" />
+    </mui:ModernWindow.TitleLinks>
     <mui:ModernWindow.MenuLinkGroups>
         <mui:LinkGroup DisplayName="Главная">
             <mui:LinkGroup.Links>
@@ -21,11 +24,17 @@
             <mui:LinkGroup.Links>
                 <mui:Link DisplayName="Основные" Source="/Views/MainSettingsView.xaml"></mui:Link>
                 <mui:Link DisplayName="Дополнительные" Source="/Views/OtherSettingsView.xaml"></mui:Link>
+                <mui:Link DisplayName="Параметры автозагрузки" Source="/Views/AppAutorunView.xaml"></mui:Link>
             </mui:LinkGroup.Links>
         </mui:LinkGroup>
         <mui:LinkGroup DisplayName="Тест">
             <mui:LinkGroup.Links>
                 <mui:Link Source="/Views/TestView.xaml"></mui:Link>
+            </mui:LinkGroup.Links>
+        </mui:LinkGroup>
+        <mui:LinkGroup DisplayName="О программе" GroupKey="settings">
+            <mui:LinkGroup.Links>
+                <mui:Link Source="/Views/About.xaml" />
             </mui:LinkGroup.Links>
         </mui:LinkGroup>
     </mui:ModernWindow.MenuLinkGroups>

@@ -1,0 +1,15 @@
+﻿<UserControl x:Class="HwdgGui.Views.About"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <StackPanel >
+            <mui:BBCodeBlock BBCode="[b]USB Watchdog UI monitor[/b] - программа для монитроинга состояния операционной системы при помощи аппаратного строржевого таймера [url=https://hwdg.ru]Hardware USB Watchdog[/url].&#13;&#10;&#13;&#10;Это проект с открытым исходным кодом, доступный на [url=https://github.com/kaseat/Hardware-USB-Watchdog]GitHub[/url]. Аппаратный строржевой таймер можно купить готовый или собрать самому на базе популярной платформы Arduino" Margin="0,0,0,32" />
+            <TextBlock Text="Версия программы: 1.0" Style="{StaticResource Heading2}" />
+        </StackPanel>
+    </Grid>
+</UserControl>

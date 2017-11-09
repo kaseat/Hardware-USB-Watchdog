@@ -25,11 +25,11 @@ namespace HwdgGui.Utils
             if (settingsKey == null)
             {
                 settingsKey = Registry.CurrentUser.CreateSubKey(SettingsPath, true);
-                settingsKey.SetValue(AutoMonitor, 0, RegistryValueKind.DWord);
+                settingsKey.SetValue(AutoMonitor, 1, RegistryValueKind.DWord);
                 settingsKey.SetValue(HwStatus, 0, RegistryValueKind.DWord);
             }
             var am = settingsKey.GetValue(AutoMonitor, null);
-            if (am == null) settingsKey.SetValue(AutoMonitor, 0);
+            if (am == null) settingsKey.SetValue(AutoMonitor, 1);
 
             var hs = settingsKey.GetValue(HwStatus, null);
             if (hs == null) settingsKey.SetValue(HwStatus, 0);
@@ -76,7 +76,7 @@ namespace HwdgGui.Utils
         /// <inheritdoc />
         public Boolean Automonitor
         {
-            get => Convert.ToBoolean(settingsKey.GetValue(AutoMonitor, 0));
+            get => Convert.ToBoolean(settingsKey.GetValue(AutoMonitor, 1));
             set => settingsKey.SetValue(AutoMonitor, value, RegistryValueKind.DWord);
         }
 

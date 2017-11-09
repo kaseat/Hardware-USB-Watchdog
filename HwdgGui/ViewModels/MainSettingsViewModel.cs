@@ -74,6 +74,7 @@ namespace HwdgGui.ViewModels
             if (HwStatus == null)
             {
                 CanEditSettings = false;
+                HwdgConnected = false;
             }
             else
             {
@@ -91,7 +92,7 @@ namespace HwdgGui.ViewModels
                 }
 
                 // Update view controls.
-                settings.HwdgStatus = HwStatus;
+                HwdgConnected = true;
                 HardReset = (status.State & WatchdogState.HardRersetEnabled) != 0;
                 Led = (status.State & WatchdogState.LedDisabled) == 0;
                 HardResetCount = status.HardResetAttempts;
@@ -100,6 +101,13 @@ namespace HwdgGui.ViewModels
                 ResponseTimeout = status.ResponseTimeout / 1000;
             }
         }
+
+
+        /// <summary>
+        /// HwdgConnected binding.
+        /// </summary>
+        [UsedImplicitly]
+        public Boolean HwdgConnected { get; set; }
 
         /// <summary>
         /// Hard reset binding.
@@ -111,13 +119,13 @@ namespace HwdgGui.ViewModels
         /// Executes when WPF SoftResetCount slider value changes.
         /// </summary>
         [UsedImplicitly]
-        public async void OnHwdgHrChecked() => await hwdg.EnableHardResetAsync();
+        public async void OnHwdgHrCheckedAsync() => await hwdg.EnableHardResetAsync();
 
         /// <summary>
         /// Executes when WPF SoftResetCount slider value changes.
         /// </summary>
         [UsedImplicitly]
-        public async void OnHwdgHrUnchecked() => await hwdg.DisableHardResetAsync();
+        public async void OnHwdgHrUncheckedAsync() => await hwdg.DisableHardResetAsync();
 
         /// <summary>
         /// Reboot timeout binding.
@@ -187,12 +195,12 @@ namespace HwdgGui.ViewModels
         /// Executes when WPF Led checks.
         /// </summary>
         [UsedImplicitly]
-        public async void LedOn() => await hwdg.EnableLedAsync();
+        public async void LedOnAsync() => await hwdg.EnableLedAsync();
 
         /// <summary>
         /// Executes when WPF Led unchecks.
         /// </summary>
         [UsedImplicitly]
-        public async void LedOff() => await hwdg.DisableLedAsync();
+        public async void LedOffAsync() => await hwdg.DisableLedAsync();
     }
 }

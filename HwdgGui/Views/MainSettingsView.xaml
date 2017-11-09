@@ -8,65 +8,64 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <converters:InvertableBooleanToVisibilityConverter x:Key="Converter"/>
     </UserControl.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-        </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" IsEnabled="{Binding CanEditSettings}" Grid.ColumnSpan="2" Margin="0,5,0,8">
+        <Label Visibility="{Binding HwdgConnected, Converter={StaticResource Converter}, ConverterParameter=Inverted}" Margin="0,30,0,0">Изменение настроек HWDG недоступно когда устройство не подключено.</Label>
+        <StackPanel Visibility="{Binding HwdgConnected, Converter={StaticResource Converter}, ConverterParameter=Normal}" Margin="0,20,0,0">
             <Label Visibility="{Binding CanEditSettings, Converter={StaticResource Converter}, ConverterParameter=Inverted}" HorizontalAlignment="Center">Изменение параметров монитроинга недоступно во время наблюдения.</Label>
-            <Label Visibility="{Binding CanEditSettings, Converter={StaticResource Converter}, ConverterParameter=Inverted}" HorizontalAlignment="Center" Margin="0,0,0,5">Чтобы изменить настройки нажмите СТОП на главной странице.</Label>
-            <Grid Margin="0,0,0,5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition Width="22"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" >Ожидание запуска системы:</Label>
-                <Slider Grid.Column="1" x:Name="RebootTimeout" cal:Message.Attach="[Event LostMouseCapture] = [Action OnRebootTimeoutChanged($this)]" VerticalAlignment="Top"  Maximum="600" Minimum="10" SmallChange="5" LargeChange="30" TickFrequency="5" Value="150" IsSnapToTickEnabled="True" Focusable="False"/>
-                <Label Grid.Column="2" Content="{Binding Value, ElementName=RebootTimeout}"/>
-                <Label Grid.Column="3" Content="с."/>
-            </Grid>
-            <Grid Margin="0,0,0,5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition Width="22"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" >Ожидание отклика системы:</Label>
-                <Slider Grid.Column="1" x:Name="ResponseTimeout" cal:Message.Attach="[Event LostMouseCapture] = [Action OnResponseTimeoutChanged($this)]" VerticalAlignment="Top"  Maximum="300" Minimum="5" SmallChange="5" LargeChange="30" TickFrequency="5" Value="90" IsSnapToTickEnabled="True" Focusable="False"/>
-                <Label Grid.Column="2" Content="{Binding Value, ElementName=ResponseTimeout}"/>
-                <Label Grid.Column="3" Content="с."/>
-            </Grid>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" >Количество попыток перезагрузки:</Label>
-                <Slider Grid.Column="1" x:Name="SoftResetCount" cal:Message.Attach="[Event LostMouseCapture] = [Action OnSoftResetCountChanged($this)]" VerticalAlignment="Top"  Maximum="8" Minimum="1" SmallChange="1" LargeChange="1" TickFrequency="1" Value="3" IsSnapToTickEnabled="True" Focusable="False"/>
-                <Label Grid.Column="2" Content="{Binding Value, ElementName=SoftResetCount}"/>
-            </Grid>
-            <CheckBox Name="HardReset" Content="Жёсткая перезагрузка" Focusable="False" cal:Message.Attach="[Event Checked] = [Action OnHwdgHrChecked];[Event Unchecked] = [Action OnHwdgHrUnchecked]" IsChecked="True"/>
-            <Grid Visibility="{Binding IsChecked, Converter={StaticResource BoolToVis}, ElementName=HardReset}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" >Количество попыток жёсткой перезагрузки:</Label>
-                <Slider Grid.Column="1" x:Name="HardResetCount" cal:Message.Attach="[Event LostMouseCapture] = [Action OnHardResetCountChanged($this)]" VerticalAlignment="Top"  Maximum="8" Minimum="1" SmallChange="1" LargeChange="1" TickFrequency="1" Value="3" IsSnapToTickEnabled="True" Focusable="False"/>
-                <Label Grid.Column="2" Content="{Binding Value, ElementName=HardResetCount}"/>
-            </Grid>
-        </StackPanel>
-        <StackPanel Grid.Row="1">
-            <CheckBox Name="Led" Content="Включить светодиод на плате" Focusable="False" cal:Message.Attach="[Event Checked] = [Action LedOn];[Event Unchecked] = [Action LedOff]" IsChecked="True"/>
+            <Label Visibility="{Binding CanEditSettings, Converter={StaticResource Converter}, ConverterParameter=Inverted}" HorizontalAlignment="Center" Margin="0,0,0,10">Чтобы изменить настройки нажмите СТОП на главной странице.</Label>
+            <StackPanel IsEnabled="{Binding CanEditSettings}" Margin="0,5,0,0">
+
+                <Grid Margin="0,0,0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="22"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" >Ожидание запуска системы:</Label>
+                    <Slider Grid.Column="1" x:Name="RebootTimeout" cal:Message.Attach="[Event LostMouseCapture] = [Action OnRebootTimeoutChanged($this)]" VerticalAlignment="Top"  Maximum="600" Minimum="10" SmallChange="5" LargeChange="30" TickFrequency="5" Value="150" IsSnapToTickEnabled="True" Focusable="False"/>
+                    <Label Grid.Column="2" Content="{Binding Value, ElementName=RebootTimeout}"/>
+                    <Label Grid.Column="3" Content="с."/>
+                </Grid>
+                <Grid Margin="0,0,0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="22"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" >Ожидание отклика системы:</Label>
+                    <Slider Grid.Column="1" x:Name="ResponseTimeout" cal:Message.Attach="[Event LostMouseCapture] = [Action OnResponseTimeoutChanged($this)]" VerticalAlignment="Top"  Maximum="300" Minimum="5" SmallChange="5" LargeChange="30" TickFrequency="5" Value="90" IsSnapToTickEnabled="True" Focusable="False"/>
+                    <Label Grid.Column="2" Content="{Binding Value, ElementName=ResponseTimeout}"/>
+                    <Label Grid.Column="3" Content="с."/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" >Количество попыток перезагрузки:</Label>
+                    <Slider Grid.Column="1" x:Name="SoftResetCount" cal:Message.Attach="[Event LostMouseCapture] = [Action OnSoftResetCountChanged($this)]" VerticalAlignment="Top"  Maximum="8" Minimum="1" SmallChange="1" LargeChange="1" TickFrequency="1" Value="3" IsSnapToTickEnabled="True" Focusable="False"/>
+                    <Label Grid.Column="2" Content="{Binding Value, ElementName=SoftResetCount}"/>
+                </Grid>
+                <CheckBox Name="HardReset" Content="Жёсткая перезагрузка" Focusable="False" cal:Message.Attach="[Event Checked] = [Action OnHwdgHrCheckedAsync];[Event Unchecked] = [Action OnHwdgHrUncheckedAsync]" IsChecked="True" Margin="0,5,0,8"/>
+                <Grid Visibility="{Binding IsChecked, Converter={StaticResource Converter}, ConverterParameter=Normal, ElementName=HardReset}" Margin="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" >Количество попыток жёсткой перезагрузки:</Label>
+                    <Slider Grid.Column="1" x:Name="HardResetCount" cal:Message.Attach="[Event LostMouseCapture] = [Action OnHardResetCountChanged($this)]" VerticalAlignment="Top"  Maximum="8" Minimum="1" SmallChange="1" LargeChange="1" TickFrequency="1" Value="3" IsSnapToTickEnabled="True" Focusable="False"/>
+                    <Label Grid.Column="2" Content="{Binding Value, ElementName=HardResetCount}"/>
+                </Grid>
+            </StackPanel>
+            <StackPanel>
+                <CheckBox Name="Led" Content="Включить светодиод на плате" Focusable="False" cal:Message.Attach="[Event Checked] = [Action LedOnAsync];[Event Unchecked] = [Action LedOffAsync]" IsChecked="True" Margin="0,5,0,0"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </UserControl>

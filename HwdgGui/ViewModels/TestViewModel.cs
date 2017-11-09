@@ -13,6 +13,7 @@
 // limitations under the License.
 
 using System;
+using System.Windows.Threading;
 using Caliburn.Micro;
 using HwdgGui.Annotations;
 using HwdgWrapper;
@@ -21,7 +22,9 @@ namespace HwdgGui.ViewModels
 {
     public class TestViewModel : PropertyChangedBase
     {
+        private const Byte InitialCounter = 6;
         private readonly IHwdg hwdg;
+        private readonly DispatcherTimer timer = new DispatcherTimer();
 
         public TestViewModel(IHwdg hwdg)
         {
@@ -29,6 +32,20 @@ namespace HwdgGui.ViewModels
             CanResetTest = hwdg.LastStatus != null;
             hwdg.Connected += OnConnected;
             hwdg.Disconnected += OnDisconnected;
+            HardResetCountdownVisibility = false;
+
+            HardResetCountdown = InitialCounter;
+            timer.Interval = TimeSpan.FromMilliseconds(1000);
+            timer.Tick += OnTick;
+        }
+
+        private void OnTick(Object sender, EventArgs e)
+        {
+            if (--HardResetCountdown >= 0) return;
+            if (hwdg.GetStatus() != null)
+                CanResetTest = true;
+            HardResetCountdownVisibility = false;
+            timer.Stop();
         }
 
         private void OnDisconnected() => CanResetTest = false;
@@ -42,6 +59,18 @@ namespace HwdgGui.ViewModels
         public Boolean CanResetTest { get; set; }
 
         /// <summary>
+        /// Countdown text.
+        /// </summary>
+        [UsedImplicitly]
+        public Int32 HardResetCountdown { get; set; }
+
+        /// <summary>
+        /// Determines coundown is visible.
+        /// </summary>
+        [UsedImplicitly]
+        public Boolean HardResetCountdownVisibility { get; set; }
+
+        /// <summary>
         /// Executes when SoftResetTest button pressed.
         /// </summary>
         [UsedImplicitly]
@@ -51,6 +80,13 @@ namespace HwdgGui.ViewModels
         /// Executes when HardResetTest button pressed.
         /// </summary>
         [UsedImplicitly]
-        public void HardResetTest() => hwdg.TestHardReset();
+        public void HardResetTest()
+        {
+            HardResetCountdown = InitialCounter;
+            HardResetCountdownVisibility = true;
+            CanResetTest = false;
+            timer.Start();
+            hwdg.TestHardReset();
+        }
     }
 }

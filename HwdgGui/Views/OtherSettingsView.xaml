@@ -4,22 +4,20 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:cal="http://www.caliburnproject.org"
+             xmlns:converters="clr-namespace:HwdgGui.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <converters:InvertableBooleanToVisibilityConverter x:Key="Converter"/>
     </UserControl.Resources>
     <Grid>
         <StackPanel>
-            <StackPanel Margin="0,0,0,40">
-                <CheckBox Name="Autorun" Content="Запуск приложения при старте Windows" Focusable="False"/>
-                <CheckBox Name="AutoMonitor" Content="Автозапуск мониторинга при старте приложения" Focusable="False"/>
-            </StackPanel>
-            <StackPanel Visibility="{Binding HwdgSettingsVisible, Converter={StaticResource BoolToVis}}">
-                <CheckBox Name="PwrPulse" Content="Короткий импульс на PWR при подаче питания на материнскую плату" Focusable="False" cal:Message.Attach="[Event Checked] = [Action PwrPulseChecked];[Event Unchecked] = [Action PwrPulseUnchecked]" IsChecked="False"/>
-                <CheckBox Name="RstPulse" Content="Короткий импульс на RST при подаче питания на материнскую плату" Focusable="False" cal:Message.Attach="[Event Checked] = [Action RstPulseChecked];[Event Unchecked] = [Action RstPulseUnchecked]" IsChecked="False"/>
+            <Label Visibility="{Binding HwdgSettingsVisible, Converter={StaticResource Converter}, ConverterParameter=Inverted}" Margin="0,30,0,0">Изменение настроек HWDG недоступно когда устройство не подключено.</Label>
+            <StackPanel Visibility="{Binding HwdgSettingsVisible, Converter={StaticResource Converter}, ConverterParameter=Normal}">
+                <CheckBox Name="PwrPulse" Content="Короткий импульс на PWR при подаче питания на материнскую плату" Focusable="False" cal:Message.Attach="[Event Checked] = [Action PwrPulseChecked];[Event Unchecked] = [Action PwrPulseUnchecked]" IsChecked="False" Margin="0,30,0,0"/>
+                <CheckBox Name="RstPulse" Content="Короткий импульс на RST при подаче питания на материнскую плату" Focusable="False" cal:Message.Attach="[Event Checked] = [Action RstPulseChecked];[Event Unchecked] = [Action RstPulseUnchecked]" IsChecked="False" Margin="0,5,0,0"/>
+                <Button Name="ResetToFactory" Margin="5,20,5,5" Focusable="False" Content="Вернуть USB Watchdog к заводским настройкам"/>
             </StackPanel>
         </StackPanel>
-
     </Grid>
 </UserControl>

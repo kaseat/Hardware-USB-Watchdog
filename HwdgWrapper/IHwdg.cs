@@ -207,7 +207,7 @@ namespace HwdgWrapper
         /// Restore factory chip settings asynchronously.
         /// </summary>
         /// <param name="ct">Cancellation token (optional).</param>
-        void RestoreFactoryAsync(CancellationToken ct = default(CancellationToken));
+        Task RestoreFactoryAsync(CancellationToken ct = default(CancellationToken));
 
         /// <summary>
         /// Set reboot timeout asynchronously.

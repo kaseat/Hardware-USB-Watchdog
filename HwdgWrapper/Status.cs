@@ -81,6 +81,16 @@ namespace HwdgWrapper
                    SoftResetAttempts == status.SoftResetAttempts;
         }
 
+        public Boolean EqualsState(Object obj)
+        {
+            return obj is Status status &&
+                   ((Int32)State & (1 << 2)) == ((Int32)status.State & (1 << 2)) &&
+                   ResponseTimeout == status.ResponseTimeout &&
+                   RebootTimeout == status.RebootTimeout &&
+                   HardResetAttempts == status.HardResetAttempts &&
+                   SoftResetAttempts == status.SoftResetAttempts;
+        }
+
         /// <inheritdoc />
         public override Int32 GetHashCode()
         {
@@ -94,7 +104,7 @@ namespace HwdgWrapper
         }
 
         /// <inheritdoc />
-        public override String ToString() => RawData.ToString("X2");
+        public override String ToString() => RawData.ToString("X8");
     }
 
     /// <summary>

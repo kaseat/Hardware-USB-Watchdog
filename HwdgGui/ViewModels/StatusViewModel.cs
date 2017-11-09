@@ -1,83 +1,28 @@
 ﻿using System;
-using System.Windows.Threading;
-using Caliburn.Micro;
 using HwdgGui.Annotations;
 using HwdgGui.Utils;
 using HwdgWrapper;
-using PropertyChanged;
 
 namespace HwdgGui.ViewModels
 {
-    public class StatusViewModel : PropertyChangedBase
+    public sealed class StatusViewModel : BaseHwdgVm
     {
-        private readonly IHwdg hwdg;
-        private readonly Dispatcher uiDisp;
-        private readonly ISettingsProvider settings;
-
         /// <summary>
         /// ctor
         /// </summary>
-        public StatusViewModel(IHwdg hwdg, ISettingsProvider settings)
+        /// <param name="hwdg">IHwdg instance.</param>
+        /// <param name="settings">ISettingsProvider instance.</param>
+        public StatusViewModel(IHwdg hwdg, ISettingsProvider settings) : base(hwdg, settings)
         {
-            // Inject dependency
-            this.hwdg = hwdg;
-            this.settings = settings;
-
-            // Get and store main thread dispatcher.
-            // This is necessary for further window color changes.
-            uiDisp = Dispatcher.CurrentDispatcher;
-
-            // Subscribe on hwdg events to handle HWDG
-            // connecting and disconnecting situations.
-            // We have only one instance of this view per app,
-            // so no need to worry about memory leak.
-            hwdg.Disconnected += OnDisconnected;
-            hwdg.Connected += OnConnected;
-            hwdg.Updated += OnUpdated;
-
-            // Get last known status.
-            HwStatus = hwdg.GetStatus();
         }
 
-        private void OnDisconnected() => HwStatus = null;
-        private void OnConnected(Status st)
-        {
-            // If auto monitoring enabled, start it immediately.
-            // We'll update status in upcoming 'OnUpdated' event.
-            if (settings.Automonitor)
-            {
-                hwdg.Stop();
-                hwdg.Start();
-            }
-
-            // Otherwise just update current status.
-            else
-            {
-                HwStatus = status;
-            }
-        }
-        private void OnUpdated(Status sta) => HwStatus = sta;
-
-        private Status status;
-
-        [DoNotNotify]
-        private Status HwStatus
-        {
-            get => status;
-            set
-            {
-                status = value;
-                OnStatusUpdate();
-            }
-        }
-
-        private void OnStatusUpdate()
+        protected override void OnStatusUpdate()
         {
             // If hwdg status is null that means hwdg disconnected.
             // We must disable all controls and change accent color.
             if (HwStatus == null)
             {
-                uiDisp.SetAccentColor(AccentColor.Disconnected);
+                UiDisp.SetAccentColor(AccentColor.Disconnected);
                 UpdateControlsOnDisconnect();
             }
             else
@@ -86,14 +31,14 @@ namespace HwdgGui.ViewModels
                 // we cant change them during monitoring execution.
                 if ((HwStatus.State & WatchdogState.IsRunning) != 0)
                 {
-                    uiDisp.SetAccentColor(AccentColor.Running);
+                    UiDisp.SetAccentColor(AccentColor.Running);
                     UpdateControlsOnRunning();
                 }
 
                 // If hwdg is not run we can edit settings.
                 if ((HwStatus.State & WatchdogState.IsRunning) == 0)
                 {
-                    uiDisp.SetAccentColor(AccentColor.Connected);
+                    UiDisp.SetAccentColor(AccentColor.Connected);
                     UpdateControlsOnConnected();
                 }
             }
@@ -116,24 +61,34 @@ namespace HwdgGui.ViewModels
             processing = true;
 
             // Get current HWDG status.
-            status = await hwdg.GetStatusAsync();
-            if (status == null)
+            HwStatus = await Hwdg.GetStatusAsync();
+
+            // If there is no HWDG move to 'disconnected' mode.
+            if (HwStatus == null)
             {
                 UpdateControlsOnDisconnect();
             }
             else
             {
-                if ((status.State & WatchdogState.IsRunning) != 0)
+                // If HWDG connected stop monitoring and update view.
+                if ((HwStatus.State & WatchdogState.IsRunning) != 0)
                 {
+                    // Save current status for futher comparison.
+                    Settings.HwdgStatus = HwStatus;
                     UpdateControlsOnRunning();
-                    await hwdg.StopAsync();
+                    await Hwdg.StopAsync();
                     processing = false;
                     return;
                 }
-                if ((status.State & WatchdogState.IsRunning) == 0)
+
+                // If HWDG is online, save current settings and start monitoring.
+                if ((HwStatus.State & WatchdogState.IsRunning) == 0)
                 {
                     UpdateControlsOnConnected();
-                    await hwdg.StartAsync();
+                    // If settings changed since last button press, update HWDG settings.
+                    if (!Settings.HwdgStatus.EqualsState(HwStatus))
+                        await Hwdg.SaveCurrentStateAsync();
+                    await Hwdg.StartAsync();
                     processing = false;
                     return;
                 }

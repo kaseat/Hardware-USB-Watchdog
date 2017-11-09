@@ -142,7 +142,7 @@ namespace HwdgWrapper
         public Task<Response> PwrPulseOnStartupDisableAsync(CancellationToken ct = default(CancellationToken))
             => wrapper.SendCommandAsync(0x3D, ct);
 
-        public void RestoreFactoryAsync(CancellationToken ct = default(CancellationToken))
+        public Task RestoreFactoryAsync(CancellationToken ct = default(CancellationToken))
             => wrapper.SendCommandAsync(0xF7, ct);
 
         public async Task<Response>

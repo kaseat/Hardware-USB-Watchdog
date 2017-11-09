@@ -86,7 +86,7 @@ namespace HwdgWrapper
                         OnDisconnected();
                     }
                 }
-                
+
                 Trace.WriteLine($"Exit SendCommand with {result} at {Thread.CurrentThread.ManagedThreadId} thread");
                 if (!isUpdated) return result;
                 isUpdated = false;
@@ -238,7 +238,7 @@ namespace HwdgWrapper
 
         private Response SendCommand(String portName, Byte cmd)
         {
-            const Int32 readCmdResponseTimeout = 30;
+            const Int32 readCmdResponseTimeout = 130;
             const Int32 cmdResponseLength = 1;
 
             // Trying to open port and send the command.

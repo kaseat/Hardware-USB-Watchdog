@@ -29,7 +29,19 @@ namespace HwdgGui.ViewModels
             {
                 hwdg.Start();
             }
+
+            hwdg.Connected += OnConnected;
         }
+
+        private void OnConnected(Status status)
+        {
+            hwdg.Stop();
+            if (settings.Automonitor)
+            {
+                hwdg.Start();
+            }
+        }
+
         /// <summary>
         /// Stop monitoring at window exit.
         /// </summary>

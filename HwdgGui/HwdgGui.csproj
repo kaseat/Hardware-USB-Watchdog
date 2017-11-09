@@ -90,11 +90,19 @@
     <Compile Include="Utils\ISettingsProvider.cs" />
     <Compile Include="Utils\RegistrySettingsProvider.cs" />
     <Compile Include="Utils\WpfAssemblyExtentions.cs" />
+    <Compile Include="ViewModels\AppAutorunViewModel.cs" />
+    <Compile Include="ViewModels\BaseHwdgVm.cs" />
     <Compile Include="ViewModels\MainSettingsViewModel.cs" />
     <Compile Include="ViewModels\OtherSettingsViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\StatusViewModel.cs" />
     <Compile Include="ViewModels\TestViewModel.cs" />
+    <Compile Include="Views\About.xaml.cs">
+      <DependentUpon>About.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AppAutorunView.xaml.cs">
+      <DependentUpon>AppAutorunView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainSettingsView.xaml.cs">
       <DependentUpon>MainSettingsView.xaml</DependentUpon>
     </Compile>
@@ -114,6 +122,14 @@
     <Compile Include="Views\TestView.xaml.cs">
       <DependentUpon>TestView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AppAutorunView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
