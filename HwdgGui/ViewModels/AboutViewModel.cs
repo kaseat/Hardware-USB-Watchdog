@@ -13,27 +13,12 @@
 // limitations under the License.
 
 using System;
+using Caliburn.Micro;
 
-namespace HwdgGui.Utils
+namespace HwdgGui.ViewModels
 {
-    /// <summary>
-    /// Represents accent color style.
-    /// </summary>
-    public enum AccentColor : Byte
+    public class AboutViewModel : PropertyChangedBase
     {
-        /// <summary>
-        /// Connected color appearance.
-        /// </summary>
-        Connected,
-
-        /// <summary>
-        /// Disconnected color appearance.
-        /// </summary>
-        Disconnected,
-
-        /// <summary>
-        /// Running color appearance.
-        /// </summary>
-        Running
+        public String Version =>$"Версия программы: {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}";
     }
 }

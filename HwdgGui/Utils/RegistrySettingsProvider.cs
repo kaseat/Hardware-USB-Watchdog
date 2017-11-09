@@ -1,11 +1,24 @@
-﻿using System;
+﻿// Copyright 2017 Oleg Petrochenko
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+using System;
 using System.Reflection;
 using HwdgWrapper;
 using Microsoft.Win32;
 
 namespace HwdgGui.Utils
 {
-
     /// <summary>
     /// Represents application settings manager.
     /// </summary>
@@ -14,6 +27,7 @@ namespace HwdgGui.Utils
         private const String AutorunPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
         private const String SettingsPath = @"SOFTWARE\Hwdg";
         private const String AutoMonitor = "AutoMonitor";
+        private const String AutoRun = "AutoRun";
         private const String HwStatus = "HwStatus";
         private readonly RegistryKey autorunKey;
         private readonly RegistryKey settingsKey;
@@ -26,25 +40,19 @@ namespace HwdgGui.Utils
             {
                 settingsKey = Registry.CurrentUser.CreateSubKey(SettingsPath, true);
                 settingsKey.SetValue(AutoMonitor, 1, RegistryValueKind.DWord);
+                settingsKey.SetValue(AutoRun, 1, RegistryValueKind.DWord);
                 settingsKey.SetValue(HwStatus, 0, RegistryValueKind.DWord);
             }
             var am = settingsKey.GetValue(AutoMonitor, null);
             if (am == null) settingsKey.SetValue(AutoMonitor, 1);
 
+            var ar = settingsKey.GetValue(AutoRun, null);
+            if (ar == null) settingsKey.SetValue(AutoRun, 1);
+
             var hs = settingsKey.GetValue(HwStatus, null);
             if (hs == null) settingsKey.SetValue(HwStatus, 0);
-        }
 
-        /// <summary>
-        /// Determines if hwdg client autostart entry exists in registry.
-        /// </summary>
-        /// <returns>Returns true if hwdg client is allowed to start
-        /// with Windows. Otherwise returns false.</returns>
-        private Boolean ReadAutostartEntry()
-        {
-            var curAssembly = Assembly.GetExecutingAssembly();
-            var startVal = (String) autorunKey.GetValue(curAssembly.GetName().Name, String.Empty);
-            return startVal == curAssembly.Location;
+            WriteAutostartEntry(Autorun);
         }
 
         /// <summary>
@@ -69,14 +77,18 @@ namespace HwdgGui.Utils
         /// <inheritdoc />
         public Boolean Autorun
         {
-            get => ReadAutostartEntry();
-            set => WriteAutostartEntry(value);
+            get => Convert.ToBoolean(settingsKey.GetValue(AutoRun, 0));
+            set
+            {
+                settingsKey.SetValue(AutoRun, value, RegistryValueKind.DWord);
+                WriteAutostartEntry(value);
+            }
         }
 
         /// <inheritdoc />
         public Boolean Automonitor
         {
-            get => Convert.ToBoolean(settingsKey.GetValue(AutoMonitor, 1));
+            get => Convert.ToBoolean(settingsKey.GetValue(AutoMonitor, 0));
             set => settingsKey.SetValue(AutoMonitor, value, RegistryValueKind.DWord);
         }
 

@@ -1,73 +1,31 @@
-﻿using System;
-using Caliburn.Micro;
+﻿// Copyright 2017 Oleg Petrochenko
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+using System;
 using HwdgGui.Annotations;
 using HwdgGui.Utils;
 using HwdgWrapper;
-using PropertyChanged;
 
 namespace HwdgGui.ViewModels
 {
-    public class MainSettingsViewModel : PropertyChangedBase
+    public class MainSettingsViewModel : BaseHwdgVm
     {
-        private readonly IHwdg hwdg;
-        private readonly ISettingsProvider settings;
-
-        public MainSettingsViewModel(IHwdg hwdg, ISettingsProvider settings)
+        public MainSettingsViewModel(IHwdg hwdg, ISettingsProvider settings):base(hwdg,settings)
         {
-            // Inject dependency
-            this.hwdg = hwdg;
-            this.settings = settings;
-
-            // Subscribe on hwdg events to handle HWDG
-            // connecting and disconnecting situations.
-            // We have only one instance of this view per app,
-            // so no need to worry about memory leak.
-            hwdg.Disconnected += OnDisconnected;
-            hwdg.Connected += OnConnected;
-            hwdg.Updated += OnUpdated;
-
-            // Get last known status.
-            HwStatus = hwdg.GetStatus();
         }
 
-        /// <summary>
-        /// Hwdg connected event handler.
-        /// </summary>
-        /// <param name="st">Hwdg status.</param>
-        private void OnConnected(Status st)
-        {
-            // If auto monitoring enabled, we'll update status
-            // later in upcoming 'OnUpdated' event.
-            if (!settings.Automonitor)
-            {
-                HwStatus = st;
-            }
-        }
-
-        /// <summary>
-        /// Hwdg disconnected event handler.
-        /// </summary>
-        private void OnDisconnected() => HwStatus = null;
-
-        /// <summary>
-        /// Hwdg status updated event handler.
-        /// </summary>
-        /// <param name="sta"></param>
-        private void OnUpdated(Status sta) => HwStatus = sta;
-
-        private Status status;
-        [DoNotNotify]
-        private Status HwStatus
-        {
-            get => status;
-            set
-            {
-                status = value;
-                OnStatusUpdate();
-            }
-        }
-
-        private void OnStatusUpdate()
+        protected override void OnStatusUpdate()
         {
             // If hwdg status is null that means hwdg disconnected.
             // We must disable all controls.
@@ -93,12 +51,12 @@ namespace HwdgGui.ViewModels
 
                 // Update view controls.
                 HwdgConnected = true;
-                HardReset = (status.State & WatchdogState.HardRersetEnabled) != 0;
-                Led = (status.State & WatchdogState.LedDisabled) == 0;
-                HardResetCount = status.HardResetAttempts;
-                SoftResetCount = status.SoftResetAttempts;
-                RebootTimeout = status.RebootTimeout / 1000;
-                ResponseTimeout = status.ResponseTimeout / 1000;
+                HardReset = (HwStatus.State & WatchdogState.HardRersetEnabled) != 0;
+                Led = (HwStatus.State & WatchdogState.LedDisabled) == 0;
+                HardResetCount = HwStatus.HardResetAttempts;
+                SoftResetCount = HwStatus.SoftResetAttempts;
+                RebootTimeout = HwStatus.RebootTimeout / 1000;
+                ResponseTimeout = HwStatus.ResponseTimeout / 1000;
             }
         }
 
@@ -119,13 +77,13 @@ namespace HwdgGui.ViewModels
         /// Executes when WPF SoftResetCount slider value changes.
         /// </summary>
         [UsedImplicitly]
-        public async void OnHwdgHrCheckedAsync() => await hwdg.EnableHardResetAsync();
+        public async void OnHwdgHrCheckedAsync() => await Hwdg.EnableHardResetAsync();
 
         /// <summary>
         /// Executes when WPF SoftResetCount slider value changes.
         /// </summary>
         [UsedImplicitly]
-        public async void OnHwdgHrUncheckedAsync() => await hwdg.DisableHardResetAsync();
+        public async void OnHwdgHrUncheckedAsync() => await Hwdg.DisableHardResetAsync();
 
         /// <summary>
         /// Reboot timeout binding.
@@ -156,28 +114,28 @@ namespace HwdgGui.ViewModels
         /// </summary>
         /// <param name="timeout">Slider value.</param>
         [UsedImplicitly]
-        public void OnRebootTimeoutChanged(Int32 timeout) => hwdg.SetRebootTimeout(timeout * 1000);
+        public void OnRebootTimeoutChanged(Int32 timeout) => Hwdg.SetRebootTimeout(timeout * 1000);
 
         /// <summary>
         /// Executes when WPF RebootTimeout slider value changes.
         /// </summary>
         /// <param name="timeout">Slider value.</param>
         [UsedImplicitly]
-        public void OnResponseTimeoutChanged(Int32 timeout) => hwdg.SetResponseTimeout(timeout * 1000);
+        public void OnResponseTimeoutChanged(Int32 timeout) => Hwdg.SetResponseTimeout(timeout * 1000);
 
         /// <summary>
         /// Executes when WPF SoftResetCount slider value changes.
         /// </summary>
         /// <param name="val">Slider value.</param>
         [UsedImplicitly]
-        public void OnSoftResetCountChanged(Byte val) => hwdg.SetSoftResetAttempts(val);
+        public void OnSoftResetCountChanged(Byte val) => Hwdg.SetSoftResetAttempts(val);
 
         /// <summary>
         /// Executes when WPF HardResetCount slider value changes.
         /// </summary>
         /// <param name="val">Slider value.</param>
         [UsedImplicitly]
-        public void OnHardResetCountChanged(Byte val) => hwdg.SetHardResetAttempts(val);
+        public void OnHardResetCountChanged(Byte val) => Hwdg.SetHardResetAttempts(val);
 
         /// <summary>
         /// Determines if hwdg settings are editable at the moment.
@@ -195,12 +153,12 @@ namespace HwdgGui.ViewModels
         /// Executes when WPF Led checks.
         /// </summary>
         [UsedImplicitly]
-        public async void LedOnAsync() => await hwdg.EnableLedAsync();
+        public async void LedOnAsync() => await Hwdg.EnableLedAsync();
 
         /// <summary>
         /// Executes when WPF Led unchecks.
         /// </summary>
         [UsedImplicitly]
-        public async void LedOffAsync() => await hwdg.DisableLedAsync();
+        public async void LedOffAsync() => await Hwdg.DisableLedAsync();
     }
 }

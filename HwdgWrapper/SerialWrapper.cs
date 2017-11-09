@@ -1,4 +1,18 @@
-﻿using System;
+﻿// Copyright 2017 Oleg Petrochenko
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+using System;
 using System.Diagnostics;
 using System.IO.Ports;
 using System.Threading;
@@ -38,21 +52,48 @@ namespace HwdgWrapper
                 Trace.WriteLine($"Enter GetStatus at {Thread.CurrentThread.ManagedThreadId} thread");
                 var result = SearchAndGetStatus();
 
-                // Last result is present but not equal previous one
-                if (lastStatus != null && result != null && !lastStatus.Equals(result))
-                    OnUpdated(lastStatus = result);
+                GetStatusIsUpdatedCheck(result);
 
-                // Last status is NULL but now connection ok
-                if (lastStatus == null && result != null) OnConnected(lastStatus = result);
+                Trace.WriteLine($"Exit GetStatus with {result} at {Thread.CurrentThread.ManagedThreadId} thread");
+                return result;
+            }
+        }
 
-                // Last status was not NULL but now connection lost
-                if (lastStatus != null && result == null)
+        private void GetStatusIsUpdatedCheck(Status result)
+        {
+            // If 'isUpdated' is true it means we lost
+            // connection or get connected.
+            if (isUpdated)
+            {
+                // Clear 'isUpdated' flag.
+                isUpdated = false;
+
+                // We connected
+                if (lastSuccessedPortName != null)
+                {
+                    if (result != null)
+                    {
+                        OnConnected(lastStatus = result);
+                    }
+                }
+
+                // We disconnected
+                else
                 {
                     lastStatus = null;
                     OnDisconnected();
                 }
-                Trace.WriteLine($"Exit GetStatus with {result} at {Thread.CurrentThread.ManagedThreadId} thread");
-                return result;
+            }
+
+            // if 'isUpdated' is false that means connection state
+            // did not changed since last transmission
+            else
+            {
+                // Last result is present but not equal previous one
+                if (lastStatus != null && result != null && !lastStatus.Equals(result))
+                {
+                    OnUpdated(lastStatus = result);
+                }
             }
         }
 
@@ -64,32 +105,40 @@ namespace HwdgWrapper
             {
                 Trace.WriteLine($"Enter SendCommand at {Thread.CurrentThread.ManagedThreadId} thread");
                 var result = SearchAndSendCommand(cmd);
-                Trace.Write($"Finish SearchAndSendCommand result: {result} ");
-                Trace.WriteLine($"at {Thread.CurrentThread.ManagedThreadId} thread");
 
-                if (lastSuccessedPortName == null) OnDisconnected();
-                else
+                // If 'isUpdated' is true it means we lost
+                // connection or get connected.
+                if (isUpdated)
                 {
-                    var status = GetStatus(lastSuccessedPortName);
+                    // Clear 'isUpdated' flag.
+                    isUpdated = false;
 
-                    // Last result present but not equal previous
-                    if (lastStatus != null && status != null && !lastStatus.Equals(status))
-                        OnUpdated(lastStatus = status);
-
-                    // Last status is NULL but now connection ok
-                    if (lastStatus == null && status != null) OnConnected(lastStatus = status);
-
-                    // Last status was not NULL but now connection lost
-                    if (lastStatus != null && status == null)
+                    // As we connected during 'SendCommand' operation
+                    // we must update current HWDG state.
+                    if (lastSuccessedPortName != null)
                     {
-                        lastStatus = null;
+                        GetStatusIsUpdatedCheck(GetStatus(lastSuccessedPortName));
+                    }
+
+                    // We disconnected during 'SendCommand' operation. Throw event.
+                    else
+                    {
                         OnDisconnected();
                     }
                 }
 
+                // if 'isUpdated' is false that means connection state
+                // did not changed since last transmission
+                else
+                {
+                    // Ignore commands that cannot change HWDG internal state
+                    if (lastSuccessedPortName != null && cmd != 0xfb && cmd != 0xf8 && cmd != 0x7e && cmd != 0x7f)
+                    {
+                        GetStatusIsUpdatedCheck(GetStatus(lastSuccessedPortName));
+                    }
+                }
+
                 Trace.WriteLine($"Exit SendCommand with {result} at {Thread.CurrentThread.ManagedThreadId} thread");
-                if (!isUpdated) return result;
-                isUpdated = false;
                 return result;
             }
         }
@@ -135,7 +184,6 @@ namespace HwdgWrapper
 
         private Response SearchAndSendCommand(Byte cmd)
         {
-
             // If last transmission was unsuccessful or this is a first
             // transmission we need to find serial port HWDG connected to.
             if (lastSuccessedPortName == null)
@@ -238,7 +286,7 @@ namespace HwdgWrapper
 
         private Response SendCommand(String portName, Byte cmd)
         {
-            const Int32 readCmdResponseTimeout = 130;
+            const Int32 readCmdResponseTimeout = 50;
             const Int32 cmdResponseLength = 1;
 
             // Trying to open port and send the command.
@@ -305,8 +353,8 @@ namespace HwdgWrapper
         {
             if (lastSuccessedPortName == portName) return;
             lastSuccessedPortName = portName;
-            Trace.Write($"lastSuccessedPortName set to {portName} ");
-            Trace.WriteLine($"at {Thread.CurrentThread.ManagedThreadId} thread");
+            var th = Thread.CurrentThread.ManagedThreadId;
+            Trace.WriteLine($"lastSuccessedPortName set to {portName} at {th} thread");
             isUpdated = true;
         }
 
@@ -317,7 +365,8 @@ namespace HwdgWrapper
         {
             if (lastSuccessedPortName == null) return;
             lastSuccessedPortName = null;
-            Trace.WriteLine($"lastSuccessedPortName set to NULL at {Thread.CurrentThread.ManagedThreadId} thread");
+            var th = Thread.CurrentThread.ManagedThreadId;
+            Trace.WriteLine($"lastSuccessedPortName set to NULL at {th} thread");
             isUpdated = true;
         }
 

@@ -13,7 +13,7 @@
     <Grid>
         <Label Visibility="{Binding HwdgConnected, Converter={StaticResource Converter}, ConverterParameter=Inverted}" Margin="0,30,0,0">Изменение настроек HWDG недоступно когда устройство не подключено.</Label>
         <StackPanel Visibility="{Binding HwdgConnected, Converter={StaticResource Converter}, ConverterParameter=Normal}" Margin="0,20,0,0">
-            <Label Visibility="{Binding CanEditSettings, Converter={StaticResource Converter}, ConverterParameter=Inverted}" HorizontalAlignment="Center">Изменение параметров монитроинга недоступно во время наблюдения.</Label>
+            <Label Visibility="{Binding CanEditSettings, Converter={StaticResource Converter}, ConverterParameter=Inverted}" HorizontalAlignment="Center">Изменение параметров мониторинга недоступно во время наблюдения.</Label>
             <Label Visibility="{Binding CanEditSettings, Converter={StaticResource Converter}, ConverterParameter=Inverted}" HorizontalAlignment="Center" Margin="0,0,0,10">Чтобы изменить настройки нажмите СТОП на главной странице.</Label>
             <StackPanel IsEnabled="{Binding CanEditSettings}" Margin="0,5,0,0">
 
