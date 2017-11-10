@@ -1,5 +1,4 @@
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("HwdgWrapperTests")]
@@ -16,5 +15,5 @@ using System.Runtime.InteropServices;
 [assembly: Guid("0c540370-817a-4aed-a855-01c09b51cbfb")]
 
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.9")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.1.10")]
+[assembly: AssemblyFileVersion("1.0.1.10")]

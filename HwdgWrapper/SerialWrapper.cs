@@ -90,7 +90,7 @@ namespace HwdgWrapper
             else
             {
                 // Last result is present but not equal previous one
-                if (lastStatus != null && result != null && !lastStatus.Equals(result))
+                if (result != null && !result.Equals(lastStatus))
                 {
                     OnUpdated(lastStatus = result);
                 }

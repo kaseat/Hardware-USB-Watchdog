@@ -86,14 +86,15 @@ namespace HwdgGui.ViewModels
             {
                 // If settings changed since last button press, update HWDG settings.
                 if (!Settings.HwdgStatus.EqualsState(HwStatus))
+                {
+                    // Save current status for futher comparison.
+                    Settings.HwdgStatus = HwStatus;
                     await Hwdg.SaveCurrentStateAsync();
+                }
 
                 // If HWDG connected stop monitoring and update view.
                 if ((HwStatus.State & WatchdogState.IsRunning) != 0)
                 {
-                    // Save current status for futher comparison.
-                    Settings.HwdgStatus = HwStatus;
-                    UpdateControlsOnRunning();
                     await Hwdg.StopAsync();
                     processing = false;
                     return;
@@ -102,7 +103,6 @@ namespace HwdgGui.ViewModels
                 // If HWDG is online, save current settings and start monitoring.
                 if ((HwStatus.State & WatchdogState.IsRunning) == 0)
                 {
-                    UpdateControlsOnConnected();
                     await Hwdg.StartAsync();
                     processing = false;
                     return;
