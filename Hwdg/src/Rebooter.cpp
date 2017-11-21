@@ -13,7 +13,6 @@
 // limitations under the License.
 
 #include "Rebooter.h"
-#include "Timer.h"
 
 #ifndef RST_TIM
 // Soft reset pin low level duration

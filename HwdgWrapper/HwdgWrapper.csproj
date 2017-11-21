@@ -48,7 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Command.cs" />
     <Compile Include="Crc.cs" />
+    <Compile Include="DefaultSettings.cs" />
     <Compile Include="IHwdg.cs" />
     <Compile Include="IWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

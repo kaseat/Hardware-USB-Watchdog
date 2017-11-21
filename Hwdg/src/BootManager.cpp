@@ -14,6 +14,8 @@
 
 #include "BootManager.h"
 
+#define BOOT_SETTINGS                 ((uint_least8_t)3)
+#define REBOOT_TIMEOUT_SETTINGS       ((uint_least8_t)3)
 #define BOOT_PULSE_TIMEOUT            ((uint_fast16_t)3000)
 #define MID_PULSE_TIMEOUT             ((uint_fast16_t)2000)
 #define CMD_PULSE_TIMEOUT             ((uint_fast16_t)1000)
