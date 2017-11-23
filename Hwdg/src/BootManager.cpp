@@ -36,7 +36,7 @@ void BootManager::ProceedBoot()
 
 	// If we apply user settings at startupp we must config reset controller,
 	// event manager and LED controller.
-	if (settings[3] & APPLY_SETTINGS_AT_ATARTUP)
+	if (settings[3] & APPLY_SETTINGS_AT_STARTUP)
 	{
 		settings[3] & LED_DISABLED
 			? rctr.GetLedController().Disable()

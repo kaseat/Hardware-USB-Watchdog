@@ -142,7 +142,7 @@ namespace HwdgWrapper
         /// <summary>
         /// Is hard reset enabled.
         /// </summary>
-        HardRersetEnabled = 1 << 2,
+        HardResetEnabled = 1 << 2,
 
         /// <summary>
         /// Is LED disabled.

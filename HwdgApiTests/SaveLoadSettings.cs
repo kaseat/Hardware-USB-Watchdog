@@ -44,7 +44,7 @@ namespace HwdgApiTests
             Assert.AreEqual(DefaultSettings.ResponseTimeout, hwdg.GetStatus().ResponseTimeout);
             Assert.AreEqual(DefaultSettings.RebootTimeout, hwdg.GetStatus().RebootTimeout);
             Assert.AreEqual(DefaultSettings.LedDisabled, hwdg.GetStatus().State.HasFlag(WatchdogState.LedDisabled));
-            Assert.AreEqual(DefaultSettings.HardResetEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.HardRersetEnabled));
+            Assert.AreEqual(DefaultSettings.HardResetEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.HardResetEnabled));
             Assert.AreEqual(DefaultSettings.EventsEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.EventsEnabled));
             Assert.AreEqual(DefaultSettings.RstPulseEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.RstPulseEnabled));
             Assert.AreEqual(DefaultSettings.PwrPulseEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.PwrPulseEnabled));
@@ -165,10 +165,10 @@ namespace HwdgApiTests
             Assert.AreEqual(Response.SaveCurrentSettingsOk, hwdg.SaveCurrentSettingsAsUsers());
             Assert.AreEqual(Response.ApplyUserSettingsAtStartupOk, hwdg.ApplyUserSettingsAtStartup());
             Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
-            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.HardRersetEnabled));
+            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.HardResetEnabled));
             hwdg.EnableHardReset();
             hwdg.ChipResetAndWaitForReady();
-            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.HardRersetEnabled));
+            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.HardResetEnabled));
             Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
         }
 
@@ -180,10 +180,10 @@ namespace HwdgApiTests
             Assert.AreEqual(Response.SaveCurrentSettingsOk, hwdg.SaveCurrentSettingsAsUsers());
             Assert.AreEqual(Response.ApplyUserSettingsAtStartupOk, hwdg.ApplyUserSettingsAtStartup());
             Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
-            Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.HardRersetEnabled));
+            Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.HardResetEnabled));
             hwdg.DisableHardReset();
             hwdg.ChipResetAndWaitForReady();
-            Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.HardRersetEnabled));
+            Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.HardResetEnabled));
             Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
         }
 
@@ -310,9 +310,9 @@ namespace HwdgApiTests
             Assert.AreEqual(Response.SaveCurrentSettingsOk, hwdg.SaveCurrentSettingsAsUsers());
             Assert.AreEqual(Response.LoadDefaultSettingsAtStartupOk, hwdg.LoadDefaultSettingsAtStartup());
             Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
-            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.HardRersetEnabled));
+            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.HardResetEnabled));
             hwdg.ChipResetAndWaitForReady();
-            Assert.AreEqual(DefaultSettings.HardResetEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.HardRersetEnabled));
+            Assert.AreEqual(DefaultSettings.HardResetEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.HardResetEnabled));
             Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
         }
 
@@ -323,9 +323,9 @@ namespace HwdgApiTests
             Assert.AreEqual(Response.SaveCurrentSettingsOk, hwdg.SaveCurrentSettingsAsUsers());
             Assert.AreEqual(Response.LoadDefaultSettingsAtStartupOk, hwdg.LoadDefaultSettingsAtStartup());
             Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
-            Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.HardRersetEnabled));
+            Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.HardResetEnabled));
             hwdg.ChipResetAndWaitForReady();
-            Assert.AreEqual(DefaultSettings.HardResetEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.HardRersetEnabled));
+            Assert.AreEqual(DefaultSettings.HardResetEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.HardResetEnabled));
             Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
         }
 
@@ -367,7 +367,7 @@ namespace HwdgApiTests
             Assert.AreEqual(DefaultSettings.ResponseTimeout, hwdg.GetStatus().ResponseTimeout);
             Assert.AreEqual(DefaultSettings.RebootTimeout, hwdg.GetStatus().RebootTimeout);
             Assert.AreEqual(DefaultSettings.LedDisabled, hwdg.GetStatus().State.HasFlag(WatchdogState.LedDisabled));
-            Assert.AreEqual(DefaultSettings.HardResetEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.HardRersetEnabled));
+            Assert.AreEqual(DefaultSettings.HardResetEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.HardResetEnabled));
             Assert.AreEqual(DefaultSettings.EventsEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.EventsEnabled));
             Assert.AreEqual(DefaultSettings.RstPulseEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.RstPulseEnabled));
             Assert.AreEqual(DefaultSettings.PwrPulseEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.PwrPulseEnabled));
@@ -386,7 +386,7 @@ namespace HwdgApiTests
             Assert.AreEqual(DefaultSettings.ResponseTimeout, hwdg.GetStatus().ResponseTimeout);
             Assert.AreEqual(DefaultSettings.RebootTimeout, hwdg.GetStatus().RebootTimeout);
             Assert.AreEqual(DefaultSettings.LedDisabled, hwdg.GetStatus().State.HasFlag(WatchdogState.LedDisabled));
-            Assert.AreEqual(DefaultSettings.HardResetEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.HardRersetEnabled));
+            Assert.AreEqual(DefaultSettings.HardResetEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.HardResetEnabled));
             Assert.AreEqual(DefaultSettings.EventsEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.EventsEnabled));
             Assert.AreEqual(DefaultSettings.RstPulseEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.RstPulseEnabled));
             Assert.AreEqual(DefaultSettings.PwrPulseEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.PwrPulseEnabled));
@@ -405,7 +405,7 @@ namespace HwdgApiTests
             Assert.AreEqual(DefaultSettings.SoftResetAttempts, hwdg.GetStatus().SoftResetAttempts);
             Assert.AreEqual(DefaultSettings.RebootTimeout, hwdg.GetStatus().RebootTimeout);
             Assert.AreEqual(DefaultSettings.LedDisabled, hwdg.GetStatus().State.HasFlag(WatchdogState.LedDisabled));
-            Assert.AreEqual(DefaultSettings.HardResetEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.HardRersetEnabled));
+            Assert.AreEqual(DefaultSettings.HardResetEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.HardResetEnabled));
             Assert.AreEqual(DefaultSettings.EventsEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.EventsEnabled));
             Assert.AreEqual(DefaultSettings.RstPulseEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.RstPulseEnabled));
             Assert.AreEqual(DefaultSettings.PwrPulseEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.PwrPulseEnabled));
@@ -424,7 +424,7 @@ namespace HwdgApiTests
             Assert.AreEqual(DefaultSettings.SoftResetAttempts, hwdg.GetStatus().SoftResetAttempts);
             Assert.AreEqual(DefaultSettings.ResponseTimeout, hwdg.GetStatus().ResponseTimeout);
             Assert.AreEqual(DefaultSettings.LedDisabled, hwdg.GetStatus().State.HasFlag(WatchdogState.LedDisabled));
-            Assert.AreEqual(DefaultSettings.HardResetEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.HardRersetEnabled));
+            Assert.AreEqual(DefaultSettings.HardResetEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.HardResetEnabled));
             Assert.AreEqual(DefaultSettings.EventsEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.EventsEnabled));
             Assert.AreEqual(DefaultSettings.RstPulseEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.RstPulseEnabled));
             Assert.AreEqual(DefaultSettings.PwrPulseEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.PwrPulseEnabled));
@@ -441,7 +441,7 @@ namespace HwdgApiTests
             Assert.AreEqual(DefaultSettings.SoftResetAttempts, hwdg.GetStatus().SoftResetAttempts);
             Assert.AreEqual(DefaultSettings.ResponseTimeout, hwdg.GetStatus().ResponseTimeout);
             Assert.AreEqual(DefaultSettings.RebootTimeout, hwdg.GetStatus().RebootTimeout);
-            Assert.AreEqual(DefaultSettings.HardResetEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.HardRersetEnabled));
+            Assert.AreEqual(DefaultSettings.HardResetEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.HardResetEnabled));
             Assert.AreEqual(DefaultSettings.EventsEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.EventsEnabled));
             Assert.AreEqual(DefaultSettings.RstPulseEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.RstPulseEnabled));
             Assert.AreEqual(DefaultSettings.PwrPulseEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.PwrPulseEnabled));
@@ -458,7 +458,7 @@ namespace HwdgApiTests
             Assert.AreEqual(DefaultSettings.SoftResetAttempts, hwdg.GetStatus().SoftResetAttempts);
             Assert.AreEqual(DefaultSettings.ResponseTimeout, hwdg.GetStatus().ResponseTimeout);
             Assert.AreEqual(DefaultSettings.RebootTimeout, hwdg.GetStatus().RebootTimeout);
-            Assert.AreEqual(DefaultSettings.HardResetEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.HardRersetEnabled));
+            Assert.AreEqual(DefaultSettings.HardResetEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.HardResetEnabled));
             Assert.AreEqual(DefaultSettings.EventsEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.EventsEnabled));
             Assert.AreEqual(DefaultSettings.RstPulseEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.RstPulseEnabled));
             Assert.AreEqual(DefaultSettings.PwrPulseEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.PwrPulseEnabled));
@@ -469,7 +469,7 @@ namespace HwdgApiTests
         public void SaveHardResetDisabledOtherSettingsNotChanged()
         {
             hwdg.DisableHardReset();
-            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.HardRersetEnabled));
+            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.HardResetEnabled));
             Assert.AreEqual(Response.SaveCurrentSettingsOk, hwdg.SaveCurrentSettingsAsUsers());
             Assert.AreEqual(DefaultSettings.HardResetAttempts, hwdg.GetStatus().HardResetAttempts);
             Assert.AreEqual(DefaultSettings.SoftResetAttempts, hwdg.GetStatus().SoftResetAttempts);
@@ -486,7 +486,7 @@ namespace HwdgApiTests
         public void SaveHardResetEnabledOtherSettingsNotChanged()
         {
             hwdg.EnableHardReset();
-            Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.HardRersetEnabled));
+            Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.HardResetEnabled));
             Assert.AreEqual(Response.SaveCurrentSettingsOk, hwdg.SaveCurrentSettingsAsUsers());
             Assert.AreEqual(DefaultSettings.HardResetAttempts, hwdg.GetStatus().HardResetAttempts);
             Assert.AreEqual(DefaultSettings.SoftResetAttempts, hwdg.GetStatus().SoftResetAttempts);
@@ -510,7 +510,7 @@ namespace HwdgApiTests
             Assert.AreEqual(DefaultSettings.ResponseTimeout, hwdg.GetStatus().ResponseTimeout);
             Assert.AreEqual(DefaultSettings.RebootTimeout, hwdg.GetStatus().RebootTimeout);
             Assert.AreEqual(DefaultSettings.LedDisabled, hwdg.GetStatus().State.HasFlag(WatchdogState.LedDisabled));
-            Assert.AreEqual(DefaultSettings.HardResetEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.HardRersetEnabled));
+            Assert.AreEqual(DefaultSettings.HardResetEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.HardResetEnabled));
             Assert.AreEqual(DefaultSettings.RstPulseEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.RstPulseEnabled));
             Assert.AreEqual(DefaultSettings.PwrPulseEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.PwrPulseEnabled));
             Assert.AreEqual(DefaultSettings.ApplySettingsAtStartup, hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
@@ -527,7 +527,7 @@ namespace HwdgApiTests
             Assert.AreEqual(DefaultSettings.ResponseTimeout, hwdg.GetStatus().ResponseTimeout);
             Assert.AreEqual(DefaultSettings.RebootTimeout, hwdg.GetStatus().RebootTimeout);
             Assert.AreEqual(DefaultSettings.LedDisabled, hwdg.GetStatus().State.HasFlag(WatchdogState.LedDisabled));
-            Assert.AreEqual(DefaultSettings.HardResetEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.HardRersetEnabled));
+            Assert.AreEqual(DefaultSettings.HardResetEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.HardResetEnabled));
             Assert.AreEqual(DefaultSettings.RstPulseEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.RstPulseEnabled));
             Assert.AreEqual(DefaultSettings.PwrPulseEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.PwrPulseEnabled));
             Assert.AreEqual(DefaultSettings.ApplySettingsAtStartup, hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
@@ -545,7 +545,7 @@ namespace HwdgApiTests
             Assert.AreEqual(DefaultSettings.RebootTimeout, hwdg.GetStatus().RebootTimeout);
             Assert.AreEqual(DefaultSettings.LedDisabled, hwdg.GetStatus().State.HasFlag(WatchdogState.LedDisabled));
             Assert.AreEqual(DefaultSettings.EventsEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.EventsEnabled));
-            Assert.AreEqual(DefaultSettings.HardResetEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.HardRersetEnabled));
+            Assert.AreEqual(DefaultSettings.HardResetEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.HardResetEnabled));
             Assert.AreEqual(DefaultSettings.PwrPulseEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.PwrPulseEnabled));
             Assert.AreEqual(DefaultSettings.ApplySettingsAtStartup, hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
         }
@@ -562,7 +562,7 @@ namespace HwdgApiTests
             Assert.AreEqual(DefaultSettings.RebootTimeout, hwdg.GetStatus().RebootTimeout);
             Assert.AreEqual(DefaultSettings.LedDisabled, hwdg.GetStatus().State.HasFlag(WatchdogState.LedDisabled));
             Assert.AreEqual(DefaultSettings.EventsEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.EventsEnabled));
-            Assert.AreEqual(DefaultSettings.HardResetEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.HardRersetEnabled));
+            Assert.AreEqual(DefaultSettings.HardResetEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.HardResetEnabled));
             Assert.AreEqual(DefaultSettings.PwrPulseEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.PwrPulseEnabled));
             Assert.AreEqual(DefaultSettings.ApplySettingsAtStartup, hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
         }
@@ -579,7 +579,7 @@ namespace HwdgApiTests
             Assert.AreEqual(DefaultSettings.RebootTimeout, hwdg.GetStatus().RebootTimeout);
             Assert.AreEqual(DefaultSettings.LedDisabled, hwdg.GetStatus().State.HasFlag(WatchdogState.LedDisabled));
             Assert.AreEqual(DefaultSettings.EventsEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.EventsEnabled));
-            Assert.AreEqual(DefaultSettings.HardResetEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.HardRersetEnabled));
+            Assert.AreEqual(DefaultSettings.HardResetEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.HardResetEnabled));
             Assert.AreEqual(DefaultSettings.RstPulseEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.RstPulseEnabled));
             Assert.AreEqual(DefaultSettings.ApplySettingsAtStartup, hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
         }
@@ -596,7 +596,7 @@ namespace HwdgApiTests
             Assert.AreEqual(DefaultSettings.RebootTimeout, hwdg.GetStatus().RebootTimeout);
             Assert.AreEqual(DefaultSettings.LedDisabled, hwdg.GetStatus().State.HasFlag(WatchdogState.LedDisabled));
             Assert.AreEqual(DefaultSettings.EventsEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.EventsEnabled));
-            Assert.AreEqual(DefaultSettings.HardResetEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.HardRersetEnabled));
+            Assert.AreEqual(DefaultSettings.HardResetEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.HardResetEnabled));
             Assert.AreEqual(DefaultSettings.RstPulseEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.RstPulseEnabled));
             Assert.AreEqual(DefaultSettings.ApplySettingsAtStartup, hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
         }

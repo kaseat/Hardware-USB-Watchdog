@@ -51,7 +51,7 @@ namespace HwdgGui.ViewModels
 
                 // Update view controls.
                 HwdgConnected = true;
-                HardReset = (HwStatus.State & WatchdogState.HardRersetEnabled) != 0;
+                HardReset = (HwStatus.State & WatchdogState.HardResetEnabled) != 0;
                 Led = (HwStatus.State & WatchdogState.LedDisabled) == 0;
                 HardResetCount = HwStatus.HardResetAttempts;
                 SoftResetCount = HwStatus.SoftResetAttempts;

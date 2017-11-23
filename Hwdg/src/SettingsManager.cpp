@@ -288,17 +288,17 @@ Response SettingsManager::ApplyUserSettingsAtStartup()
 #ifdef __ICCSTM8__
 	// If we have the same values in EEPROM we don't need to
 	// rewrite existing data, just say operation succeeded.
-	if (settings3 & APPLY_SETTINGS_AT_ATARTUP)
+	if (settings3 & APPLY_SETTINGS_AT_STARTUP)
 		return ApplyUserSettingsAtStartupOk;
 
 	// Write data to EEPROM.
 	FLASH->DUKR = FLASH_RASS_KEY1;
 	FLASH->DUKR = FLASH_RASS_KEY2;
-	settings3 |= APPLY_SETTINGS_AT_ATARTUP;
+	settings3 |= APPLY_SETTINGS_AT_STARTUP;
 	FLASH->IAPSR = uint8_t(~FLASH_IAPSR_DUL);
 
 	// Verify write operation succeeded.
-	return settings3 & APPLY_SETTINGS_AT_ATARTUP
+	return settings3 & APPLY_SETTINGS_AT_STARTUP
 		       ? ApplyUserSettingsAtStartupOk
 		       : SaveSettingsError;
 #endif
@@ -308,14 +308,14 @@ Response SettingsManager::ApplyUserSettingsAtStartup()
 #ifdef __AVR__
 	// If we have the same values in EEPROM we don't need to
 	// rewrite existing data, just say operation succeeded.
-	if (EEPROM[sizeof CompileTime + 4] & APPLY_SETTINGS_AT_ATARTUP)
+	if (EEPROM[sizeof CompileTime + 4] & APPLY_SETTINGS_AT_STARTUP)
 		return ApplyUserSettingsAtStartupOk;
 
 	// Write data to EEPROM.
-	EEPROM[sizeof CompileTime + 4] |= APPLY_SETTINGS_AT_ATARTUP;
+	EEPROM[sizeof CompileTime + 4] |= APPLY_SETTINGS_AT_STARTUP;
 
 	// Verify write operation succeeded.
-	return EEPROM[sizeof CompileTime + 4] & APPLY_SETTINGS_AT_ATARTUP
+	return EEPROM[sizeof CompileTime + 4] & APPLY_SETTINGS_AT_STARTUP
 		? ApplyUserSettingsAtStartupOk
 		: SaveSettingsError;
 #endif
@@ -326,17 +326,17 @@ Response SettingsManager::LoadDefaultSettingsAtStartup()
 #ifdef __ICCSTM8__
 	// If we have the same values in EEPROM we don't need to
 	// rewrite existing data, just say operation succeeded.
-	if (!(settings3 & APPLY_SETTINGS_AT_ATARTUP))
+	if (!(settings3 & APPLY_SETTINGS_AT_STARTUP))
 		return LoadDefaultSettingsAtStartupOk;
 
 	// Write data to EEPROM.
 	FLASH->DUKR = FLASH_RASS_KEY1;
 	FLASH->DUKR = FLASH_RASS_KEY2;
-	settings3 &= ~APPLY_SETTINGS_AT_ATARTUP;
+	settings3 &= ~APPLY_SETTINGS_AT_STARTUP;
 	FLASH->IAPSR = uint8_t(~FLASH_IAPSR_DUL);
 
 	// Verify write operation succeeded.
-	return !(settings3 & APPLY_SETTINGS_AT_ATARTUP)
+	return !(settings3 & APPLY_SETTINGS_AT_STARTUP)
 		       ? LoadDefaultSettingsAtStartupOk
 		       : SaveSettingsError;
 #endif
@@ -346,14 +346,14 @@ Response SettingsManager::LoadDefaultSettingsAtStartup()
 #ifdef __AVR__
 	// If we have the same values in EEPROM we don't need to
 	// rewrite existing data, just say operation succeeded.
-	if (!(EEPROM[sizeof CompileTime + 4] & APPLY_SETTINGS_AT_ATARTUP))
+	if (!(EEPROM[sizeof CompileTime + 4] & APPLY_SETTINGS_AT_STARTUP))
 		return LoadDefaultSettingsAtStartupOk;
 
 	// Write data to EEPROM.
-	EEPROM[sizeof CompileTime + 4] &= ~APPLY_SETTINGS_AT_ATARTUP;
+	EEPROM[sizeof CompileTime + 4] &= ~APPLY_SETTINGS_AT_STARTUP;
 
 	// Verify write operation succeeded.
-	return !(EEPROM[sizeof CompileTime + 4] & APPLY_SETTINGS_AT_ATARTUP)
+	return !(EEPROM[sizeof CompileTime + 4] & APPLY_SETTINGS_AT_STARTUP)
 		? LoadDefaultSettingsAtStartupOk
 		: SaveSettingsError;
 #endif

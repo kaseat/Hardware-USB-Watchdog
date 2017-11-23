@@ -43,7 +43,7 @@ namespace HwdgApiTests
         {
             hwdg.EnableHardReset();
             Assert.AreEqual(Response.DisableHardResetOk, hwdg.DisableHardReset());
-            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.HardRersetEnabled));
+            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.HardResetEnabled));
             Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.IsRunning));
         }
 
@@ -51,7 +51,7 @@ namespace HwdgApiTests
         public void CanDisableHardResetWhenHardResetDisabled()
         {
             Assert.AreEqual(Response.DisableHardResetOk, hwdg.DisableHardReset());
-            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.HardRersetEnabled));
+            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.HardResetEnabled));
             Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.IsRunning));
         }
 
@@ -60,7 +60,7 @@ namespace HwdgApiTests
         {
             hwdg.Start();
             Assert.AreEqual(Response.Busy, hwdg.DisableHardReset());
-            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.HardRersetEnabled));
+            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.HardResetEnabled));
             Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.IsRunning));
         }
 
@@ -74,7 +74,7 @@ namespace HwdgApiTests
             hwdg.WaitForFlag(WatchdogState.WaitingForReboot);
 
             Assert.AreEqual(Response.Busy, hwdg.DisableHardReset());
-            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.HardRersetEnabled));
+            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.HardResetEnabled));
             Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.IsRunning));
             Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.WaitingForReboot));
         }
@@ -84,7 +84,7 @@ namespace HwdgApiTests
         {
             hwdg.EnableHardReset();
             Assert.AreEqual(Response.EnableHardResetOk, hwdg.EnableHardReset());
-            Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.HardRersetEnabled));
+            Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.HardResetEnabled));
             Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.IsRunning));
         }
 
@@ -92,7 +92,7 @@ namespace HwdgApiTests
         public void CanEnableHardResetWhenHardResetDisabled()
         {
             Assert.AreEqual(Response.EnableHardResetOk, hwdg.EnableHardReset());
-            Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.HardRersetEnabled));
+            Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.HardResetEnabled));
             Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.IsRunning));
         }
 
@@ -101,7 +101,7 @@ namespace HwdgApiTests
         {
             hwdg.Start();
             Assert.AreEqual(Response.Busy, hwdg.EnableHardReset());
-            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.HardRersetEnabled));
+            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.HardResetEnabled));
             Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.IsRunning));
         }
 
@@ -115,7 +115,7 @@ namespace HwdgApiTests
             hwdg.WaitForFlag(WatchdogState.WaitingForReboot);
 
             Assert.AreEqual(Response.Busy, hwdg.EnableHardReset());
-            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.HardRersetEnabled));
+            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.HardResetEnabled));
             Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.IsRunning));
             Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.WaitingForReboot));
         }

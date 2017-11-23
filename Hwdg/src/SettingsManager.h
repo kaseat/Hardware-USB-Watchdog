@@ -24,7 +24,7 @@
 
 #define LED_DISABLED                  ((uint8_t)(1U << 0U))
 #define EVENTS_ENABLED                ((uint8_t)(1U << 1U))
-#define APPLY_SETTINGS_AT_ATARTUP     ((uint8_t)(1U << 2U))
+#define APPLY_SETTINGS_AT_STARTUP     ((uint8_t)(1U << 2U))
 #define RST_PULSE_ENABLED             ((uint8_t)(1U << 3U))
 #define PWR_PULSE_ENABLED             ((uint8_t)(1U << 4U))
 
