@@ -60,6 +60,7 @@
     <Compile Include="PwrPulseOnStartup.cs" />
     <Compile Include="RebootTimeout.cs" />
     <Compile Include="ResponseTimeout.cs" />
+    <Compile Include="RestoreFactory.cs" />
     <Compile Include="RstPulseOnStartup.cs" />
     <Compile Include="SaveLoadSettings.cs" />
     <Compile Include="SoftResetAttempts.cs" />
