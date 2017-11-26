@@ -218,6 +218,66 @@ namespace HwdgApiTests
         }
 
         [TestMethod]
+        public void SaveRstDisabledNotAffectedByApplyOnStartup()
+        {
+            hwdg.RstPulseOnStartupDisable();
+            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
+            Assert.AreEqual(Response.SaveCurrentSettingsOk, hwdg.SaveCurrentSettingsAsUsers());
+            Assert.AreEqual(Response.ApplyUserSettingsAtStartupOk, hwdg.ApplyUserSettingsAtStartup());
+            Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
+            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.RstPulseEnabled));
+            hwdg.RstPulseOnStartupEnable();
+            hwdg.ChipResetAndWaitForReady(3200);
+            Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.RstPulseEnabled));
+            Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
+        }
+
+        [TestMethod]
+        public void SaveRstEnabledNotAffectedByApplyOnStartup()
+        {
+            hwdg.RstPulseOnStartupEnable();
+            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
+            Assert.AreEqual(Response.SaveCurrentSettingsOk, hwdg.SaveCurrentSettingsAsUsers());
+            Assert.AreEqual(Response.ApplyUserSettingsAtStartupOk, hwdg.ApplyUserSettingsAtStartup());
+            Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
+            Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.RstPulseEnabled));
+            hwdg.RstPulseOnStartupDisable();
+            hwdg.ChipResetAndWaitForReady();
+            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.RstPulseEnabled));
+            Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
+        }
+
+        [TestMethod]
+        public void SavePwrDisabledNotAffectedByApplyOnStartup()
+        {
+            hwdg.PwrPulseOnStartupDisable();
+            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
+            Assert.AreEqual(Response.SaveCurrentSettingsOk, hwdg.SaveCurrentSettingsAsUsers());
+            Assert.AreEqual(Response.ApplyUserSettingsAtStartupOk, hwdg.ApplyUserSettingsAtStartup());
+            Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
+            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.PwrPulseEnabled));
+            hwdg.PwrPulseOnStartupEnable();
+            hwdg.ChipResetAndWaitForReady(3200);
+            Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.PwrPulseEnabled));
+            Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
+        }
+
+        [TestMethod]
+        public void SavePwrEnabledNotAffectedByApplyOnStartup()
+        {
+            hwdg.PwrPulseOnStartupEnable();
+            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
+            Assert.AreEqual(Response.SaveCurrentSettingsOk, hwdg.SaveCurrentSettingsAsUsers());
+            Assert.AreEqual(Response.ApplyUserSettingsAtStartupOk, hwdg.ApplyUserSettingsAtStartup());
+            Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
+            Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.PwrPulseEnabled));
+            hwdg.PwrPulseOnStartupDisable();
+            hwdg.ChipResetAndWaitForReady();
+            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.PwrPulseEnabled));
+            Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
+        }
+
+        [TestMethod]
         public void SaveHardResetAttemptsAndLoadDefaultOnStartup()
         {
             const Byte attempts = 6;
@@ -352,6 +412,58 @@ namespace HwdgApiTests
             Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.EventsEnabled));
             hwdg.ChipResetAndWaitForReady();
             Assert.AreEqual(DefaultSettings.EventsEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.EventsEnabled));
+            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
+        }
+
+        [TestMethod]
+        public void SaveRstDisabledNotAffectedByLoadDefaultOnStartup()
+        {
+            hwdg.RstPulseOnStartupDisable();
+            Assert.AreEqual(Response.SaveCurrentSettingsOk, hwdg.SaveCurrentSettingsAsUsers());
+            Assert.AreEqual(Response.LoadDefaultSettingsAtStartupOk, hwdg.LoadDefaultSettingsAtStartup());
+            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
+            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.RstPulseEnabled));
+            hwdg.ChipResetAndWaitForReady();
+            Assert.AreEqual(DefaultSettings.RstPulseEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.RstPulseEnabled));
+            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
+        }
+
+        [TestMethod]
+        public void SaveRstEnabledNotAffectedByLoadDefaultOnStartup()
+        {
+            hwdg.RstPulseOnStartupEnable();
+            Assert.AreEqual(Response.SaveCurrentSettingsOk, hwdg.SaveCurrentSettingsAsUsers());
+            Assert.AreEqual(Response.LoadDefaultSettingsAtStartupOk, hwdg.LoadDefaultSettingsAtStartup());
+            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
+            Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.RstPulseEnabled));
+            hwdg.ChipResetAndWaitForReady(3200);
+            Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.RstPulseEnabled));
+            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
+        }
+
+        [TestMethod]
+        public void SavePwrDisabledNotAffectedByLoadDefaultOnStartup()
+        {
+            hwdg.PwrPulseOnStartupDisable();
+            Assert.AreEqual(Response.SaveCurrentSettingsOk, hwdg.SaveCurrentSettingsAsUsers());
+            Assert.AreEqual(Response.LoadDefaultSettingsAtStartupOk, hwdg.LoadDefaultSettingsAtStartup());
+            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
+            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.PwrPulseEnabled));
+            hwdg.ChipResetAndWaitForReady();
+            Assert.AreEqual(DefaultSettings.PwrPulseEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.PwrPulseEnabled));
+            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
+        }
+
+        [TestMethod]
+        public void SavePwrEnabledNotAffectedByLoadDefaultOnStartup()
+        {
+            hwdg.PwrPulseOnStartupEnable();
+            Assert.AreEqual(Response.SaveCurrentSettingsOk, hwdg.SaveCurrentSettingsAsUsers());
+            Assert.AreEqual(Response.LoadDefaultSettingsAtStartupOk, hwdg.LoadDefaultSettingsAtStartup());
+            Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
+            Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.PwrPulseEnabled));
+            hwdg.ChipResetAndWaitForReady(3200);
+            Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.PwrPulseEnabled));
             Assert.IsFalse(hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
         }
 
@@ -599,6 +711,18 @@ namespace HwdgApiTests
             Assert.AreEqual(DefaultSettings.HardResetEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.HardResetEnabled));
             Assert.AreEqual(DefaultSettings.RstPulseEnabled, hwdg.GetStatus().State.HasFlag(WatchdogState.RstPulseEnabled));
             Assert.AreEqual(DefaultSettings.ApplySettingsAtStartup, hwdg.GetStatus().State.HasFlag(WatchdogState.LoadUserSettings));
+        }
+
+        [TestMethod]
+        public void VerifyRstAndPwrEnabledOnStartup()
+        {
+            hwdg.RstPulseOnStartupEnable();
+            hwdg.PwrPulseOnStartupEnable();
+            Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.RstPulseEnabled));
+            Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.PwrPulseEnabled));
+            hwdg.ChipResetAndWaitForReady(6200);
+            Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.RstPulseEnabled));
+            Assert.IsTrue(hwdg.GetStatus().State.HasFlag(WatchdogState.PwrPulseEnabled));
         }
     }
 }
