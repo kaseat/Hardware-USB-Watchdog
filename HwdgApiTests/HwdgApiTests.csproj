@@ -51,6 +51,7 @@
     <Compile Include="AssemblyBase.cs" />
     <Compile Include="Events.cs" />
     <Compile Include="EventsResponse.cs" />
+    <Compile Include="GetStatus.cs" />
     <Compile Include="HardReset.cs" />
     <Compile Include="HardResetAttempts.cs" />
     <Compile Include="IsAlive.cs" />
