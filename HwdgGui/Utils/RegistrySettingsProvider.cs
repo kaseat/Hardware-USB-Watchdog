@@ -38,19 +38,19 @@ namespace HwdgGui.Utils
             settingsKey = Registry.CurrentUser.OpenSubKey(SettingsPath, true);
             if (settingsKey == null)
             {
-                settingsKey = Registry.CurrentUser.CreateSubKey(SettingsPath, true);
-                settingsKey.SetValue(AutoMonitor, 1, RegistryValueKind.DWord);
-                settingsKey.SetValue(AutoRun, 1, RegistryValueKind.DWord);
-                settingsKey.SetValue(HwStatus, 0, RegistryValueKind.DWord);
+                settingsKey = Registry.CurrentUser.CreateSubKey(SettingsPath);
+                settingsKey?.SetValue(AutoMonitor, 1, RegistryValueKind.DWord);
+                settingsKey?.SetValue(AutoRun, 1, RegistryValueKind.DWord);
+                settingsKey?.SetValue(HwStatus, 0, RegistryValueKind.DWord);
             }
-            var am = settingsKey.GetValue(AutoMonitor, null);
-            if (am == null) settingsKey.SetValue(AutoMonitor, 1);
+            var am = settingsKey?.GetValue(AutoMonitor, null);
+            if (am == null) settingsKey?.SetValue(AutoMonitor, 1);
 
-            var ar = settingsKey.GetValue(AutoRun, null);
-            if (ar == null) settingsKey.SetValue(AutoRun, 1);
+            var ar = settingsKey?.GetValue(AutoRun, null);
+            if (ar == null) settingsKey?.SetValue(AutoRun, 1);
 
-            var hs = settingsKey.GetValue(HwStatus, null);
-            if (hs == null) settingsKey.SetValue(HwStatus, 0);
+            var hs = settingsKey?.GetValue(HwStatus, null);
+            if (hs == null) settingsKey?.SetValue(HwStatus, 0);
 
             WriteAutostartEntry(Autorun);
         }

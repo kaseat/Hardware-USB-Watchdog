@@ -4,21 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FE87243D-38FD-41FD-A72A-DF645840CFE6}</ProjectGuid>
+    <ProjectGuid>{0A495AA3-ACA9-4CFB-946E-E02428674841}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HwdgWrapper</RootNamespace>
-    <AssemblyName>HwdgWrapper</AssemblyName>
+    <RootNamespace>HwdgHid</RootNamespace>
+    <AssemblyName>HwdgHid</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ShouldCreateLogs>True</ShouldCreateLogs>
-    <AdvancedSettingsExpanded>False</AdvancedSettingsExpanded>
-    <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
-    <UpdateAssemblyFileVersion>False</UpdateAssemblyFileVersion>
-    <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
-    <AssemblyVersionSettings>
-    </AssemblyVersionSettings>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,7 +32,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,16 +40,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Command.cs" />
-    <Compile Include="Crc.cs" />
-    <Compile Include="DefaultSettings.cs" />
-    <Compile Include="IHwdg.cs" />
-    <Compile Include="IWrapper.cs" />
+    <Compile Include="DeviceCapabilities.cs" />
+    <Compile Include="DeviceInfo.cs" />
+    <Compile Include="IHidDevice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Response.cs" />
-    <Compile Include="SerialHwdg.cs" />
-    <Compile Include="SerialWrapper.cs" />
-    <Compile Include="Status.cs" />
+    <Compile Include="Report.cs" />
+    <Compile Include="Win32\Devpropkey.cs" />
+    <Compile Include="Win32\FileAccess.cs" />
+    <Compile Include="Win32\FileAttributes.cs" />
+    <Compile Include="Win32\HiddAttributes.cs" />
+    <Compile Include="Win32\HidpCaps.cs" />
+    <Compile Include="Win32\HidpValueCaps.cs" />
+    <Compile Include="Win32\OpenMode.cs" />
+    <Compile Include="Win32\SecurityAttributes.cs" />
+    <Compile Include="Win32\SetupDiGetClassDevsFlags.cs" />
+    <Compile Include="Win32\ShareMode.cs" />
+    <Compile Include="Win32\SpDeviceInterfaceData.cs" />
+    <Compile Include="Win32\SpDeviceInterfaceDetailData.cs" />
+    <Compile Include="Win32\SpDevinfoData.cs" />
+    <Compile Include="Win32\Wrapper.cs" />
+    <Compile Include="Win32\HidDevice.cs" />
+    <Compile Include="Win32\HidDevices.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
