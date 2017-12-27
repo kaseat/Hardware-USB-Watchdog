@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using Microsoft.Win32.SafeHandles;
 
 namespace HwdgHid.Win32
@@ -39,17 +40,21 @@ namespace HwdgHid.Win32
 
         public void WriteReport(Report report)
         {
-            var buffer = report.Data.ToArray();
-            Wrapper.HidD_SetOutputReport(deviceHandle, report.Data.ToArray(), buffer.Length);
+            var buffer = new List<Byte>(Info.Capabilities.OutputReportByteLength) {report.ReportId};
+            buffer.AddRange(report.Data);
+            if (!Wrapper.HidD_SetOutputReport(deviceHandle, buffer.ToArray(),
+                Math.Min(buffer.Count, Info.Capabilities.OutputReportByteLength)))
+                throw new InvalidOperationException("Failed to write the report");
         }
 
         public Report ReadReport(Byte reportId)
         {
-            var cmdBuffer = new Byte[Info.Capabilities.InputReportByteLength];
-            cmdBuffer[0] = reportId;
-            var bSuccess = Wrapper.HidD_GetInputReport(deviceHandle, out cmdBuffer[0], cmdBuffer.Length);
-            var rep = new Report {Data = cmdBuffer,ReportId = cmdBuffer[0]};
-            return rep;
+            var buff = new Byte[Info.Capabilities.InputReportByteLength];
+            buff[0] = reportId;
+
+            return Wrapper.HidD_GetInputReport(deviceHandle, out buff[0], buff.Length)
+                ? new Report { Data = buff.Skip(1), ReportId = buff[0] }
+                : null;
         }
 
         private void ReleaseUnmanagedResources()

@@ -326,7 +326,7 @@ namespace HwdgHid.Win32
         /// The HidD_SetOutputReport routine sends an output report to a top-level collection.
         /// </summary>
         /// <param name="hidDeviceObject">Specifies an open handle to a top-level collection.</param>
-        /// <param name="lpReportBuffer">Pointer to a caller-allocated output report buffer
+        /// <param name="reportBuffer">Pointer to a caller-allocated output report buffer
         /// that the caller uses to specify a report ID.</param>
         /// <param name="reportBufferLength">Specifies the size, in bytes, of the report
         /// buffer. The report buffer must be large enough to hold the output report -
@@ -335,7 +335,7 @@ namespace HwdgHid.Win32
         /// <returns>If HidD_SetOutputReport succeeds, it returns TRUE; otherwise,
         /// ]it returns FALSE.</returns>
         [DllImport("hid.dll")]
-        internal static extern Boolean HidD_SetOutputReport(IntPtr hidDeviceObject, Byte[] lpReportBuffer,
+        internal static extern Boolean HidD_SetOutputReport(IntPtr hidDeviceObject, Byte[] reportBuffer,
             Int32 reportBufferLength);
 
         /// <summary>
