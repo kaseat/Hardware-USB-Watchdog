@@ -4,8 +4,8 @@
 //
 // HwdgHid is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
+// the Free Software Foundation, either version 3 of the License, or any
+// later version.
 //
 // HwdgHid is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -13,7 +13,7 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+// along with HwdgHid. If not, see <http://www.gnu.org/licenses/>.
 
 using System;
 using System.Runtime.InteropServices;
@@ -22,9 +22,44 @@ namespace HwdgHid.Win32
 {
     internal static class Wrapper
     {
+        /// <summary>
+        /// Marks any outstanding I/O operations for the specified file handle.
+        /// The function only cancels I/O operations in the current process,
+        /// regardless of which thread created the I/O operation.
+        /// </summary>
+        /// <param name="hFile">A handle to the file.</param>
+        /// <param name="lpOverlapped">A pointer to an OVERLAPPED data structure
+        /// that contains the data used for asynchronous I/O. If this parameter
+        ///is NULL, all I/O requests for the hFile parameter are canceled. If
+        /// this parameter is not NULL, only those specific I/O requests that
+        /// were issued for the file with the specified lpOverlapped overlapped
+        /// structure are marked as canceled, meaning that you can cancel one or
+        /// more requests, while the CancelIo function cancels all outstanding
+        /// requests on a file handle.</param>
+        /// <returns>If the function succeeds, the return value is nonzero. The
+        /// cancel operation for all pending I/O operations issued by the calling
+        /// process for the specified file handle was successfully requested. The
+        /// application must not free or reuse the OVERLAPPED structure associated
+        /// with the canceled I/O operations until they have completed. The thread
+        /// can use the GetOverlappedResult function to determine when the I/O
+        /// operations themselves have been completed. If the function fails, the
+        /// return value is 0 (zero). To get extended error information, call the
+        /// GetLastError function. If this function cannot find a request to cancel,
+        /// the return value is 0 (zero), and GetLastError returns ERROR_NOT_FOUND.</returns>
         [DllImport("kernel32.dll", SetLastError = true, ExactSpelling = true, CharSet = CharSet.Auto)]
         internal static extern Boolean CancelIoEx(IntPtr hFile, IntPtr lpOverlapped);
 
+        /// <summary>
+        /// Closes an open object handle.
+        /// </summary>
+        /// <param name="hObject">A valid handle to an open object.</param>
+        /// <returns>If the function succeeds, the return value is nonzero. If the
+        /// function fails, the return value is zero. To get extended error information,
+        /// call GetLastError. If the application is running under a debugger, the function
+        /// will throw an exception if it receives either a handle value that is not valid
+        /// or a pseudo-handle value. This can happen if you close a handle twice, or if you
+        /// call CloseHandle on a handle returned by the FindFirstFile function instead of
+        /// calling the FindClose function.</returns>
         [DllImport("kernel32.dll", SetLastError = true, ExactSpelling = true, CharSet = CharSet.Auto)]
         internal static extern Boolean CloseHandle(IntPtr hObject);
 
@@ -144,11 +179,19 @@ namespace HwdgHid.Win32
         /// or device for various types of I/O depending on the file or device and the
         /// flags and attributes specified.</returns>
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        internal static extern IntPtr CreateFile(String lpFileName, FileAccess dwDesiredAccess, ShareMode dwShareMode,
-            ref SecurityAttributes lpSecurityAttributes, OpenMode dwCreationDisposition, FileAttributes dwFlagsAndAttributes,
-            IntPtr hTemplateFile);
+        internal static extern IntPtr CreateFile(String lpFileName, FileAccess dwDesiredAccess,
+            ShareMode dwShareMode, ref SecurityAttributes lpSecurityAttributes,
+            OpenMode dwCreationDisposition, FileAttributes dwFlagsAndAttributes, IntPtr hTemplateFile);
 
-
+        /// <summary>
+        /// The HidD_FreePreparsedData routine releases the resources that the
+        /// HID class driver allocated to hold a top-level collection's preparsed data.
+        /// </summary>
+        /// <param name="preparsedData">Pointer to the buffer, returned by
+        /// HidD_GetPreparsedData, that is freed.</param>
+        /// <returns>HidD_FreePreparsedData returns TRUE if it succeeds.
+        /// Otherwise, it returns FALSE if the buffer was not a preparsed
+        /// data buffer.</returns>
         [DllImport("hid.dll")]
         internal static extern Boolean HidD_FreePreparsedData(IntPtr preparsedData);
 
@@ -156,13 +199,26 @@ namespace HwdgHid.Win32
         /// The HidD_GetAttributes routine returns the attributes of a specified top-level collection.
         /// </summary>
         /// <param name="hidDeviceObject">Specifies an open handle to a top-level collection.</param>
-        /// <param name="attributes">Pointer to a caller-allocated HIDD_ATTRIBUTES structure that returns the attributes of the collection specified by HidDeviceObject.</param>
+        /// <param name="attributes">Pointer to a caller-allocated HIDD_ATTRIBUTES structure that
+        /// returns the attributes of the collection specified by HidDeviceObject.</param>
         /// <returns>HidD_GetAttributes returns TRUE if succeeds; otherwise, it returns FALSE.</returns>
         [DllImport("hid.dll")]
         internal static extern Boolean HidD_GetAttributes(IntPtr hidDeviceObject, ref HiddAttributes attributes);
 
+        /// <summary>
+        /// The HidD_GetFeature routine returns a feature report from a specified top-level collection.
+        /// </summary>
+        /// <param name="hidDeviceObject">pecifies an open handle to a top-level collection.</param>
+        /// <param name="lpReportBuffer">Pointer to a caller-allocated HID report buffer that the
+        /// caller uses to specify a report ID. HidD_GetFeature uses ReportBuffer to return the
+        /// specified feature report.</param>
+        /// <param name="reportBufferLength">Specifies the size, in bytes, of the report buffer.
+        /// The report buffer must be large enough to hold the feature report - excluding its
+        /// report ID, if report IDs are used - plus one additional byte that
+        /// specifies a nonzero report ID or zero.</param>
+        /// <returns>If HidD_GetFeature succeeds, it returns TRUE; otherwise, it returns FALSE.</returns>
         [DllImport("hid.dll")]
-        internal static extern Boolean HidD_GetFeature(IntPtr hidDeviceObject, Byte[] lpReportBuffer,
+        internal static extern Boolean HidD_GetFeature(IntPtr hidDeviceObject, out Byte[] lpReportBuffer,
             Int32 reportBufferLength);
 
         /// <summary>
@@ -173,51 +229,189 @@ namespace HwdgHid.Win32
         [DllImport("hid.dll")]
         internal static extern void HidD_GetHidGuid(ref Guid hidGuid);
 
+        /// <summary>
+        /// The HidD_GetInputReport routine returns an input reports from a top-level collection.
+        /// </summary>
+        /// <param name="hidDeviceObject">Specifies an open handle to a top-level collection.</param>
+        /// <param name="reportBuffer">Pointer to a caller-allocated input report buffer that
+        /// the caller uses to specify a HID report ID and HidD_GetInputReport uses to return
+        /// the specified input report.</param>
+        /// <param name="reportBufferLength">Specifies the size, in bytes, of the report buffer.
+        /// The report buffer must be large enough to hold the input report - excluding its
+        ///report ID, if report IDs are used - plus one additional byte that specifies a
+        /// nonzero report ID or zero.</param>
+        /// <returns>HidD_GetInputReport returns TRUE if it succeeds; otherwise, it returns FALSE.</returns>
         [DllImport("hid.dll")]
-        internal static extern Boolean HidD_GetInputReport(IntPtr hidDeviceObject, Byte[] lpReportBuffer,
+        internal static extern Boolean HidD_GetInputReport(IntPtr hidDeviceObject, out Byte reportBuffer,
             Int32 reportBufferLength);
 
+        /// <summary>
+        /// The HidD_GetManufacturerString routine returns a top-level collection's embedded
+        /// string that identifies the manufacturer.
+        /// </summary>
+        /// <param name="hidDeviceObject">Specifies an open handle to a top-level collection.</param>
+        /// <param name="reportBuffer">Pointer to a caller-allocated buffer that the routine
+        /// uses to return the collection's manufacturer string. The routine returns a
+        /// NULL-terminated wide character string in a human-readable format.</param>
+        /// <param name="reportBufferLength">Specifies the length, in bytes, of a
+        /// caller-allocated buffer provided at Buffer. If the buffer is not large
+        /// enough to return the entire NULL-terminated embedded string, the routine
+        /// returns nothing in the buffer.</param>
+        /// <returns>HidD_HidD_GetManufacturerString returns TRUE if it returns the
+        /// entire NULL-terminated embedded string. Otherwise, the routine returns FALSE.</returns>
         [DllImport("hid.dll", CharSet = CharSet.Unicode)]
-        internal static extern Boolean HidD_GetManufacturerString(IntPtr hidDeviceObject, ref Byte lpReportBuffer,
+        internal static extern Boolean HidD_GetManufacturerString(IntPtr hidDeviceObject, out Byte reportBuffer,
             Int32 reportBufferLength);
 
+        /// <summary>
+        /// The HidD_GetPreparsedData routine returns a top-level collection's preparsed data.
+        /// </summary>
+        /// <param name="hidDeviceObject">Specifies an open handle to a top-level collection.</param>
+        /// <param name="preparsedData">Pointer to the address of a routine-allocated buffer
+        /// that contains a collection's preparsed data in a _HIDP_PREPARSED_DATA structure.</param>
+        /// <returns>HidD_GetPreparsedData returns TRUE if it succeeds; otherwise, it returns FALSE.</returns>
         [DllImport("hid.dll")]
-        internal static extern Boolean HidD_GetPreparsedData(IntPtr hidDeviceObject, ref IntPtr preparsedData);
+        internal static extern Boolean HidD_GetPreparsedData(IntPtr hidDeviceObject, out IntPtr preparsedData);
 
+        /// <summary>
+        /// The HidD_GetProductString routine returns the embedded string of a top-level
+        /// collection that identifies the manufacturer's product.
+        /// </summary>
+        /// <param name="hidDeviceObject">Specifies an open handle to a top-level collection.</param>
+        /// <param name="lpReportBuffer">Pointer to a caller-allocated buffer that the
+        /// routine uses to return the requested product string. The routine returns
+        /// a NULL-terminated wide character string.</param>
+        /// <param name="reportBufferLength">Specifies the length, in bytes, of a caller-allocated
+        /// buffer provided at Buffer. If the buffer is not large enough to return the entire
+        /// NULL-terminated embedded string, the routine returns nothing in the buffer.</param>
+        /// <returns>HidD_GetProductString returns TRUE if it successfully returns the entire
+        /// NULL-terminated embedded string. Otherwise, the routine returns FALSE.</returns>
         [DllImport("hid.dll", CharSet = CharSet.Unicode)]
-        internal static extern Boolean HidD_GetProductString(IntPtr hidDeviceObject, ref Byte lpReportBuffer,
+        internal static extern Boolean HidD_GetProductString(IntPtr hidDeviceObject, out Byte lpReportBuffer,
             Int32 reportBufferLength);
 
+        /// <summary>
+        /// The HidD_GetSerialNumberString routine returns the embedded string of a top-level
+        /// collection that identifies the serial number of the collection's physical device.
+        /// </summary>
+        /// <param name="hidDeviceObject">Specifies an open handle to a top-level collection.</param>
+        /// <param name="lpReportBuffer">Pointer to a caller-allocated buffer that the routine
+        /// uses to return the requested serial number string. The routine returns a
+        /// NULL-terminated wide character string.</param>
+        /// <param name="reportBufferLength">Specifies the length, in bytes, of a caller-allocated
+        /// buffer provided at Buffer. If the buffer is not large enough to return the entire
+        /// NULL-terminated embedded string, the routine returns nothing in the buffer.</param>
+        /// <returns>HidD_GetSerialNumberString returns TRUE if it successfully returns the
+        /// entire NULL-terminated embedded string. Otherwise, the routine returns FALSE.</returns>
         [DllImport("hid.dll", CharSet = CharSet.Unicode)]
-        internal static extern Boolean HidD_GetSerialNumberString(IntPtr hidDeviceObject, ref Byte lpReportBuffer,
+        internal static extern Boolean HidD_GetSerialNumberString(IntPtr hidDeviceObject, out Byte[] lpReportBuffer,
             Int32 reportBufferLength);
 
+        /// <summary>
+        /// The HidD_SetFeature routine sends a feature report to a top-level collection.
+        /// </summary>
+        /// <param name="hidDeviceObject">Specifies an open handle to a top-level collection.</param>
+        /// <param name="lpReportBuffer">Pointer to a caller-allocated feature report buffer
+        /// that the caller uses to specify a HID report ID.</param>
+        /// <param name="reportBufferLength">Specifies the size, in bytes, of the report buffer.
+        /// The report buffer must be large enough to hold the feature report - excluding its
+        /// report ID, if report IDs are used - plus one additional byte that specifies a
+        /// nonzero report ID or zero.</param>
+        /// <returns>If HidD_SetFeature succeeds, it returns TRUE; otherwise, it returns FALSE.</returns>
         [DllImport("hid.dll")]
         internal static extern Boolean HidD_SetFeature(IntPtr hidDeviceObject, Byte[] lpReportBuffer,
             Int32 reportBufferLength);
 
+        /// <summary>
+        /// The HidD_SetOutputReport routine sends an output report to a top-level collection.
+        /// </summary>
+        /// <param name="hidDeviceObject">Specifies an open handle to a top-level collection.</param>
+        /// <param name="lpReportBuffer">Pointer to a caller-allocated output report buffer
+        /// that the caller uses to specify a report ID.</param>
+        /// <param name="reportBufferLength">Specifies the size, in bytes, of the report
+        /// buffer. The report buffer must be large enough to hold the output report -
+        /// excluding its report ID, if report IDs are used - plus one additional byte
+        /// that specifies a nonzero report ID or zero.</param>
+        /// <returns>If HidD_SetOutputReport succeeds, it returns TRUE; otherwise,
+        /// ]it returns FALSE.</returns>
         [DllImport("hid.dll")]
         internal static extern Boolean HidD_SetOutputReport(IntPtr hidDeviceObject, Byte[] lpReportBuffer,
             Int32 reportBufferLength);
 
+        /// <summary>
+        /// The HidP_GetCaps routine returns a top-level collection's HIDP_CAPS structure.
+        /// </summary>
+        /// <param name="preparsedData">Pointer to a top-level collection's preparsed data.</param>
+        /// <param name="capabilities">Pointer to a caller-allocated buffer that the routine
+        /// uses to return a collection's HIDP_CAPS structure.</param>
+        /// <returns>HIDP_STATUS_SUCCESS if the routine successfully returned the collection capability
+        /// information. HIDP_STATUS_INVALID_PREPARSED_DATA if the specified preparsed data is invalid.</returns>
         [DllImport("hid.dll")]
-        internal static extern Int32 HidP_GetCaps(IntPtr preparsedData, ref HidpCaps capabilities);
+        internal static extern Int32 HidP_GetCaps(IntPtr preparsedData, out HidpCaps capabilities);
 
-        [DllImport("kernel32.dll", SetLastError = true)]
-        internal static extern Boolean ReadFile(IntPtr hFile, IntPtr lpBuffer, UInt32 nNumberOfBytesToRead,
-            out UInt32 lpNumberOfBytesRead, [In] ref System.Threading.NativeOverlapped lpOverlapped);
-
+        /// <summary>
+        /// The SetupDiDestroyDeviceInfoList function deletes a device information set and
+        /// frees all associated memory.
+        /// </summary>
+        /// <param name="deviceInfoSet">A handle to the device information set to delete.</param>
+        /// <returns>The function returns TRUE if it is successful. Otherwise, it returns
+        /// FALSE and the logged error can be retrieved with a call to GetLastError.</returns>
         [DllImport("setupapi.dll")]
         internal static extern Int32 SetupDiDestroyDeviceInfoList(IntPtr deviceInfoSet);
 
+        /// <summary>
+        /// The SetupDiEnumDeviceInfo function returns a SP_DEVINFO_DATA structure that
+        /// specifies a device information element in a device information set.
+        /// </summary>
+        /// <param name="deviceInfoSet">A handle to the device information set for
+        /// which to return an SP_DEVINFO_DATA structure that represents a device
+        /// information element.</param>
+        /// <param name="memberIndex">A zero-based index of the device information
+        /// element to retrieve.</param>
+        /// <param name="deviceInfoData">A pointer to an SP_DEVINFO_DATA structure
+        /// to receive information about an enumerated device information element.
+        /// The caller must set DeviceInfoData.cbSize to sizeof(SP_DEVINFO_DATA).</param>
+        /// <returns>The function returns TRUE if it is successful. Otherwise, it
+        /// returns FALSE and the logged error can be retrieved with a call to GetLastError.</returns>
         [DllImport("setupapi.dll")]
         internal static extern Boolean SetupDiEnumDeviceInfo(IntPtr deviceInfoSet, Int32 memberIndex,
             ref SpDevinfoData deviceInfoData);
 
+        /// <summary>
+        /// The SetupDiEnumDeviceInterfaces function enumerates the device interfaces that
+        /// are contained in a device information set.
+        /// </summary>
+        /// <param name="deviceInfoSet">A pointer to a device information set that contains
+        /// the device interfaces for which to return information. This handle is typically
+        /// returned by SetupDiGetClassDevs.</param>
+        /// <param name="deviceInfoData">A pointer to an SP_DEVINFO_DATA structure that
+        /// specifies a device information element in DeviceInfoSet. This parameter is
+        /// optional and can be NULL. If this parameter is specified, SetupDiEnumDeviceInterfaces
+        /// constrains the enumeration to the interfaces that are supported by the specified
+        /// device. If this parameter is NULL, repeated calls to SetupDiEnumDeviceInterfaces
+        /// return information about the interfaces that are associated with all the device
+        /// information elements in DeviceInfoSet. This pointer is typically returned by
+        /// SetupDiEnumDeviceInfo.</param>
+        /// <param name="interfaceClassGuid">A pointer to a GUID that specifies the device
+        /// interface class for the requested interface.</param>
+        /// <param name="memberIndex">A zero-based index into the list of interfaces in the
+        /// device information set. The caller should call this function first with MemberIndex
+        /// set to zero to obtain the first interface. Then, repeatedly increment MemberIndex
+        /// and retrieve an interface until this function fails and GetLastError returns
+        /// ERROR_NO_MORE_ITEMS. If DeviceInfoData specifies a particular device, the
+        /// MemberIndex is relative to only the interfaces exposed by that device.</param>
+        /// <param name="deviceInterfaceData">A pointer to a caller-allocated buffer that
+        /// contains, on successful return, a completed SP_DEVICE_INTERFACE_DATA structure
+        /// that identifies an interface that meets the search parameters. The caller must
+        /// set DeviceInterfaceData.cbSize to sizeof(SP_DEVICE_INTERFACE_DATA) before calling
+        /// this function.</param>
+        /// <returns>SetupDiEnumDeviceInterfaces returns TRUE if the function completed without
+        /// error. If the function completed with an error, FALSE is returned and the error code
+        /// for the failure can be retrieved by calling GetLastError.</returns>
         [DllImport("setupapi.dll")]
         internal static extern Boolean SetupDiEnumDeviceInterfaces(IntPtr deviceInfoSet,
             ref SpDevinfoData deviceInfoData, ref Guid interfaceClassGuid, Int32 memberIndex,
-            ref SpDeviceInterfaceData deviceInterfaceData);
+            out SpDeviceInterfaceData deviceInterfaceData);
 
         /// <summary>
         /// The SetupDiGetClassDevs function returns a handle to a device
@@ -307,9 +501,5 @@ namespace HwdgHid.Win32
             Int32 deviceInterfaceDetailDataSize,
             IntPtr requiredSize,
             IntPtr deviceInfoData);
-
-        [DllImport("kernel32.dll")]
-        internal static extern Boolean WriteFile(IntPtr hFile, Byte[] lpBuffer, UInt32 nNumberOfBytesToWrite,
-            out UInt32 lpNumberOfBytesWritten, [In] ref System.Threading.NativeOverlapped lpOverlapped);
     }
 }

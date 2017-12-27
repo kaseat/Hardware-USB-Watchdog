@@ -48,6 +48,7 @@
     <Compile Include="Win32\Devpropkey.cs" />
     <Compile Include="Win32\FileAccess.cs" />
     <Compile Include="Win32\FileAttributes.cs" />
+    <Compile Include="Win32\Extensions.cs" />
     <Compile Include="Win32\HiddAttributes.cs" />
     <Compile Include="Win32\HidpCaps.cs" />
     <Compile Include="Win32\HidpValueCaps.cs" />

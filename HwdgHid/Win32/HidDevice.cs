@@ -4,8 +4,8 @@
 //
 // HwdgHid is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
+// the Free Software Foundation, either version 3 of the License, or any
+// later version.
 //
 // HwdgHid is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -13,39 +13,72 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+// along with HwdgHid. If not, see <http://www.gnu.org/licenses/>.
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Microsoft.Win32.SafeHandles;
 
 namespace HwdgHid.Win32
 {
-    public class HidDevice : IHidDevice
+    public class HidDevice : IHidDevice, IDisposable
     {
-        public Boolean IsOpen { get; }
-        public Boolean IsConnected { get; }
-        public String DevicePath { get; }
+        private readonly IntPtr deviceHandle;
 
-        public void OpenDevice()
+        public HidDevice(DeviceInfo deviceInfo)
         {
-            throw new NotImplementedException();
-        }
+            Info = deviceInfo;
 
-        public void CloseDevice()
-        {
-            throw new NotImplementedException();
+            if ((deviceHandle = OpenDeviceReadWrite(Info.Path)) == new IntPtr(-1))
+                throw new InvalidOperationException("Could not connect the device!");
         }
 
         public DeviceInfo Info { get; }
 
-        public IEnumerable<Byte> Read()
+        public void WriteReport(Report report)
         {
-            throw new NotImplementedException();
+            var buffer = report.Data.ToArray();
+            Wrapper.HidD_SetOutputReport(deviceHandle, report.Data.ToArray(), buffer.Length);
         }
 
-        public Boolean Write(IEnumerable<Byte> data)
+        public Report ReadReport(Byte reportId)
         {
-            throw new NotImplementedException();
+            var cmdBuffer = new Byte[Info.Capabilities.InputReportByteLength];
+            cmdBuffer[0] = reportId;
+            var bSuccess = Wrapper.HidD_GetInputReport(deviceHandle, out cmdBuffer[0], cmdBuffer.Length);
+            var rep = new Report {Data = cmdBuffer,ReportId = cmdBuffer[0]};
+            return rep;
+        }
+
+        private void ReleaseUnmanagedResources()
+        {
+            deviceHandle.DisposeDeviceHandle();
+        }
+
+        public void Dispose()
+        {
+            ReleaseUnmanagedResources();
+            GC.SuppressFinalize(this);
+        }
+
+        ~HidDevice()
+        {
+            ReleaseUnmanagedResources();
+        }
+
+        /// <summary>
+        /// Get device handle.
+        /// </summary>
+        /// <param name="devicePath">Path to the device.</param>
+        /// <returns>Returns device handle.</returns>
+        private static IntPtr OpenDeviceReadWrite(String devicePath)
+        {
+            var securityAttributes = SecurityAttributes.Initialize();
+            return Wrapper.CreateFile(devicePath, FileAccess.GenericRead | FileAccess.GenericWrite,
+                ShareMode.Exclusive, ref securityAttributes, OpenMode.OpenExisting,
+                FileAttributes.FileFlagOverlapped, IntPtr.Zero);
         }
     }
 }
