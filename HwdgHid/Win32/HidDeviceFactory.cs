@@ -24,7 +24,7 @@ namespace HwdgHid.Win32
     /// <summary>
     /// Represents HID devices communication class.
     /// </summary>
-    public static class HidDevices
+    public static class HidDeviceFactory
     {
         /// <summary>
         /// Get info about all connected USB HID devices.

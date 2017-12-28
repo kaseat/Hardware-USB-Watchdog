@@ -16,7 +16,6 @@
 // along with HwdgHid. If not, see <http://www.gnu.org/licenses/>.
 
 using System;
-using System.Collections.Generic;
 
 namespace HwdgHid
 {
@@ -25,8 +24,43 @@ namespace HwdgHid
     /// </summary>
     public interface IHidDevice
     {
+        /// <summary>
+        /// Device info
+        /// </summary>
         DeviceInfo Info { get; }
-        void WriteReport(Report report);
-        Report ReadReport(Byte reportId);
+
+        /// <summary>
+        /// Send report to the device.
+        /// </summary>
+        /// <param name="report">Report to be sent.</param>
+        /// <exception cref="NullReferenceException">Occurs when <paramref name="report"/> equals null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Occurs when report size and target device report length mismatch.</exception>
+        /// <exception cref="NotSupportedException">Occurs when target device not support output reports.</exception>
+        /// <exception cref="InvalidOperationException">Occurs when send report operation fails.</exception>
+        void SendReport(Report report);
+
+        /// <summary>
+        /// Get device report.
+        /// </summary>
+        /// <param name="reportId">Report Id.</param>
+        /// <returns>Returns report if read operation succeeded, otherwise returns null.</returns>
+        Report GetReport(Byte reportId);
+
+        /// <summary>
+        /// Send feature report to the device.
+        /// </summary>
+        /// <param name="report">Report to be sent.</param>
+        /// <exception cref="NullReferenceException">Occurs when <paramref name="report"/> equals null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Occurs when report size and target device report length mismatch.</exception>
+        /// <exception cref="NotSupportedException">Occurs when target device not support feature reports.</exception>
+        /// <exception cref="InvalidOperationException">Occurs when send feature report operation fails.</exception>
+        void SendFeatureReport(Report report);
+
+        /// <summary>
+        /// Get device feature report.
+        /// </summary>
+        /// <param name="reportId">Report Id.</param>
+        /// <returns>Returns feature report if read operation succeeded, otherwise returns null.</returns>
+        Report GetFeatureReport(Byte reportId);
     }
 }

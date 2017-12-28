@@ -12,11 +12,13 @@ namespace HwdgHidTests
         [TestMethod]
         public void CheckHid()
         {
-            var infos = HidDevices.GetDeviceInfos();
+            var infos = HidDeviceFactory.GetDeviceInfos();
             using (var device = new HidDevice(infos.First(x => x.ProductId == 0x5711 && x.VendorId == 0x0483)))
             {
-                device.WriteReport(new Report {ReportId = 1, Data = new Byte[] {33}});
-                var rp = device.ReadReport(1);
+                device.SendReport(new Report {ReportId = 1, Data = new Byte[] {33}});
+                var rp = device.GetReport(1);
+                device.SendFeatureReport(new Report { ReportId = 1, Data = new Byte[] { 00 } });
+                rp = device.GetFeatureReport(1);
             }
         }
     }

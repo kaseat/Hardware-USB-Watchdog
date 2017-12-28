@@ -209,7 +209,7 @@ namespace HwdgHid.Win32
         /// The HidD_GetFeature routine returns a feature report from a specified top-level collection.
         /// </summary>
         /// <param name="hidDeviceObject">pecifies an open handle to a top-level collection.</param>
-        /// <param name="lpReportBuffer">Pointer to a caller-allocated HID report buffer that the
+        /// <param name="reportBuffer">Pointer to a caller-allocated HID report buffer that the
         /// caller uses to specify a report ID. HidD_GetFeature uses ReportBuffer to return the
         /// specified feature report.</param>
         /// <param name="reportBufferLength">Specifies the size, in bytes, of the report buffer.
@@ -218,7 +218,7 @@ namespace HwdgHid.Win32
         /// specifies a nonzero report ID or zero.</param>
         /// <returns>If HidD_GetFeature succeeds, it returns TRUE; otherwise, it returns FALSE.</returns>
         [DllImport("hid.dll")]
-        internal static extern Boolean HidD_GetFeature(IntPtr hidDeviceObject, out Byte[] lpReportBuffer,
+        internal static extern Boolean HidD_GetFeature(IntPtr hidDeviceObject, out Byte reportBuffer,
             Int32 reportBufferLength);
 
         /// <summary>
@@ -295,7 +295,7 @@ namespace HwdgHid.Win32
         /// collection that identifies the serial number of the collection's physical device.
         /// </summary>
         /// <param name="hidDeviceObject">Specifies an open handle to a top-level collection.</param>
-        /// <param name="lpReportBuffer">Pointer to a caller-allocated buffer that the routine
+        /// <param name="reportBuffer">Pointer to a caller-allocated buffer that the routine
         /// uses to return the requested serial number string. The routine returns a
         /// NULL-terminated wide character string.</param>
         /// <param name="reportBufferLength">Specifies the length, in bytes, of a caller-allocated
@@ -304,14 +304,14 @@ namespace HwdgHid.Win32
         /// <returns>HidD_GetSerialNumberString returns TRUE if it successfully returns the
         /// entire NULL-terminated embedded string. Otherwise, the routine returns FALSE.</returns>
         [DllImport("hid.dll", CharSet = CharSet.Unicode)]
-        internal static extern Boolean HidD_GetSerialNumberString(IntPtr hidDeviceObject, out Byte[] lpReportBuffer,
+        internal static extern Boolean HidD_GetSerialNumberString(IntPtr hidDeviceObject, out Byte[] reportBuffer,
             Int32 reportBufferLength);
 
         /// <summary>
         /// The HidD_SetFeature routine sends a feature report to a top-level collection.
         /// </summary>
         /// <param name="hidDeviceObject">Specifies an open handle to a top-level collection.</param>
-        /// <param name="lpReportBuffer">Pointer to a caller-allocated feature report buffer
+        /// <param name="reportBuffer">Pointer to a caller-allocated feature report buffer
         /// that the caller uses to specify a HID report ID.</param>
         /// <param name="reportBufferLength">Specifies the size, in bytes, of the report buffer.
         /// The report buffer must be large enough to hold the feature report - excluding its
@@ -319,7 +319,7 @@ namespace HwdgHid.Win32
         /// nonzero report ID or zero.</param>
         /// <returns>If HidD_SetFeature succeeds, it returns TRUE; otherwise, it returns FALSE.</returns>
         [DllImport("hid.dll")]
-        internal static extern Boolean HidD_SetFeature(IntPtr hidDeviceObject, Byte[] lpReportBuffer,
+        internal static extern Boolean HidD_SetFeature(IntPtr hidDeviceObject, Byte[] reportBuffer,
             Int32 reportBufferLength);
 
         /// <summary>

@@ -61,7 +61,7 @@
     <Compile Include="Win32\SpDevinfoData.cs" />
     <Compile Include="Win32\Wrapper.cs" />
     <Compile Include="Win32\HidDevice.cs" />
-    <Compile Include="Win32\HidDevices.cs" />
+    <Compile Include="Win32\HidDeviceFactory.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

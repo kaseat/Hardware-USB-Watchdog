@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source files">
+      <UniqueIdentifier>{9d921a98-e0dd-4fa2-a180-4ee11d8edf37}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header files">
+      <UniqueIdentifier>{09556ddb-12aa-4321-a8ce-c097223a0ca6}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Drivers">
+      <UniqueIdentifier>{7a6b2a36-37cd-42ee-85a8-bd48a2f9f658}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Device-specific files">
+      <UniqueIdentifier>{d141b86f-0dbf-4819-a0d0-83c657631539}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Device-specific files\VisualGDB settings">
+      <UniqueIdentifier>{feeb5bac-ca3f-491b-9da2-d71bb1bb4297}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="avr.props">
+      <Filter>Device-specific files</Filter>
+    </None>
+    <None Include="HwdgTiny-Debug.vgdbsettings">
+      <Filter>Device-specific files\VisualGDB settings</Filter>
+    </None>
+    <None Include="HwdgTiny-Release.vgdbsettings">
+      <Filter>Device-specific files\VisualGDB settings</Filter>
+    </None>
+    <None Include="avr.xml">
+      <Filter>Device-specific files\VisualGDB settings</Filter>
+    </None>
+    <None Include="usbdrv\usbdrvasm12.inc">
+      <Filter>Drivers</Filter>
+    </None>
+    <None Include="usbdrv\usbdrvasm15.inc">
+      <Filter>Drivers</Filter>
+    </None>
+    <None Include="usbdrv\usbdrvasm16.inc">
+      <Filter>Drivers</Filter>
+    </None>
+    <None Include="usbdrv\usbdrvasm18-crc.inc">
+      <Filter>Drivers</Filter>
+    </None>
+    <None Include="usbdrv\usbdrvasm20.inc">
+      <Filter>Drivers</Filter>
+    </None>
+    <None Include="usbdrv\usbdrvasm128.inc">
+      <Filter>Drivers</Filter>
+    </None>
+    <None Include="usbdrv\usbdrvasm165.inc">
+      <Filter>Drivers</Filter>
+    </None>
+    <None Include="usbdrv\asmcommon.inc">
+      <Filter>Drivers</Filter>
+    </None>
+    <None Include="usbdrv\usbdrvasm.asm">
+      <Filter>Drivers</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="usbdrv\oddebug.c">
+      <Filter>Drivers</Filter>
+    </ClCompile>
+    <ClCompile Include="usbDriver.c">
+      <Filter>Drivers</Filter>
+    </ClCompile>
+    <ClCompile Include="usbdrv\usbdrv.c">
+      <Filter>Drivers</Filter>
+    </ClCompile>
+    <ClCompile Include="usbdrv\usbdrvasm.S">
+      <Filter>Drivers</Filter>
+    </ClCompile>
+    <ClCompile Include="HardwareInit.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="usbdrv\usbportability.h">
+      <Filter>Drivers</Filter>
+    </ClInclude>
+    <ClInclude Include="usbdrv\usbdrv.h">
+      <Filter>Drivers</Filter>
+    </ClInclude>
+    <ClInclude Include="usbdrv\usbconfig-prototype.h">
+      <Filter>Drivers</Filter>
+    </ClInclude>
+    <ClInclude Include="usbconfig.h">
+      <Filter>Drivers</Filter>
+    </ClInclude>
+    <ClInclude Include="usbdrv\oddebug.h">
+      <Filter>Drivers</Filter>
+    </ClInclude>
+    <ClInclude Include="usbDriver.h">
+      <Filter>Drivers</Filter>
+    </ClInclude>
+    <ClInclude Include="HardwareInit.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="usbdrv\CommercialLicense.txt">
+      <Filter>Drivers</Filter>
+    </Text>
+    <Text Include="usbdrv\License.txt">
+      <Filter>Drivers</Filter>
+    </Text>
+  </ItemGroup>
+</Project>

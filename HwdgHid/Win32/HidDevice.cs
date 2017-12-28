@@ -17,13 +17,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using Microsoft.Win32.SafeHandles;
 
 namespace HwdgHid.Win32
 {
+    /// <summary>
+    /// Represents Win32 IHidDevice implementation.
+    /// </summary>
     public class HidDevice : IHidDevice, IDisposable
     {
         private readonly IntPtr deviceHandle;
@@ -38,21 +38,59 @@ namespace HwdgHid.Win32
 
         public DeviceInfo Info { get; }
 
-        public void WriteReport(Report report)
+        public void SendReport(Report report)
         {
-            var buffer = new List<Byte>(Info.Capabilities.OutputReportByteLength) {report.ReportId};
+            if (report == null) throw new NullReferenceException(nameof(report));
+
+            var expectedDataLength = Info.Capabilities.OutputReportByteLength;
+            if (expectedDataLength <= 0) throw new NotSupportedException("The device not support output reports.");
+
+            var reportDataLength = report.Data.Count() + 1;
+            if (reportDataLength != expectedDataLength) throw new ArgumentOutOfRangeException(
+                $"report.Data size is {reportDataLength}, but expected {expectedDataLength}");
+
+            var buffer = new List<Byte>(expectedDataLength) {report.ReportId};
             buffer.AddRange(report.Data);
             if (!Wrapper.HidD_SetOutputReport(deviceHandle, buffer.ToArray(),
-                Math.Min(buffer.Count, Info.Capabilities.OutputReportByteLength)))
+                Math.Min(buffer.Count, expectedDataLength)))
                 throw new InvalidOperationException("Failed to write the report");
         }
 
-        public Report ReadReport(Byte reportId)
+        public Report GetReport(Byte reportId)
         {
             var buff = new Byte[Info.Capabilities.InputReportByteLength];
             buff[0] = reportId;
 
             return Wrapper.HidD_GetInputReport(deviceHandle, out buff[0], buff.Length)
+                ? new Report { Data = buff.Skip(1), ReportId = buff[0] }
+                : null;
+        }
+
+        public void SendFeatureReport(Report report)
+        {
+            if (report == null) throw new NullReferenceException(nameof(report));
+
+            var expectedDataLength = Info.Capabilities.FeatureReportByteLength;
+            if (expectedDataLength <= 0)
+                throw new InvalidOperationException("The device not support output feature reports.");
+
+            var reportDataLength = report.Data.Count() + 1;
+            if (reportDataLength != expectedDataLength) throw new ArgumentOutOfRangeException(
+                $"report.Data size is {reportDataLength}, but expected {expectedDataLength}");
+
+            var buffer = new List<Byte>(expectedDataLength) { report.ReportId };
+            buffer.AddRange(report.Data);
+            if (!Wrapper.HidD_SetFeature(deviceHandle, buffer.ToArray(),
+                Math.Min(buffer.Count, expectedDataLength)))
+                throw new InvalidOperationException("Failed to send feature report");
+        }
+
+        public Report GetFeatureReport(Byte reportId)
+        {
+            var buff = new Byte[Info.Capabilities.InputReportByteLength];
+            buff[0] = reportId;
+
+            return Wrapper.HidD_GetFeature(deviceHandle, out buff[0], buff.Length)
                 ? new Report { Data = buff.Skip(1), ReportId = buff[0] }
                 : null;
         }
