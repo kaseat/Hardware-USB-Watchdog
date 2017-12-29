@@ -18,30 +18,32 @@
 #pragma once
 
 #include <stdint-gcc.h>
+#include "usbdrv.h"
+#include <util/delay.h>
+/**
+* \brief This routine initializes USB driver.
+*/
+__inline void UsbInit(void)
+{
+	usbInit();
+	usbDeviceDisconnect();
+	_delay_ms(250);
+	usbDeviceConnect();
+}
+/**
+* \brief This function must be called at regular intervals from the
+* main loop. Maximum delay between calls is somewhat less than 50ms
+* (USB timeout for accepting a Setup message). Otherwise the device
+* will not be recognized.
+*/
+__inline void UsbPoll(void)
+{
+	usbPoll();
+}
 
 /**
- * \brief Represents USB driver.
+ * \brief This function is called by USB driver
+ * when a new command received from the host.
+ * \param data Received command.
  */
-typedef struct
-{
-	/**
-	* \brief This routine initializes USB driver.
-	*/
-	void (*Init)(void);
-
-	/**
-	* \brief This function must be called at regular intervals from the
-	* main loop. Maximum delay between calls is somewhat less than 50ms
-	* (USB timeout for accepting a Setup message). Otherwise the device
-	* will not be recognized.
-	*/
-	void (*Poll)(void);
-
-	/**
-	* \brief This routine calls when device received a command via USB.
-	* \return Returns command value.
-	*/
-	void (*OnCommandReceived)(uint8_t data);
-} UsbDriver_t;
-
-const UsbDriver_t Usb;
+void OnCommandReceived(uint8_t data);

@@ -15,21 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with HwdgTiny. If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
-
-#include <avr/interrupt.h>
-#include "usbDriver.h"
 #include "Timer.h"
-#include "Gpio.h"
+#include <avr/interrupt.h>
 
-/**
- * \brief Low level hardware initialization.
- */
-__inline void HardwareInit(void)
+extern void RebooterTimebase(void);
+extern void LedControlerTimebase(void);
+
+uint16_t counter = 0;
+ISR(TIM0_COMPA_vect)
 {
-	//wdt_enable(WDTO_1S);
-	TimerInit();
-	GpioInit();
-	UsbInit();
-	sei();
+	RebooterTimebase();
+	LedControlerTimebase();
+//	if (++counter > 1000)
+//	{
+//		counter = 0;
+//		PORTB ^= 1 << 3;
+//	}
 }

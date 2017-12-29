@@ -21,11 +21,9 @@
 #include <avr/eeprom.h>
 #include "usbdrv.h"
 #include <util/delay.h>
+#include "Rebooter.h"
+#include "LedController.h"
 
-void OnCommandReceived(uint8_t data);
-void InitUsbDriver(void);
-
-const UsbDriver_t Usb = { usbInit, usbPoll, OnCommandReceived };
 
 #define abs(x) ((x) > 0 ? (x) : (-x))
 static uint8_t currentAddress;
@@ -174,22 +172,21 @@ usbMsgLen_t usbFunctionSetup(uint8_t data[8])
 
 __attribute__((weak)) void OnCommandReceived(uint8_t data)
 {
-	if (data)
-	{
-		DDRB |= 1 << 3;
-		PORTB |= 1 << 3;
-	}
-	else
-	{
-		PORTB &= ~(1 << 3);
-		DDRB &= ~(1 << 3);
-	}
-}
+	if (data == 1)
+		RebooterSoftReset();
+	if (data == 2)
+		LedControlerBlinkFast();
+	if (data == 3)
+		LedControlerBlinkSlow();
 
-void InitUsbDriver(void)
-{
-	usbInit();
-	usbDeviceDisconnect();
-	_delay_ms(250);
-	usbDeviceConnect();
+	//	if (data)
+	//	{
+	//		DDRB |= 1 << 3;
+	//		PORTB |= 1 << 3;
+	//	}
+	//	else
+	//	{
+	//		PORTB &= ~(1 << 3);
+	//		DDRB &= ~(1 << 3);
+	//	}
 }

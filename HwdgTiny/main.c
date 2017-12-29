@@ -15,26 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with HwdgTiny. If not, see <http://www.gnu.org/licenses/>.
 
-#include <avr/interrupt.h>
 #include "usbDriver.h"
 #include "HardwareInit.h"
 
 int main(void)
 {
-	DDRB |= 1 << 3;
 	HardwareInit();
+
 	for (;;)
 	{
-		Usb.Poll();
-	}
-}
-
-uint16_t counter = 0;
-ISR(TIM0_COMPA_vect)
-{
-	if (++counter > 1000)
-	{
-		counter = 0;
-		PORTB ^= 1 << 3;
+		UsbPoll();
 	}
 }

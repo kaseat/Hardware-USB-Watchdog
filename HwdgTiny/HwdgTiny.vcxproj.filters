@@ -1,114 +1,157 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source files">
-      <UniqueIdentifier>{9d921a98-e0dd-4fa2-a180-4ee11d8edf37}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header files">
-      <UniqueIdentifier>{09556ddb-12aa-4321-a8ce-c097223a0ca6}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="Drivers">
       <UniqueIdentifier>{7a6b2a36-37cd-42ee-85a8-bd48a2f9f658}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Device-specific files">
+    <Filter Include="Drivers\Usb">
+      <UniqueIdentifier>{dc597709-4fea-4203-91df-eaf9ada9a686}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Drivers\Usb\v-usb">
+      <UniqueIdentifier>{bd01514f-d3cc-43aa-8655-8577469fc6f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Drivers\Gpio">
+      <UniqueIdentifier>{9061697a-b2b5-4376-b6ab-920dea319fca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Drivers\Timer">
+      <UniqueIdentifier>{b27959e0-9305-4129-8e5f-96a00ec8e79f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App">
+      <UniqueIdentifier>{fe5062d3-bdab-4642-968a-c36eb33c8368}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Rebooter">
+      <UniqueIdentifier>{d7722959-48ca-420d-a6cd-f230b8a04423}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Common">
+      <UniqueIdentifier>{fc62fe78-7350-40ee-8819-a6f267848210}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Drivers\Device-specific files">
       <UniqueIdentifier>{d141b86f-0dbf-4819-a0d0-83c657631539}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Device-specific files\VisualGDB settings">
+    <Filter Include="Drivers\Device-specific files\VisualGDB settings">
       <UniqueIdentifier>{feeb5bac-ca3f-491b-9da2-d71bb1bb4297}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\LedController">
+      <UniqueIdentifier>{d72b0158-bc2d-4fe9-b771-5da1a387526e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="avr.props">
-      <Filter>Device-specific files</Filter>
+      <Filter>Drivers\Device-specific files</Filter>
     </None>
     <None Include="HwdgTiny-Debug.vgdbsettings">
-      <Filter>Device-specific files\VisualGDB settings</Filter>
+      <Filter>Drivers\Device-specific files\VisualGDB settings</Filter>
     </None>
     <None Include="HwdgTiny-Release.vgdbsettings">
-      <Filter>Device-specific files\VisualGDB settings</Filter>
+      <Filter>Drivers\Device-specific files\VisualGDB settings</Filter>
     </None>
     <None Include="avr.xml">
-      <Filter>Device-specific files\VisualGDB settings</Filter>
-    </None>
-    <None Include="usbdrv\usbdrvasm12.inc">
-      <Filter>Drivers</Filter>
-    </None>
-    <None Include="usbdrv\usbdrvasm15.inc">
-      <Filter>Drivers</Filter>
-    </None>
-    <None Include="usbdrv\usbdrvasm16.inc">
-      <Filter>Drivers</Filter>
-    </None>
-    <None Include="usbdrv\usbdrvasm18-crc.inc">
-      <Filter>Drivers</Filter>
-    </None>
-    <None Include="usbdrv\usbdrvasm20.inc">
-      <Filter>Drivers</Filter>
-    </None>
-    <None Include="usbdrv\usbdrvasm128.inc">
-      <Filter>Drivers</Filter>
-    </None>
-    <None Include="usbdrv\usbdrvasm165.inc">
-      <Filter>Drivers</Filter>
+      <Filter>Drivers\Device-specific files\VisualGDB settings</Filter>
     </None>
     <None Include="usbdrv\asmcommon.inc">
-      <Filter>Drivers</Filter>
+      <Filter>Drivers\Usb\v-usb</Filter>
     </None>
     <None Include="usbdrv\usbdrvasm.asm">
-      <Filter>Drivers</Filter>
+      <Filter>Drivers\Usb\v-usb</Filter>
+    </None>
+    <None Include="usbdrv\usbdrvasm12.inc">
+      <Filter>Drivers\Usb\v-usb</Filter>
+    </None>
+    <None Include="usbdrv\usbdrvasm15.inc">
+      <Filter>Drivers\Usb\v-usb</Filter>
+    </None>
+    <None Include="usbdrv\usbdrvasm16.inc">
+      <Filter>Drivers\Usb\v-usb</Filter>
+    </None>
+    <None Include="usbdrv\usbdrvasm18-crc.inc">
+      <Filter>Drivers\Usb\v-usb</Filter>
+    </None>
+    <None Include="usbdrv\usbdrvasm20.inc">
+      <Filter>Drivers\Usb\v-usb</Filter>
+    </None>
+    <None Include="usbdrv\usbdrvasm128.inc">
+      <Filter>Drivers\Usb\v-usb</Filter>
+    </None>
+    <None Include="usbdrv\usbdrvasm165.inc">
+      <Filter>Drivers\Usb\v-usb</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.c">
-      <Filter>Source files</Filter>
-    </ClCompile>
     <ClCompile Include="usbdrv\oddebug.c">
-      <Filter>Drivers</Filter>
-    </ClCompile>
-    <ClCompile Include="usbDriver.c">
-      <Filter>Drivers</Filter>
+      <Filter>Drivers\Usb\v-usb</Filter>
     </ClCompile>
     <ClCompile Include="usbdrv\usbdrv.c">
-      <Filter>Drivers</Filter>
+      <Filter>Drivers\Usb\v-usb</Filter>
     </ClCompile>
     <ClCompile Include="usbdrv\usbdrvasm.S">
-      <Filter>Drivers</Filter>
+      <Filter>Drivers\Usb\v-usb</Filter>
+    </ClCompile>
+    <ClCompile Include="usbDriver.c">
+      <Filter>Drivers\Usb</Filter>
+    </ClCompile>
+    <ClCompile Include="Gpio.c">
+      <Filter>Drivers\Gpio</Filter>
     </ClCompile>
     <ClCompile Include="HardwareInit.c">
-      <Filter>Source files</Filter>
+      <Filter>Drivers</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.c">
+      <Filter>Drivers\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Rebooter.c">
+      <Filter>App\Rebooter</Filter>
+    </ClCompile>
+    <ClCompile Include="main.c">
+      <Filter>App</Filter>
+    </ClCompile>
+    <ClCompile Include="LedController.c">
+      <Filter>App\LedController</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="usbdrv\usbportability.h">
-      <Filter>Drivers</Filter>
-    </ClInclude>
-    <ClInclude Include="usbdrv\usbdrv.h">
-      <Filter>Drivers</Filter>
+    <ClInclude Include="usbdrv\oddebug.h">
+      <Filter>Drivers\Usb\v-usb</Filter>
     </ClInclude>
     <ClInclude Include="usbdrv\usbconfig-prototype.h">
-      <Filter>Drivers</Filter>
+      <Filter>Drivers\Usb\v-usb</Filter>
     </ClInclude>
     <ClInclude Include="usbconfig.h">
-      <Filter>Drivers</Filter>
+      <Filter>Drivers\Usb\v-usb</Filter>
     </ClInclude>
-    <ClInclude Include="usbdrv\oddebug.h">
-      <Filter>Drivers</Filter>
+    <ClInclude Include="usbdrv\usbdrv.h">
+      <Filter>Drivers\Usb\v-usb</Filter>
+    </ClInclude>
+    <ClInclude Include="usbdrv\usbportability.h">
+      <Filter>Drivers\Usb\v-usb</Filter>
     </ClInclude>
     <ClInclude Include="usbDriver.h">
-      <Filter>Drivers</Filter>
+      <Filter>Drivers\Usb</Filter>
+    </ClInclude>
+    <ClInclude Include="Gpio.h">
+      <Filter>Drivers\Gpio</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Drivers\Timer</Filter>
     </ClInclude>
     <ClInclude Include="HardwareInit.h">
-      <Filter>Header files</Filter>
+      <Filter>Drivers</Filter>
+    </ClInclude>
+    <ClInclude Include="Rebooter.h">
+      <Filter>App\Rebooter</Filter>
+    </ClInclude>
+    <ClInclude Include="Response.h">
+      <Filter>App\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="LedController.h">
+      <Filter>App\LedController</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="usbdrv\CommercialLicense.txt">
-      <Filter>Drivers</Filter>
+      <Filter>Drivers\Usb\v-usb</Filter>
     </Text>
     <Text Include="usbdrv\License.txt">
-      <Filter>Drivers</Filter>
+      <Filter>Drivers\Usb\v-usb</Filter>
     </Text>
   </ItemGroup>
 </Project>

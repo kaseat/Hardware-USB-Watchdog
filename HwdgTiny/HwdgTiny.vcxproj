@@ -57,8 +57,12 @@
     </ToolchainSettingsContainer>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Gpio.c" />
     <ClCompile Include="HardwareInit.c" />
+    <ClCompile Include="LedController.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="Rebooter.c" />
+    <ClCompile Include="Timer.c" />
     <ClCompile Include="usbDriver.c" />
     <ClCompile Include="usbdrv\oddebug.c" />
     <ClCompile Include="usbdrv\usbdrv.c" />
@@ -83,7 +87,12 @@
     <None Include="usbdrv\usbdrvasm20.inc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Gpio.h" />
     <ClInclude Include="HardwareInit.h" />
+    <ClInclude Include="LedController.h" />
+    <ClInclude Include="Rebooter.h" />
+    <ClInclude Include="Response.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="usbconfig.h" />
     <ClInclude Include="usbDriver.h" />
     <ClInclude Include="usbdrv\oddebug.h" />

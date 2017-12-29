@@ -17,19 +17,42 @@
 
 #pragma once
 
-#include <avr/interrupt.h>
-#include "usbDriver.h"
-#include "Timer.h"
-#include "Gpio.h"
+#include "Response.h"
+#include <stdint-gcc.h>
 
 /**
- * \brief Low level hardware initialization.
- */
-__inline void HardwareInit(void)
-{
-	//wdt_enable(WDTO_1S);
-	TimerInit();
-	GpioInit();
-	UsbInit();
-	sei();
-}
+* \brief Enable LED.
+*/
+Response_t LedControlerEnable(void);
+/**
+* \brief Get current enable status.
+*/
+uint8_t LedControlerIsEnabled(void);
+/**
+* \brief Disable LED.
+*/
+Response_t LedControlerDisable(void);
+/**
+* \brief Turn LED off.
+*/
+void LedControlerOff(void);
+
+/**
+* \brief Turn LED on.
+*/
+void LedControlerGlow(void);
+
+/**
+* \brief Start fast LED blink.
+*/
+void LedControlerBlinkFast(void);
+
+/**
+* \brief Start medium LED blink.
+*/
+void LedControlerBlinkMid(void);
+
+/**
+* \brief Start slow LED blink.
+*/
+void LedControlerBlinkSlow(void);

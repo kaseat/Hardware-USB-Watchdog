@@ -17,19 +17,24 @@
 
 #pragma once
 
-#include <avr/interrupt.h>
-#include "usbDriver.h"
-#include "Timer.h"
-#include "Gpio.h"
+#include <stdint-gcc.h>
+#include <avr/io.h>
 
 /**
- * \brief Low level hardware initialization.
- */
-__inline void HardwareInit(void)
+* \brief Configure TIM0 as 1ms interrupt source.
+*/
+__inline void TimerInit(void)
 {
-	//wdt_enable(WDTO_1S);
-	TimerInit();
-	GpioInit();
-	UsbInit();
-	sei();
+	// Ensure we have zero in TCNT0 register.
+	TCNT0 = 0;
+	// Configure counter resolution to get 1 ms interrupt.
+	// Actually we have an interrupt every 1.0055 ms instead.
+	// It's the closest value we can achieve on this microcontroller.
+	OCR0A = 64;
+	// Put timer in CTC mode.
+	TCCR0A = 1 << WGM01;
+	// Set 256 prescaler.
+	TCCR0B = 1 << CS02;
+	// Enable Output Compare Match interrupt.
+	TIMSK |= 1 << OCIE0A;
 }
