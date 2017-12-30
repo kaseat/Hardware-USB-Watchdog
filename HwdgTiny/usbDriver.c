@@ -23,6 +23,7 @@
 #include <util/delay.h>
 #include "Rebooter.h"
 #include "LedController.h"
+#include "ResetController.h"
 
 
 #define abs(x) ((x) > 0 ? (x) : (-x))
@@ -173,11 +174,11 @@ usbMsgLen_t usbFunctionSetup(uint8_t data[8])
 __attribute__((weak)) void OnCommandReceived(uint8_t data)
 {
 	if (data == 1)
-		RebooterSoftReset();
+		ResetControllerStart();
 	if (data == 2)
-		LedControlerBlinkFast();
+		ResetControllerStop();
 	if (data == 3)
-		LedControlerBlinkSlow();
+		ResetControllerPing();
 
 	//	if (data)
 	//	{

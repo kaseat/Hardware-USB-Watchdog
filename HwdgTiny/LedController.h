@@ -23,36 +23,36 @@
 /**
 * \brief Enable LED.
 */
-Response_t LedControlerEnable(void);
+Response_t LedControllerEnable(void);
 /**
 * \brief Get current enable status.
 */
-uint8_t LedControlerIsEnabled(void);
+uint8_t LedControllerIsEnabled(void);
 /**
 * \brief Disable LED.
 */
-Response_t LedControlerDisable(void);
+Response_t LedControllerDisable(void);
 /**
 * \brief Turn LED off.
 */
-void LedControlerOff(void);
+void LedControllerOff(void);
 
 /**
 * \brief Turn LED on.
 */
-void LedControlerGlow(void);
+void LedControllerGlow(void);
 
 /**
 * \brief Start fast LED blink.
 */
-void LedControlerBlinkFast(void);
+void LedControllerBlinkFast(void);
 
 /**
 * \brief Start medium LED blink.
 */
-void LedControlerBlinkMid(void);
+void LedControllerBlinkMid(void);
 
 /**
 * \brief Start slow LED blink.
 */
-void LedControlerBlinkSlow(void);
+void LedControllerBlinkSlow(void);

@@ -20,15 +20,15 @@
 
 
 #ifndef SLOW_BLINK_TIMEOUT
-#define SLOW_BLINK_TIMEOUT  ((uint16_t)1000U)
+#define SLOW_BLINK_TIMEOUT  ((uint16_t)500U)
 #endif
 
 #ifndef MID_BLINK_TIMEOUT
-#define MID_BLINK_TIMEOUT   ((uint16_t)500U)
+#define MID_BLINK_TIMEOUT   ((uint16_t)250)
 #endif
 
 #ifndef FAST_BLINK_TIMEOUT
-#define FAST_BLINK_TIMEOUT  ((uint16_t)250U)
+#define FAST_BLINK_TIMEOUT  ((uint16_t)125U)
 #endif
 
 #define INITIAL             ((uint8_t)0x00U)
@@ -40,54 +40,54 @@
 #define OFF                 ((uint8_t)0x20U)
 #define GLOW                ((uint8_t)0x40U)
 
-static uint8_t state;
-static uint8_t disabled;
-static uint16_t counter;
+static uint8_t state = GLOW;
+static uint8_t disabled = 0;
+static uint16_t counter = INITIAL;
 
-Response_t LedControlerEnable(void)
+Response_t LedControllerEnable(void)
 {
 	disabled = 0;
 	if (state & GLOW) GpioDriveLedHigh();
 	return EnableLedOk;
 }
 
-uint8_t LedControlerIsEnabled(void)
+uint8_t LedControllerIsEnabled(void)
 {
 	return !disabled;
 }
 
-Response_t LedControlerDisable(void)
+Response_t LedControllerDisable(void)
 {
 	disabled = 1;
 	GpioDriveLedLow();
 	return DisableLedOk;
 }
 
-void LedControlerOff(void)
+void LedControllerOff(void)
 {
 	state = OFF;
 	if (!disabled) GpioDriveLedLow();
 }
 
-void LedControlerGlow(void)
+void LedControllerGlow(void)
 {
 	state = GLOW;
 	if (!disabled) GpioDriveLedHigh();
 }
 
-void LedControlerBlinkFast(void)
+void LedControllerBlinkFast(void)
 {
 	state = FAST_BLINK;
 	if (!disabled) GpioDriveLedLow();
 }
 
-void LedControlerBlinkMid(void)
+void LedControllerBlinkMid(void)
 {
 	state = MID_BLINK;
 	if (!disabled) GpioDriveLedLow();
 }
 
-void LedControlerBlinkSlow(void)
+void LedControllerBlinkSlow(void)
 {
 	state = SLOW_BLINK;
 	if (!disabled) GpioDriveLedLow();

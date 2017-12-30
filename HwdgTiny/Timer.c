@@ -20,15 +20,12 @@
 
 extern void RebooterTimebase(void);
 extern void LedControlerTimebase(void);
+extern void ResetControllerTimebase(void);
 
-uint16_t counter = 0;
+
 ISR(TIM0_COMPA_vect)
 {
 	RebooterTimebase();
 	LedControlerTimebase();
-//	if (++counter > 1000)
-//	{
-//		counter = 0;
-//		PORTB ^= 1 << 3;
-//	}
+	ResetControllerTimebase();
 }

@@ -34,6 +34,12 @@
     <Filter Include="App\LedController">
       <UniqueIdentifier>{d72b0158-bc2d-4fe9-b771-5da1a387526e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="App\ResetController">
+      <UniqueIdentifier>{01e29577-f336-43b7-836b-47b50dd6f501}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\CommandManager">
+      <UniqueIdentifier>{6b506f8a-8d16-455a-9773-ef1ffd3bfe45}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="avr.props">
@@ -107,6 +113,12 @@
     <ClCompile Include="LedController.c">
       <Filter>App\LedController</Filter>
     </ClCompile>
+    <ClCompile Include="ResetController.c">
+      <Filter>App\ResetController</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandManager.c">
+      <Filter>App\CommandManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="usbdrv\oddebug.h">
@@ -144,6 +156,12 @@
     </ClInclude>
     <ClInclude Include="LedController.h">
       <Filter>App\LedController</Filter>
+    </ClInclude>
+    <ClInclude Include="ResetController.h">
+      <Filter>App\ResetController</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandManager.h">
+      <Filter>App\CommandManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
