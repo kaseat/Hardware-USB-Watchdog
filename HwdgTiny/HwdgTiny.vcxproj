@@ -64,6 +64,7 @@
     <ClCompile Include="main.c" />
     <ClCompile Include="Rebooter.c" />
     <ClCompile Include="ResetController.c" />
+    <ClCompile Include="SettingsManager.c" />
     <ClCompile Include="Timer.c" />
     <ClCompile Include="usbDriver.c" />
     <ClCompile Include="usbdrv\oddebug.c" />
@@ -96,6 +97,7 @@
     <ClInclude Include="Rebooter.h" />
     <ClInclude Include="ResetController.h" />
     <ClInclude Include="Response.h" />
+    <ClInclude Include="SettingsManager.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="usbconfig.h" />
     <ClInclude Include="usbDriver.h" />
