@@ -141,7 +141,8 @@ uint8_t usbFunctionWrite(uint8_t* data, uint8_t len)
 	}
 	return bytesRemaining == 0; /* return 1 if this was the last chunk */
 }
-
+extern uint8_t LastOperationStatus;
+//static uint8_t buff[5];
 /**
  * \brief This function is called when the driver receives a SETUP transaction
  * from the host which is not answered by the driver itself(in practice : class
@@ -164,7 +165,8 @@ usbMsgLen_t usbFunctionSetup(uint8_t data[8])
 			reportId = rq->wValue.bytes[0];
 			bytesRemaining = 5;
 			currentAddress = 0;
-			return USB_NO_MSG;
+			usbMsgPtr = (uint16_t)&LastOperationStatus;
+			return 5;
 		}
 		if (rq->bRequest == USBRQ_HID_SET_REPORT)
 		{

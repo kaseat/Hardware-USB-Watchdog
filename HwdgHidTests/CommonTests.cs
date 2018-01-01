@@ -17,6 +17,7 @@ namespace HwdgHidTests
             {
                 var t = device.GetFeatureReport(1);
                 device.SendReport(new Report {ReportId = 1, Data = new Byte[] {0xF9}});
+                t = device.GetFeatureReport(1);
                 device.SendReport(new Report {ReportId = 1, Data = new Byte[] { 0xFA } });
                 device.SendReport(new Report {ReportId = 1, Data = new Byte[] { 0x7F } });
                 var rp = device.GetReport(1);

@@ -40,7 +40,7 @@
     <Filter Include="App\CommandManager">
       <UniqueIdentifier>{6b506f8a-8d16-455a-9773-ef1ffd3bfe45}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Drivers\SettingsManager">
+    <Filter Include="App\SettingsManager">
       <UniqueIdentifier>{ae7da6ed-c501-43f7-8e5e-96ca830ed023}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -123,7 +123,7 @@
       <Filter>App\CommandManager</Filter>
     </ClCompile>
     <ClCompile Include="SettingsManager.c">
-      <Filter>Drivers\SettingsManager</Filter>
+      <Filter>App\SettingsManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -170,7 +170,7 @@
       <Filter>App\CommandManager</Filter>
     </ClInclude>
     <ClInclude Include="SettingsManager.h">
-      <Filter>Drivers\SettingsManager</Filter>
+      <Filter>App\SettingsManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

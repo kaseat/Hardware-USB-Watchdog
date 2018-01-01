@@ -19,25 +19,28 @@
 #include "Response.h"
 #include "ResetController.h"
 #include "LedController.h"
+#include "SettingsManager.h"
+uint8_t LastOperationStatus = 0;
+Response_t CommandManagerSaveCurrentSettings(void);
 
 void OnCommandReceived(uint8_t data)
 {
 	data == 0xFB // Ping command
-		? ResetControllerPing()
+		? LastOperationStatus = ResetControllerPing()
 		//	: data == 0xF8 // IsAlive command
 		//	? SoftwareVersion
 		//	: data == 0x01 // GetStatus command
 		//	? GetStatus()
 		: data == 0xF9 // Start command
-		? ResetControllerStart()
+		? LastOperationStatus = ResetControllerStart()
 		: data == 0xFA // Stop command
-		? ResetControllerStop()
+		? LastOperationStatus = ResetControllerStop()
 		: data == 0xFE // Enable LED
-		? LedControllerEnable()
+		? LastOperationStatus = LedControllerEnable()
 		: data == 0xFF // Disable LED
-		? LedControllerDisable()
+		? LastOperationStatus = LedControllerDisable()
 		: data == 0x7F // TestSoftReset command
-		? ResetControllerTestSoftReset()
+		? LastOperationStatus = ResetControllerTestSoftReset()
 
 		//	: data == 0x3F // RstPulseOnStartupDisable command
 		//	? settingsManager.RstPulseOnStartupDisable()
@@ -48,19 +51,40 @@ void OnCommandReceived(uint8_t data)
 		//	: data == 0x3C // PwrPulseOnStartupEnable command
 		//	? settingsManager.PwrPulseOnStartupEnable()
 		//
-		//	: data == 0x3B // ApplyUserSettingsAtStartup command
-		//	? settingsManager.ApplyUserSettingsAtStartup()
-		//	: data == 0x3A // LoadDefaultSettingsAtStartup command
-		//	? settingsManager.LoadDefaultSettingsAtStartup()
-		//	: data == 0x39 // SaveCurrentSettings command
-		//	? SaveCurrentSettings()
+		: data == 0x3B // ApplyUserSettingsAtStartup command
+		? LastOperationStatus = SettingsManagerApplyUserSettingsAtStartup()
+		: data == 0x3A // LoadDefaultSettingsAtStartup command
+		? LastOperationStatus = SettingsManagerLoadDefaultSettingsAtStartup()
+		: data == 0x39 // SaveCurrentSettings command
+		? LastOperationStatus = CommandManagerSaveCurrentSettings()
 
 
 		: data >> 7 == 1 // SetRebootTimeout command
-		? ResetControllerSetRebootTimeout(data)
+		? LastOperationStatus = ResetControllerSetRebootTimeout(data)
 		: data >> 6 == 1 // SetResponseTimeout command
-		? ResetControllerSetResponseTimeout(data)
+		? LastOperationStatus = ResetControllerSetResponseTimeout(data)
 		: data >> 3 == 2 // SetSoftResetAttempts command
-		? ResetControllerSetSoftResetAttempts(data)
+		? LastOperationStatus = ResetControllerSetSoftResetAttempts(data)
 		: UnknownCommand;
+}
+
+Response_t CommandManagerSaveCurrentSettings(void)
+{
+	// Get ResetController status
+	uint8_t buffer[4];
+	*(uint32_t*)buffer = ResetControllerGetStatus();
+
+	// Get LED status.
+	if(LedControllerIsEnabled())
+	{
+		buffer[3] &= ~LED_DISABLED;
+	}
+	else
+	{
+		buffer[3] |= LED_DISABLED;
+	}
+	// Save all settings we got earlier
+	return SettingsManagerSaveUserSettings(*(uint32_t*)buffer)
+	? SaveCurrentSettingsOk
+	: SaveSettingsError;
 }
