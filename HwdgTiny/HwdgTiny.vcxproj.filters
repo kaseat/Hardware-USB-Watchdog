@@ -43,6 +43,9 @@
     <Filter Include="App\SettingsManager">
       <UniqueIdentifier>{ae7da6ed-c501-43f7-8e5e-96ca830ed023}</UniqueIdentifier>
     </Filter>
+    <Filter Include="App\BootManager">
+      <UniqueIdentifier>{5aabb578-24d6-44df-a55c-d6cb297d2b5d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="avr.props">
@@ -125,6 +128,9 @@
     <ClCompile Include="SettingsManager.c">
       <Filter>App\SettingsManager</Filter>
     </ClCompile>
+    <ClCompile Include="BootManager.c">
+      <Filter>App\BootManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="usbdrv\oddebug.h">
@@ -157,9 +163,6 @@
     <ClInclude Include="Rebooter.h">
       <Filter>App\Rebooter</Filter>
     </ClInclude>
-    <ClInclude Include="Response.h">
-      <Filter>App\Common</Filter>
-    </ClInclude>
     <ClInclude Include="LedController.h">
       <Filter>App\LedController</Filter>
     </ClInclude>
@@ -171,6 +174,12 @@
     </ClInclude>
     <ClInclude Include="SettingsManager.h">
       <Filter>App\SettingsManager</Filter>
+    </ClInclude>
+    <ClInclude Include="BootManager.h">
+      <Filter>App\BootManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Common.h">
+      <Filter>App\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

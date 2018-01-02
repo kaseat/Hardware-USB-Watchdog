@@ -17,7 +17,7 @@
 
 #pragma once
 #include <stdint-gcc.h>
-#include "Response.h"
+#include "Common.h"
 
 #define SETTINGS_DEFAULT_0            ((uint8_t)0x1C)
 #define SETTINGS_DEFAULT_1            ((uint8_t)0x44)
@@ -35,13 +35,13 @@
  * \param status Status to be saved.
  * \return Returns true if save operation succeeded, otherwise false.
  */
-uint8_t SettingsManagerSaveUserSettings(uint32_t status);
+uint8_t SettingsManagerSaveUserSettings(Status_t* status);
 
 /**
  * \brief Fetch user HWDG settings from NVRAM.
  * \return Returns user settings.
  */
-uint32_t SettingsManagerObtainUserSettings(void);
+Status_t SettingsManagerObtainUserSettings(void);
 
 /**
  * \brief Apply user settings at startup.

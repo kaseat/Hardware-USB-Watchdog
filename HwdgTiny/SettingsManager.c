@@ -17,36 +17,36 @@
 
 #include "SettingsManager.h"
 #include <avr/eeprom.h>
-
-uint8_t SettingsManagerSaveUserSettings(uint32_t status)
+#define EEPROM_ADDR (uint32_t *)0
+uint8_t SettingsManagerSaveUserSettings(Status_t* status)
 {
-	uint32_t data = status;
-	uint8_t* data_p = (uint8_t*)&data;
-	data_p[3] = data_p[3] & 0xFC;
-	uint32_t readData;
+	Status_t actual = *status;
 
-	eeprom_read_block((uint8_t*)&readData, (uint8_t *)0, sizeof(uint32_t));
-	((uint8_t*)&readData)[3] = ((uint8_t*)&readData)[3] & 0x03;
+	// Following code is the same if we just called:
+	// actual.IsRebooting = 0;
+	// actual.IsMonitoring = 0;
+	// We save couple of bytes applying bit mask. 
+	uint8_t* actual_p = (uint8_t*)&actual;
+	actual_p[1] &= 0x3F;
+
+	const uint32_t saved = eeprom_read_dword(EEPROM_ADDR);
 
 	// If we have the same values in EEPROM we don't need to
 	// rewrite existing data, just say operation succeeded.
-	if (data == readData)
+	if(saved == (uint32_t)*actual_p)
 		return 1;
 
 	// Write data to EEPROM.
-	eeprom_write_block((uint8_t*)&status, (uint8_t *)0, sizeof(uint32_t));
+	eeprom_write_dword(EEPROM_ADDR, (uint32_t)*actual_p);
 
 	// Verify write operation succeeded.
-	eeprom_read_block((uint8_t*)&readData, (uint8_t *)0, sizeof(uint32_t));
-	((uint8_t*)&readData)[3] = ((uint8_t*)&readData)[3] & 0x03;
-	return !(data == readData);
+	return !((uint32_t)*actual_p == eeprom_read_dword(EEPROM_ADDR));
 }
 
-uint32_t SettingsManagerObtainUserSettings(void)
+Status_t SettingsManagerObtainUserSettings(void)
 {
-	uint32_t result = 0;
-	eeprom_read_block((uint8_t*)&result, (uint8_t *)0, sizeof(uint32_t));
-	return result;
+	uint32_t result = eeprom_read_dword(EEPROM_ADDR);
+	return *(Status_t*)&result;
 }
 
 Response_t SettingsManagerApplyUserSettingsAtStartup(void)

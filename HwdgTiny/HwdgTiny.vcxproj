@@ -57,6 +57,7 @@
     </ToolchainSettingsContainer>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BootManager.c" />
     <ClCompile Include="CommandManager.c" />
     <ClCompile Include="Gpio.c" />
     <ClCompile Include="HardwareInit.c" />
@@ -90,13 +91,14 @@
     <None Include="usbdrv\usbdrvasm20.inc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BootManager.h" />
     <ClInclude Include="CommandManager.h" />
     <ClInclude Include="Gpio.h" />
     <ClInclude Include="HardwareInit.h" />
     <ClInclude Include="LedController.h" />
     <ClInclude Include="Rebooter.h" />
     <ClInclude Include="ResetController.h" />
-    <ClInclude Include="Response.h" />
+    <ClInclude Include="Common.h" />
     <ClInclude Include="SettingsManager.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="usbconfig.h" />

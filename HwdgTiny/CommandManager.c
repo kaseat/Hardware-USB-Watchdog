@@ -1,4 +1,4 @@
-// Copyright 2017 Oleg Petrochenko
+// Copyright 2018 Oleg Petrochenko
 // 
 // This file is part of HwdgTiny.
 // 
@@ -16,21 +16,29 @@
 // along with HwdgTiny. If not, see <http://www.gnu.org/licenses/>.
 
 #include "CommandManager.h"
-#include "Response.h"
+#include "Common.h"
 #include "ResetController.h"
 #include "LedController.h"
 #include "SettingsManager.h"
-uint8_t LastOperationStatus = 0;
-Response_t CommandManagerSaveCurrentSettings(void);
+#include "BootManager.h"
 
+typedef struct
+{
+	uint8_t LastOperationStatus;
+
+}Communication_t;
+
+uint8_t LastOperationStatus = 0;
+
+static Response_t CommandManagerSaveCurrentSettings(void);
 void OnCommandReceived(uint8_t data)
 {
 	data == 0xFB // Ping command
 		? LastOperationStatus = ResetControllerPing()
 		//	: data == 0xF8 // IsAlive command
 		//	? SoftwareVersion
-		//	: data == 0x01 // GetStatus command
-		//	? GetStatus()
+			: data == 0x01 // GetStatus command
+			? BootManagerProceedBoot()
 		: data == 0xF9 // Start command
 		? LastOperationStatus = ResetControllerStart()
 		: data == 0xFA // Stop command
@@ -42,15 +50,7 @@ void OnCommandReceived(uint8_t data)
 		: data == 0x7F // TestSoftReset command
 		? LastOperationStatus = ResetControllerTestSoftReset()
 
-		//	: data == 0x3F // RstPulseOnStartupDisable command
-		//	? settingsManager.RstPulseOnStartupDisable()
-		//	: data == 0x3E // RstPulseOnStartupEnable command
-		//	? settingsManager.RstPulseOnStartupEnable()
-		//	: data == 0x3D // PwrPulseOnStartupDisable command
-		//	? settingsManager.PwrPulseOnStartupDisable()
-		//	: data == 0x3C // PwrPulseOnStartupEnable command
-		//	? settingsManager.PwrPulseOnStartupEnable()
-		//
+
 		: data == 0x3B // ApplyUserSettingsAtStartup command
 		? LastOperationStatus = SettingsManagerApplyUserSettingsAtStartup()
 		: data == 0x3A // LoadDefaultSettingsAtStartup command
@@ -75,7 +75,7 @@ Response_t CommandManagerSaveCurrentSettings(void)
 	*(uint32_t*)buffer = ResetControllerGetStatus();
 
 	// Get LED status.
-	if(LedControllerIsEnabled())
+	if (LedControllerIsEnabled())
 	{
 		buffer[3] &= ~LED_DISABLED;
 	}
@@ -84,7 +84,7 @@ Response_t CommandManagerSaveCurrentSettings(void)
 		buffer[3] |= LED_DISABLED;
 	}
 	// Save all settings we got earlier
-	return SettingsManagerSaveUserSettings(*(uint32_t*)buffer)
-	? SaveCurrentSettingsOk
-	: SaveSettingsError;
+	return SettingsManagerSaveUserSettings((Status_t*)buffer)
+		       ? SaveCurrentSettingsOk
+		       : SaveSettingsError;
 }

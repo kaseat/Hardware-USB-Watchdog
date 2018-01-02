@@ -96,21 +96,21 @@ Response_t ResetControllerPing(void)
 	return PingOk;
 }
 
-Response_t ResetControllerSetResponseTimeout(uint8_t timeout)
+Response_t ResetControllerSetResponseTimeout(const uint8_t timeout)
 {
 	if (state & ENABLED) return Busy;
 	responseTimeout = ((timeout & RESPONSE_MASK) + 1) * SR_TIMEBASE;
 	return SetResponseTimeoutOk;
 }
 
-Response_t ResetControllerSetRebootTimeout(uint8_t timeout)
+Response_t ResetControllerSetRebootTimeout(const uint8_t timeout)
 {
 	if (state & ENABLED) return Busy;
 	rebootTimeout = REBOOT_MIN_TIMEOUT + (timeout & REBOOT_MASK) * HR_TIMEBASE;
 	return SetRebootTimeoutOk;
 }
 
-Response_t ResetControllerSetSoftResetAttempts(uint8_t attempts)
+Response_t ResetControllerSetSoftResetAttempts(const uint8_t attempts)
 {
 	if (state & ENABLED) return Busy;
 	sAttemptCurr = (attempts & ATTEMPTS_MASK) + 1;

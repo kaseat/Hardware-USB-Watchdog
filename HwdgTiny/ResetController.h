@@ -1,4 +1,4 @@
-// Copyright 2017 Oleg Petrochenko
+// Copyright 2018 Oleg Petrochenko
 // 
 // This file is part of HwdgTiny.
 // 
@@ -18,7 +18,7 @@
 #pragma once
 
 #include <stdint-gcc.h>
-#include "Response.h"
+#include "Common.h"
 
 /**
 * \brief Gets ResetController status.

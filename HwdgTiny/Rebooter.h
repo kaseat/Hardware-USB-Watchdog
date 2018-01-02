@@ -1,4 +1,4 @@
-// Copyright 2017 Oleg Petrochenko
+// Copyright 2018 Oleg Petrochenko
 // 
 // This file is part of HwdgTiny.
 // 
@@ -16,7 +16,7 @@
 // along with HwdgTiny. If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
-#include "Response.h"
+#include "Common.h"
 
 /**
 * \brief Start soft reset sequence.

@@ -17,42 +17,7 @@
 
 #pragma once
 
-#include "Common.h"
-#include <stdint-gcc.h>
-
 /**
-* \brief Enable LED.
-*/
-Response_t LedControllerEnable(void);
-/**
-* \brief Get current enable status.
-*/
-uint8_t LedControllerIsEnabled(void);
-/**
-* \brief Disable LED.
-*/
-Response_t LedControllerDisable(void);
-/**
-* \brief Turn LED off.
-*/
-void LedControllerOff(void);
-
-/**
-* \brief Turn LED on.
-*/
-void LedControllerGlow(void);
-
-/**
-* \brief Start fast LED blink.
-*/
-void LedControllerBlinkFast(void);
-
-/**
-* \brief Start medium LED blink.
-*/
-void LedControllerBlinkMid(void);
-
-/**
-* \brief Start slow LED blink.
-*/
-void LedControllerBlinkSlow(void);
+ * \brief Proceed boot routine.
+ */
+void BootManagerProceedBoot(void);
