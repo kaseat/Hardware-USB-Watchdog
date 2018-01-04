@@ -16,7 +16,7 @@ namespace HwdgHidTests
             using (var device = new HidDevice(infos.First(x => x.ProductId == 0x5711 && x.VendorId == 0x0483)))
             {
                 var t = device.GetFeatureReport(1);
-                device.SendReport(new Report {ReportId = 1, Data = new Byte[] {0xF9}});
+                device.SendReport(new Report {ReportId = 1, Data = new Byte[] {0x01}});
                 t = device.GetFeatureReport(1);
                 device.SendReport(new Report {ReportId = 1, Data = new Byte[] { 0xFA } });
                 device.SendReport(new Report {ReportId = 1, Data = new Byte[] { 0x7F } });

@@ -20,51 +20,47 @@
 #include "ResetController.h"
 #include "LedController.h"
 #include "SettingsManager.h"
-#include "BootManager.h"
-
-typedef struct
-{
-	uint8_t LastOperationStatus;
-
-}Communication_t;
-
-uint8_t LastOperationStatus = 0;
+#include "Crc.h"
 
 static Response_t CommandManagerSaveCurrentSettings(void);
+static void GetSettings(void);
+extern Status_t HwdgStatus;
+
 void OnCommandReceived(uint8_t data)
 {
+
 	data == 0xFB // Ping command
-		? LastOperationStatus = ResetControllerPing()
+		? ResetControllerPing()
 		//	: data == 0xF8 // IsAlive command
 		//	? SoftwareVersion
-			: data == 0x01 // GetStatus command
-			? BootManagerProceedBoot()
+		: data == 0x01 // GetStatus command
+		? GetSettings()
 		: data == 0xF9 // Start command
-		? LastOperationStatus = ResetControllerStart()
+		? ResetControllerStart()
 		: data == 0xFA // Stop command
-		? LastOperationStatus = ResetControllerStop()
+		? ResetControllerStop()
 		: data == 0xFE // Enable LED
-		? LastOperationStatus = LedControllerEnable()
+		? LedControllerEnable()
 		: data == 0xFF // Disable LED
-		? LastOperationStatus = LedControllerDisable()
+		? LedControllerDisable()
 		: data == 0x7F // TestSoftReset command
-		? LastOperationStatus = ResetControllerTestSoftReset()
+		? ResetControllerTestSoftReset()
 
 
 		: data == 0x3B // ApplyUserSettingsAtStartup command
-		? LastOperationStatus = SettingsManagerApplyUserSettingsAtStartup()
+		? SettingsManagerApplyUserSettingsAtStartup()
 		: data == 0x3A // LoadDefaultSettingsAtStartup command
-		? LastOperationStatus = SettingsManagerLoadDefaultSettingsAtStartup()
+		? SettingsManagerLoadDefaultSettingsAtStartup()
 		: data == 0x39 // SaveCurrentSettings command
-		? LastOperationStatus = CommandManagerSaveCurrentSettings()
+		? CommandManagerSaveCurrentSettings()
 
 
 		: data >> 7 == 1 // SetRebootTimeout command
-		? LastOperationStatus = ResetControllerSetRebootTimeout(data)
+		? ResetControllerSetRebootTimeout(data)
 		: data >> 6 == 1 // SetResponseTimeout command
-		? LastOperationStatus = ResetControllerSetResponseTimeout(data)
+		? ResetControllerSetResponseTimeout(data)
 		: data >> 3 == 2 // SetSoftResetAttempts command
-		? LastOperationStatus = ResetControllerSetSoftResetAttempts(data)
+		? ResetControllerSetSoftResetAttempts(data)
 		: UnknownCommand;
 }
 
@@ -87,4 +83,9 @@ Response_t CommandManagerSaveCurrentSettings(void)
 	return SettingsManagerSaveUserSettings((Status_t*)buffer)
 		       ? SaveCurrentSettingsOk
 		       : SaveSettingsError;
+}
+void GetSettings(void)
+{
+	HwdgStatus = SettingsManagerObtainUserSettings();
+	HwdgStatus.Checksum = GetCrc7((uint8_t*)&HwdgStatus, 3);
 }

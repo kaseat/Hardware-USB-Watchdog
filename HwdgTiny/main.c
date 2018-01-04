@@ -17,9 +17,17 @@
 
 #include "usbDriver.h"
 #include "HardwareInit.h"
+#include "SettingsManager.h"
+
+Status_t HwdgStatus;
 
 int main(void)
 {
+	HwdgStatus.IsLedDisabled = 0;
+	HwdgStatus.IsMonitoring = 0;
+	HwdgStatus.IsRebooting = 0;
+	HwdgStatus.LoadUserSettings = 0;
+
 	HardwareInit();
 
 	for (;;)

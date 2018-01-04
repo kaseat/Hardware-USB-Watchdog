@@ -21,6 +21,7 @@
 #include "usbDriver.h"
 #include "Timer.h"
 #include "Gpio.h"
+#include "BootManager.h"
 
 /**
  * \brief Low level hardware initialization.
@@ -31,5 +32,6 @@ __inline void HardwareInit(void)
 	TimerInit();
 	GpioInit();
 	UsbInit();
+	BootManagerProceedBoot();
 	sei();
 }

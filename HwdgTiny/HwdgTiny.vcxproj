@@ -59,6 +59,7 @@
   <ItemGroup>
     <ClCompile Include="BootManager.c" />
     <ClCompile Include="CommandManager.c" />
+    <ClCompile Include="Crc7.c" />
     <ClCompile Include="Gpio.c" />
     <ClCompile Include="HardwareInit.c" />
     <ClCompile Include="LedController.c" />
@@ -93,6 +94,7 @@
   <ItemGroup>
     <ClInclude Include="BootManager.h" />
     <ClInclude Include="CommandManager.h" />
+    <ClInclude Include="Crc.h" />
     <ClInclude Include="Gpio.h" />
     <ClInclude Include="HardwareInit.h" />
     <ClInclude Include="LedController.h" />

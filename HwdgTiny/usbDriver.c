@@ -48,7 +48,7 @@ PROGMEM const char usbHidReportDescriptor[USB_CFG_HID_REPORT_DESCRIPTOR_LENGTH] 
 	0x09, 0x01, //   USAGE (Vendor Usage 1)
 	0x91, 0x82, //   INPUT (Data,Var,Abs,Vol)
 	0x75, 0x08, //   REPORT_SIZE (8)
-	0x95, 0x04, //   REPORT_COUNT (4)
+	0x95, 0x03, //   REPORT_COUNT (4)
 	0x09, 0x01, //   USAGE (Vendor Usage 1)
 	0x81, 0x82, //   INPUT (Data,Var,Abs,Vol)
 	0xc0 // END_COLLECTION
@@ -141,7 +141,7 @@ uint8_t usbFunctionWrite(uint8_t* data, uint8_t len)
 	}
 	return bytesRemaining == 0; /* return 1 if this was the last chunk */
 }
-extern uint8_t LastOperationStatus;
+extern Status_t HwdgStatus;
 //static uint8_t buff[5];
 /**
  * \brief This function is called when the driver receives a SETUP transaction
@@ -163,10 +163,10 @@ usbMsgLen_t usbFunctionSetup(uint8_t data[8])
 		if (rq->bRequest == USBRQ_HID_GET_REPORT)
 		{
 			reportId = rq->wValue.bytes[0];
-			bytesRemaining = 5;
+			bytesRemaining = 4;
 			currentAddress = 0;
-			usbMsgPtr = (uint16_t)&LastOperationStatus;
-			return 5;
+			usbMsgPtr = (uint16_t)&HwdgStatus;
+			return 4;
 		}
 		if (rq->bRequest == USBRQ_HID_SET_REPORT)
 		{

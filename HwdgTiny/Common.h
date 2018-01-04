@@ -60,10 +60,10 @@ typedef enum
 
 
 /**
- * \brief Represents actual HWDG status.
- * \remarks See https://hwdg.ru/developer/hwdg-api/getstatus/
- * for more detailed information. This is HWDG Tiny version.
- */
+* \brief Represents actual HWDG status.
+* \remarks See https://hwdg.ru/developer/hwdg-api/getstatus/
+* for more detailed information. This is HWDG Tiny version.
+*/
 typedef struct
 {
 	/**
@@ -71,49 +71,53 @@ typedef struct
 	*/
 	unsigned char : 1;
 	/**
-	 * \brief System reboot timeout. If system does not
-	 * reboot within this time HWDG reboots the system again.
-	 */
+	* \brief System reboot timeout. If system does not
+	* reboot within this time HWDG reboots the system again.
+	*/
 	unsigned char RebootTimeout : 7;
+
+
+
 	/**
 	* \brief System response timeout. If system does not
 	* respond within this time HWDG reboots the system.
 	*/
 	unsigned char ResponseTimeout : 6;
 	/**
-	 * \brief This flag is set when HWDG started to reboot system.
-	 */
+	* \brief This flag is set when HWDG started to reboot system.
+	*/
 	unsigned char IsRebooting : 1;
 	/**
-	 * \brief This flag is set when HWDG is running and awaiting Ping command.
-	 */
+	* \brief This flag is set when HWDG is running and awaiting Ping command.
+	*/
 	unsigned char IsMonitoring : 1;
+
+
+
 	/**
-	 * \brief Reset attempts count before HWDG goes idle state or begins Hard reset routine.
-	 */
+	* \brief Reset attempts count before HWDG goes idle state or begins Hard reset routine.
+	*/
 	unsigned char ResetAttempts : 3;
 	/**
-	 * \brief Reserved.
-	 */
-	unsigned short : 10;
-	/**
-	 * \brief When this flag is set, HWDG loads user setting instead of default.
-	 */
+	* \brief When this flag is set, HWDG loads user setting instead of default.
+	*/
 	unsigned char LoadUserSettings : 1;
+	/**
+	* \brief This flag is set when HWDG LED disabled.
+	*/
+	unsigned char IsLedDisabled : 1;
 	/**
 	* \brief Reserved.
 	*/
-	unsigned char : 1;
+	unsigned char : 3;
+
+
+
 	/**
-	 * \brief This flag is set when HWDG LED disabled.
-	 */
-	unsigned char IsLedDisabled : 1;
-	/**
-	 * \brief Checksum.
-	 */
+	* \brief Checksum.
+	*/
 	unsigned char Checksum : 8;
 }Status_t;
-
 
 ///**
 // * \brief Represents actual HWDG status.

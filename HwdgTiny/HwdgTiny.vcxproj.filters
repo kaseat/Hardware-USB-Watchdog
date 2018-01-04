@@ -46,6 +46,9 @@
     <Filter Include="App\BootManager">
       <UniqueIdentifier>{5aabb578-24d6-44df-a55c-d6cb297d2b5d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="App\crc">
+      <UniqueIdentifier>{ed6c5726-d421-4049-bf50-1c59aa1d3c03}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="avr.props">
@@ -131,6 +134,9 @@
     <ClCompile Include="BootManager.c">
       <Filter>App\BootManager</Filter>
     </ClCompile>
+    <ClCompile Include="Crc7.c">
+      <Filter>App\crc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="usbdrv\oddebug.h">
@@ -180,6 +186,9 @@
     </ClInclude>
     <ClInclude Include="Common.h">
       <Filter>App\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Crc.h">
+      <Filter>App\crc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
