@@ -1,4 +1,4 @@
-// Copyright 2017 Oleg Petrochenko
+// Copyright 2018 Oleg Petrochenko
 // 
 // This file is part of HwdgTiny.
 // 
@@ -21,7 +21,6 @@
 #include <avr/eeprom.h>
 #include "usbdrv.h"
 #include <util/delay.h>
-#include "Rebooter.h"
 #include "LedController.h"
 #include "ResetController.h"
 
@@ -141,7 +140,9 @@ uint8_t usbFunctionWrite(uint8_t* data, uint8_t len)
 	}
 	return bytesRemaining == 0; /* return 1 if this was the last chunk */
 }
+
 extern Status_t HwdgStatus;
+
 //static uint8_t buff[5];
 /**
  * \brief This function is called when the driver receives a SETUP transaction
@@ -180,21 +181,4 @@ usbMsgLen_t usbFunctionSetup(uint8_t data[8])
 
 __attribute__((weak)) void OnCommandReceived(uint8_t data)
 {
-	if (data == 1)
-		ResetControllerStart();
-	if (data == 2)
-		ResetControllerStop();
-	if (data == 3)
-		ResetControllerPing();
-
-	//	if (data)
-	//	{
-	//		DDRB |= 1 << 3;
-	//		PORTB |= 1 << 3;
-	//	}
-	//	else
-	//	{
-	//		PORTB &= ~(1 << 3);
-	//		DDRB &= ~(1 << 3);
-	//	}
 }

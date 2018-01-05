@@ -37,7 +37,7 @@
 __inline void GpioInit(void)
 {
 	// Turn LED on.
-//	LED_DDR |= LED_VAL;
+	LED_DDR |= LED_VAL;
 //	LED_PIN |= LED_VAL;
 
 	// Ensure reset pins are in input mode.

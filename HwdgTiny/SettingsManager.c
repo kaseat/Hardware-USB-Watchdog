@@ -17,6 +17,7 @@
 
 #include "SettingsManager.h"
 #include <avr/eeprom.h>
+#define DEFAULT_SETTINGS ((uint32_t)0x55667788)
 
 #define EEPROM_ADDR (uint32_t *)0
 uint8_t SettingsManagerSaveUserSettings(Status_t* status)
@@ -56,16 +57,19 @@ Response_t SettingsManagerApplyUserSettingsAtStartup(void)
 {
 	// If we have the same values in EEPROM we don't need to
 	// rewrite existing data, just say operation succeeded.
-	const uint8_t data = eeprom_read_byte((uint8_t *)0 + 3);
-
-	if (data & APPLY_SETTINGS_AT_STARTUP)
+	uint32_t saved = eeprom_read_dword(EEPROM_ADDR);
+	Status_t* saved_p = (Status_t*)&saved;
+	
+	if (saved_p->LoadUserSettings)
 		return ApplyUserSettingsAtStartupOk;
 
 	// Write data to EEPROM.
-	eeprom_write_byte((uint8_t *)0 + 3, data | APPLY_SETTINGS_AT_STARTUP);
+	saved_p->LoadUserSettings = 1;
+	eeprom_write_dword(EEPROM_ADDR, saved);
 
-	// Verify write operation succeeded.
-	return eeprom_read_byte((uint8_t *)0 + 3) & APPLY_SETTINGS_AT_STARTUP
+	// Verify write operation succeeded.	
+	saved = eeprom_read_dword(EEPROM_ADDR);
+	return saved_p->LoadUserSettings
 		       ? ApplyUserSettingsAtStartupOk
 		       : SaveSettingsError;
 }
@@ -74,16 +78,19 @@ Response_t SettingsManagerLoadDefaultSettingsAtStartup(void)
 {
 	// If we have the same values in EEPROM we don't need to
 	// rewrite existing data, just say operation succeeded.
-	const uint8_t data = eeprom_read_byte((uint8_t *)0 + 3);
+	uint32_t saved = eeprom_read_dword(EEPROM_ADDR);
+	Status_t* saved_p = (Status_t*)&saved;
 
-	if (!(data & APPLY_SETTINGS_AT_STARTUP))
+	if (!saved_p->LoadUserSettings)
 		return LoadDefaultSettingsAtStartupOk;
 
 	// Write data to EEPROM.
-	eeprom_write_byte((uint8_t *)0 + 3, data & ~APPLY_SETTINGS_AT_STARTUP);
-
-	// Verify write operation succeeded.
-	return !(eeprom_read_byte((uint8_t *)0 + 3) & APPLY_SETTINGS_AT_STARTUP)
+	saved_p->LoadUserSettings = 0;
+	eeprom_write_dword(EEPROM_ADDR, saved);
+	
+	// Verify write operation succeeded.	
+	saved = eeprom_read_dword(EEPROM_ADDR);
+	return !saved_p->LoadUserSettings
 		       ? LoadDefaultSettingsAtStartupOk
 		       : SaveSettingsError;
 }
@@ -92,26 +99,19 @@ uint8_t SettingsManagerRestoreFactory(void)
 {
 	// If we have the same values in EEPROM we don't need to
 	// rewrite existing data, just say operation succeeded.
-	if (eeprom_read_byte((uint8_t *)0 + 0) == SETTINGS_DEFAULT_0 &&
-		eeprom_read_byte((uint8_t *)0 + 1) == SETTINGS_DEFAULT_1 &&
-		eeprom_read_byte((uint8_t *)0 + 2) == SETTINGS_DEFAULT_2 &&
-		eeprom_read_byte((uint8_t *)0 + 3) == SETTINGS_DEFAULT_3)
+	uint32_t saved = eeprom_read_dword(EEPROM_ADDR);
+	if (saved == DEFAULT_SETTINGS)
 		return 1;
 
 	// Write data to EEPROM.
-	eeprom_write_byte((uint8_t *)0 + 0, SETTINGS_DEFAULT_0);
-	eeprom_write_byte((uint8_t *)0 + 1, SETTINGS_DEFAULT_1);
-	eeprom_write_byte((uint8_t *)0 + 2, SETTINGS_DEFAULT_2);
-	eeprom_write_byte((uint8_t *)0 + 3, SETTINGS_DEFAULT_3);
+	eeprom_write_dword(EEPROM_ADDR, DEFAULT_SETTINGS);
 
 	// Verify write operation succeeded.
-	return eeprom_read_byte((uint8_t *)0 + 0) == SETTINGS_DEFAULT_0 &&
-		eeprom_read_byte((uint8_t *)0 + 1) == SETTINGS_DEFAULT_1 &&
-		eeprom_read_byte((uint8_t *)0 + 2) == SETTINGS_DEFAULT_2 &&
-		eeprom_read_byte((uint8_t *)0 + 3) == SETTINGS_DEFAULT_3;
+	saved = eeprom_read_dword(EEPROM_ADDR);
+	return saved == DEFAULT_SETTINGS;
 }
 
 uint8_t SettingsManagerGetBootSettings(void)
 {
-	return eeprom_read_byte((uint8_t *)0 + 3);
+	return eeprom_read_byte((uint8_t *)0 + 2);
 }

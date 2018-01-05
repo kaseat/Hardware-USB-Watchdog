@@ -117,6 +117,12 @@ typedef struct
 	* \brief Checksum.
 	*/
 	unsigned char Checksum : 8;
+
+
+	/**
+	* \brief Checksum.
+	*/
+	unsigned char LastCommandStatus : 8;
 }Status_t;
 
 ///**
