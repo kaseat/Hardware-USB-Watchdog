@@ -59,6 +59,10 @@
       <Project>{0a495aa3-aca9-4cfb-946e-e02428674841}</Project>
       <Name>HwdgHid</Name>
     </ProjectReference>
+    <ProjectReference Include="..\HwdgWrapper\HwdgWrapper.csproj">
+      <Project>{fe87243d-38fd-41fd-a72a-df645840cfe6}</Project>
+      <Name>HwdgWrapper</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

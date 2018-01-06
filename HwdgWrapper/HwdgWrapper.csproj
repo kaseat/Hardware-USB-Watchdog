@@ -52,6 +52,7 @@
     <Compile Include="Command.cs" />
     <Compile Include="Crc.cs" />
     <Compile Include="DefaultSettings.cs" />
+    <Compile Include="HidWrapper.cs" />
     <Compile Include="IHwdg.cs" />
     <Compile Include="IWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -59,6 +60,12 @@
     <Compile Include="SerialHwdg.cs" />
     <Compile Include="SerialWrapper.cs" />
     <Compile Include="Status.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HwdgHid\HwdgHid.csproj">
+      <Project>{0a495aa3-aca9-4cfb-946e-e02428674841}</Project>
+      <Name>HwdgHid</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

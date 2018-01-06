@@ -23,10 +23,10 @@ Status_t HwdgStatus;
 
 int main(void)
 {
-	HwdgStatus.IsLedDisabled = 0;
-	HwdgStatus.IsMonitoring = 0;
-	HwdgStatus.IsRebooting = 0;
-	HwdgStatus.LoadUserSettings = 0;
+//	HwdgStatus.IsLedDisabled = 0;
+//	HwdgStatus.IsMonitoring = 0;
+//	HwdgStatus.IsRebooting = 0;
+//	HwdgStatus.LoadUserSettings = 0;
 
 	HardwareInit();
 

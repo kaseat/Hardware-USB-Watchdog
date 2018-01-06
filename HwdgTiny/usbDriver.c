@@ -47,7 +47,7 @@ PROGMEM const char usbHidReportDescriptor[USB_CFG_HID_REPORT_DESCRIPTOR_LENGTH] 
 	0x09, 0x01, //   USAGE (Vendor Usage 1)
 	0x91, 0x82, //   INPUT (Data,Var,Abs,Vol)
 	0x75, 0x08, //   REPORT_SIZE (8)
-	0x95, 0x03, //   REPORT_COUNT (4)
+	0x95, 0x04, //   REPORT_COUNT (4)
 	0x09, 0x01, //   USAGE (Vendor Usage 1)
 	0x81, 0x82, //   INPUT (Data,Var,Abs,Vol)
 	0xc0 // END_COLLECTION
@@ -103,14 +103,6 @@ uint8_t usbFunctionRead(uint8_t* data, uint8_t len)
 {
 	if (len > bytesRemaining)
 		len = bytesRemaining;
-	//eeprom_read_block(data, (uint8_t *)0 + currentAddress, len);
-	currentAddress += len;
-	bytesRemaining -= len;
-	data[0] = reportId;
-	data[1] = 0x01;
-	data[2] = 0x05;
-	data[3] = 0x07;
-	data[4] = 0x04;
 	return len;
 }
 
@@ -130,10 +122,6 @@ uint8_t usbFunctionWrite(uint8_t* data, uint8_t len)
 	if (len > bytesRemaining)
 		len = bytesRemaining;
 
-	//eeprom_write_block(data, (uint8_t *)0 + currentAddress, len);
-	currentAddress += len;
-	bytesRemaining -= len;
-
 	if (bytesRemaining == 0)
 	{
 		OnCommandReceived(data[1]);
@@ -143,7 +131,6 @@ uint8_t usbFunctionWrite(uint8_t* data, uint8_t len)
 
 extern Status_t HwdgStatus;
 
-//static uint8_t buff[5];
 /**
  * \brief This function is called when the driver receives a SETUP transaction
  * from the host which is not answered by the driver itself(in practice : class
@@ -163,11 +150,8 @@ usbMsgLen_t usbFunctionSetup(uint8_t data[8])
 	{
 		if (rq->bRequest == USBRQ_HID_GET_REPORT)
 		{
-			reportId = rq->wValue.bytes[0];
-			bytesRemaining = 4;
-			currentAddress = 0;
 			usbMsgPtr = (uint16_t)&HwdgStatus;
-			return 4;
+			return 5;
 		}
 		if (rq->bRequest == USBRQ_HID_SET_REPORT)
 		{
