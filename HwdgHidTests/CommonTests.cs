@@ -36,8 +36,12 @@ namespace HwdgHidTests
                 var wrap = new HidWrapper(device);
                 using (var hwdg = new SerialHwdg(wrap))
                 {
-                    hwdg.DisableLed();
-                    //hwdg.EnableLed();
+                    var rsp = hwdg.DisableLed();
+                    rsp = hwdg.EnableLed();
+                    rsp = hwdg.DisableLed();
+                    rsp = hwdg.DisableLed();
+                    rsp = hwdg.EnableLed();
+                    rsp = hwdg.DisableLed();
                 }
             }
         }

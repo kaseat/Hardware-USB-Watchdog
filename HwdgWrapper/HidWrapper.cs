@@ -1,17 +1,17 @@
 ﻿// Copyright 2018 Oleg Petrochenko
-// 
+//
 // This file is part of HwdgWrapper.
-// 
+//
 // HwdgWrapper is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or any
 // later version.
-// 
+//
 // HwdgWrapper is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with HwdgWrapper. If not, see <http://www.gnu.org/licenses/>.
 
@@ -49,7 +49,7 @@ namespace HwdgWrapper
 
             device.SendReport(report);
             var result = device.GetReport(1);
-            return (Response) result.Data.ToArray().Last();
+            return (Response) result.Data.Last();
         }
 
         public Task<Status> GetStatusAsync(CancellationToken ct = default(CancellationToken))

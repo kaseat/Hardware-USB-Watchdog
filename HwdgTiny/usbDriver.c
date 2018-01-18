@@ -26,9 +26,7 @@
 
 
 #define abs(x) ((x) > 0 ? (x) : (-x))
-static uint8_t currentAddress;
 static uint8_t bytesRemaining;
-static uint8_t reportId;
 
 /**
  * \brief Device descriptor.
@@ -47,7 +45,7 @@ PROGMEM const char usbHidReportDescriptor[USB_CFG_HID_REPORT_DESCRIPTOR_LENGTH] 
 	0x09, 0x01, //   USAGE (Vendor Usage 1)
 	0x91, 0x82, //   INPUT (Data,Var,Abs,Vol)
 	0x75, 0x08, //   REPORT_SIZE (8)
-	0x95, 0x04, //   REPORT_COUNT (4)
+	0x95, 0x05, //   REPORT_COUNT (4)
 	0x09, 0x01, //   USAGE (Vendor Usage 1)
 	0x81, 0x82, //   INPUT (Data,Var,Abs,Vol)
 	0xc0 // END_COLLECTION
@@ -118,15 +116,16 @@ uint8_t usbFunctionRead(uint8_t* data, uint8_t len)
 uint8_t usbFunctionWrite(uint8_t* data, uint8_t len)
 {
 	if (bytesRemaining == 0)
-		return 1; /* end of transfer */
+		return 1;
+
 	if (len > bytesRemaining)
 		len = bytesRemaining;
+	bytesRemaining -= len;
 
 	if (bytesRemaining == 0)
-	{
 		OnCommandReceived(data[1]);
-	}
-	return bytesRemaining == 0; /* return 1 if this was the last chunk */
+
+	return bytesRemaining == 0;
 }
 
 extern Status_t HwdgStatus;
@@ -151,12 +150,11 @@ usbMsgLen_t usbFunctionSetup(uint8_t data[8])
 		if (rq->bRequest == USBRQ_HID_GET_REPORT)
 		{
 			usbMsgPtr = (uint16_t)&HwdgStatus;
-			return 5;
+			return 6;
 		}
 		if (rq->bRequest == USBRQ_HID_SET_REPORT)
 		{
 			bytesRemaining = 2;
-			currentAddress = 0;
 			return USB_NO_MSG;
 		}
 	}
@@ -165,4 +163,6 @@ usbMsgLen_t usbFunctionSetup(uint8_t data[8])
 
 __attribute__((weak)) void OnCommandReceived(uint8_t data)
 {
+	for (;;)
+		;
 }

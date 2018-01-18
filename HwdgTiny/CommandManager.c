@@ -24,6 +24,7 @@
 
 static Response_t CommandManagerSaveCurrentSettings(void);
 static void GetSettings(void);
+static __inline void SendUnknownCommand(void);
 extern Status_t HwdgStatus;
 
 void OnCommandReceived(uint8_t data)
@@ -40,9 +41,9 @@ void OnCommandReceived(uint8_t data)
 		: data == 0xFA // Stop command
 		? ResetControllerStop()
 		: data == 0xFE // Enable LED
-		? LedControllerEnable()
+		? HwdgStatus.LastCommandStatus = LedControllerEnable()
 		: data == 0xFF // Disable LED
-		? LedControllerDisable()
+		? HwdgStatus.LastCommandStatus = LedControllerDisable()
 		: data == 0x7F // TestSoftReset command
 		? ResetControllerTestSoftReset()
 
@@ -61,7 +62,7 @@ void OnCommandReceived(uint8_t data)
 		? ResetControllerSetResponseTimeout(data)
 		: data >> 3 == 2 // SetSoftResetAttempts command
 		? ResetControllerSetSoftResetAttempts(data)
-		: UnknownCommand;
+		: SendUnknownCommand();
 }
 
 Response_t CommandManagerSaveCurrentSettings(void)
@@ -87,5 +88,11 @@ Response_t CommandManagerSaveCurrentSettings(void)
 void GetSettings(void)
 {
 	HwdgStatus = SettingsManagerObtainUserSettings();
-	HwdgStatus.Checksum = GetCrc7((uint8_t*)&HwdgStatus, 3);
+	HwdgStatus.Checksum = GetCrc7((uint8_t*)&HwdgStatus, 4);
+	HwdgStatus.LastCommandStatus = 0x00;
+}
+
+__inline void SendUnknownCommand(void)
+{
+	HwdgStatus.LastCommandStatus = (uint8_t)UnknownCommand; 
 }

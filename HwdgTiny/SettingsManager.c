@@ -17,7 +17,7 @@
 
 #include "SettingsManager.h"
 #include <avr/eeprom.h>
-#define DEFAULT_SETTINGS ((uint32_t)0x55667788)
+#define DEFAULT_SETTINGS ((uint32_t)0x1C444800)
 
 #define EEPROM_ADDR (uint32_t *)0
 uint8_t SettingsManagerSaveUserSettings(Status_t* status)
@@ -25,7 +25,6 @@ uint8_t SettingsManagerSaveUserSettings(Status_t* status)
 	Status_t actual = *status;
 	// As we save only sttings, we dont need to save
 	// IsRebooting and IsMonitoring flags and checksum.
-	actual.Checksum = 0;
 	// Following code is the same if we just called:
 	// actual.IsRebooting = 0;
 	// actual.IsMonitoring = 0;
