@@ -16,7 +16,8 @@
 
 #define BOOT_SETTINGS                 ((uint_least8_t)3)
 #define REBOOT_TIMEOUT_SETTINGS       ((uint_least8_t)3)
-#define BOOT_PULSE_TIMEOUT            ((uint_fast16_t)3000)
+#define BOOT_PULSE_TIMEOUT            ((uint_fast16_t)4000)
+#define RST_PULSE_TIMEOUT             ((uint_fast16_t)10000)
 #define MID_PULSE_TIMEOUT             ((uint_fast16_t)2000)
 #define CMD_PULSE_TIMEOUT             ((uint_fast16_t)1000)
 #define INITIAL                       ((uint_fast16_t)0)
@@ -66,7 +67,7 @@ void BootManager::ProceedBoot()
 	counter = INITIAL;
 	if (settings[3] & PWR_PULSE_ENABLED)
 		while (rctr.GetRebooter().PwrPulse() == Busy)
-			if (counter > CMD_PULSE_TIMEOUT) return;
+			if (counter > CMD_PULSE_TIMEOUT) break;
 
 	// If we send pulse both PWR and RST we need to wait few seconds between pulses.
 	if (settings[3] & RST_PULSE_ENABLED && settings[3] & PWR_PULSE_ENABLED)
@@ -77,7 +78,18 @@ void BootManager::ProceedBoot()
 	counter = INITIAL;
 	if (settings[3] & RST_PULSE_ENABLED)
 		while (rctr.GetRebooter().SoftReset() == Busy)
-			if (counter > CMD_PULSE_TIMEOUT) return;
+			if (counter > CMD_PULSE_TIMEOUT) break;
+
+	// When we send double RST pulse we must wait some time.
+	if (settings[3] & RST_PULSE_ENABLED && settings[3])
+		while (counter < RST_PULSE_TIMEOUT)
+			;
+
+	// Send RST pulse again
+	counter = INITIAL;
+	if (settings[3] & RST_PULSE_ENABLED)
+		while (rctr.GetRebooter().SoftReset() == Busy)
+			if (counter > CMD_PULSE_TIMEOUT) break;
 
 	// Unsubscribe on timer elapse as we no longer need time base.
 	rctr.GetRebooter().GetTimer().UnsubscribeOnElapse(*this);

@@ -24,6 +24,17 @@ namespace HwdgWrapper
     public interface IHwdg
     {
         /// <summary>
+        /// Check specific URL availability.
+        /// </summary>
+        /// <param name="url">URL we check.</param>
+        void EnableUrlCheck(String url);
+
+        /// <summary>
+        /// Disable URL check.
+        /// </summary>
+        void DisableUrlCheck();
+
+        /// <summary>
         /// Last known HWDG status.
         /// </summary>
         Status LastStatus { get; }

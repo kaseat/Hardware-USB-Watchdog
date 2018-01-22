@@ -94,9 +94,47 @@ namespace HwdgGui.ViewModels
         public async void PwrPulseUnchecked() => await Hwdg.PwrPulseOnStartupDisableAsync();
 
         /// <summary>
+        /// Executes when WPF Led checks.
+        /// </summary>
+        [UsedImplicitly]
+        public void CheckUrlChecked() => Hwdg.EnableUrlCheck(Url);
+
+        /// <summary>
+        /// Url we check.
+        /// </summary>
+        [UsedImplicitly]
+        public String Url
+        {
+            get => Settings.Url;
+            set => Settings.Url = value;
+        }
+
+        /// <summary>
+        /// Check URL option.
+        /// </summary>
+        [UsedImplicitly]
+        public Boolean CheckUrl
+        {
+            get => Settings.CheckUrl;
+            set => Settings.CheckUrl = value;
+        }
+
+        /// <summary>
+        /// Executes when WPF Led unchecks.
+        /// </summary>
+        [UsedImplicitly]
+        public void CheckUrlUnchecked() => Hwdg.DisableUrlCheck();
+
+        /// <summary>
         /// Executes when WPF ResetToFactory button pressed.
         /// </summary>
         [UsedImplicitly]
         public async void ResetToFactory() => await Hwdg.RestoreFactoryAsync();
+
+        /// <summary>
+        /// Executes when user updates URL.
+        /// </summary>
+        [UsedImplicitly]
+        public void UrlUpdated() => Hwdg.EnableUrlCheck(Url);
     }
 }

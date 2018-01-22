@@ -27,6 +27,8 @@ namespace HwdgGui.Utils
         private const String AutorunPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
         private const String SettingsPath = @"SOFTWARE\Hwdg";
         private const String AutoMonitor = "AutoMonitor";
+        private const String PingUrl = "PingUrl";
+        private const String UrlString = "UrlString";
         private const String AutoRun = "AutoRun";
         private const String HwStatus = "HwStatus";
         private readonly RegistryKey autorunKey;
@@ -41,6 +43,8 @@ namespace HwdgGui.Utils
                 settingsKey = Registry.CurrentUser.CreateSubKey(SettingsPath);
                 settingsKey?.SetValue(AutoMonitor, 1, RegistryValueKind.DWord);
                 settingsKey?.SetValue(AutoRun, 1, RegistryValueKind.DWord);
+                settingsKey?.SetValue(PingUrl, 0, RegistryValueKind.DWord);
+                settingsKey?.SetValue(UrlString, "https://google.com/", RegistryValueKind.String);
                 settingsKey?.SetValue(HwStatus, 0, RegistryValueKind.DWord);
             }
             var am = settingsKey?.GetValue(AutoMonitor, null);
@@ -48,6 +52,12 @@ namespace HwdgGui.Utils
 
             var ar = settingsKey?.GetValue(AutoRun, null);
             if (ar == null) settingsKey?.SetValue(AutoRun, 1);
+
+            var pu = settingsKey?.GetValue(PingUrl, null);
+            if (pu == null) settingsKey?.SetValue(PingUrl, 0);
+
+            var us = settingsKey?.GetValue(UrlString, null);
+            if (us == null) settingsKey?.SetValue(UrlString, "https://google.com/");
 
             var hs = settingsKey?.GetValue(HwStatus, null);
             if (hs == null) settingsKey?.SetValue(HwStatus, 0);
@@ -92,6 +102,21 @@ namespace HwdgGui.Utils
             set => settingsKey.SetValue(AutoMonitor, value, RegistryValueKind.DWord);
         }
 
+        /// <inheritdoc />
+        public Boolean CheckUrl
+        {
+            get => Convert.ToBoolean(settingsKey.GetValue(PingUrl, 0));
+            set => settingsKey.SetValue(PingUrl, value, RegistryValueKind.DWord);
+        }
+
+        /// <inheritdoc />
+        public String Url
+        {
+            get => settingsKey.GetValue(UrlString, "https://google.com/").ToString();
+            set => settingsKey.SetValue(UrlString, value, RegistryValueKind.String);
+        }
+
+        /// <inheritdoc />
         public Status HwdgStatus
         {
             get => new Status((Int32) settingsKey.GetValue(HwStatus, 0));

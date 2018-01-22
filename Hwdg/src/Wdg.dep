@@ -5,150 +5,148 @@
     <configuration>
         <name>Debug</name>
         <outputs>
-            <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
-            <file>$PROJ_DIR$\Debug\List\Wdg.map</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
-            <file>$PROJ_DIR$\stm8s_flash.c</file>
-            <file>$PROJ_DIR$\Debug\Obj\BootManager.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\SettingsManager.pbi</file>
-            <file>$PROJ_DIR$\Debug\Obj\Rebooter.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\Eeprom.pbi</file>
-            <file>$PROJ_DIR$\Debug\Obj\LedController.pbi</file>
-            <file>$PROJ_DIR$\Debug\Obj\Crc7.pbi</file>
-            <file>$TOOLKIT_DIR$\lib\dlstm8smn.a</file>
-            <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Threads.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\Uart.pbi</file>
-            <file>$PROJ_DIR$\stm8s.h</file>
-            <file>$PROJ_DIR$\stm8s_flash.h</file>
-            <file>$PROJ_DIR$\Crc.cpp</file>
-            <file>$PROJ_DIR$\CommandManager.cpp</file>
-            <file>$PROJ_DIR$\BootManager.cpp</file>
-            <file>$PROJ_DIR$\ISubscriber.h</file>
-            <file>$PROJ_DIR$\BootManager.h</file>
-            <file>$PROJ_DIR$\Crc.h</file>
-            <file>$PROJ_DIR$\LedController.cpp</file>
-            <file>$PROJ_DIR$\LedController.h</file>
-            <file>$PROJ_DIR$\CommandManager.h</file>
-            <file>$PROJ_DIR$\Uart.cpp</file>
-            <file>$PROJ_DIR$\main.cpp</file>
-            <file>$PROJ_DIR$\GpioDriver.cpp</file>
-            <file>$PROJ_DIR$\Uart.h</file>
-            <file>$PROJ_DIR$\STM8S003F3.h</file>
-            <file>$PROJ_DIR$\ChipReset.cpp</file>
-            <file>$PROJ_DIR$\SettingsManager.cpp</file>
-            <file>$PROJ_DIR$\Timer.cpp</file>
-            <file>$PROJ_DIR$\ResetController.cpp</file>
-            <file>$PROJ_DIR$\Debug\Obj\GpioDriver.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\main.__cstat.et</file>
             <file>$PROJ_DIR$\Debug\Obj\Crc.__cstat.et</file>
-            <file>$PROJ_DIR$\ResetController.h</file>
-            <file>$PROJ_DIR$\Timer.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\BootManager.pbi</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
+            <file>$TOOLKIT_DIR$\lib\dbgstm8smd.a</file>
+            <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\Timer.__cstat.et</file>
             <file>$PROJ_DIR$\Debug\Obj\LedController.__cstat.et</file>
-            <file>$PROJ_DIR$\Clock.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\Uart.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\Uart.pbi</file>
             <file>$TOOLKIT_DIR$\inc\c\intrinsics.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\Exti.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\Crc.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\Uart.__cstat.et</file>
+            <file>$PROJ_DIR$\Exti.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Threads.h</file>
+            <file>$PROJ_DIR$\Crc7.cpp</file>
+            <file>$PROJ_DIR$\ChipReset.h</file>
+            <file>$PROJ_DIR$\Clock.cpp</file>
+            <file>$PROJ_DIR$\Timer.h</file>
+            <file>$PROJ_DIR$\ISubscriber.h</file>
+            <file>$PROJ_DIR$\CommandManager.cpp</file>
+            <file>$PROJ_DIR$\Crc.cpp</file>
+            <file>$PROJ_DIR$\LedController.cpp</file>
+            <file>$PROJ_DIR$\Rebooter.h</file>
+            <file>$PROJ_DIR$\ResetController.cpp</file>
+            <file>$PROJ_DIR$\BootManager.h</file>
+            <file>$PROJ_DIR$\ResetController.h</file>
+            <file>$PROJ_DIR$\Crc.h</file>
+            <file>$PROJ_DIR$\SettingsManager.cpp</file>
+            <file>$PROJ_DIR$\SettingsManager.h</file>
+            <file>$PROJ_DIR$\ChipReset.cpp</file>
+            <file>$PROJ_DIR$\Clock.h</file>
+            <file>$PROJ_DIR$\GpioDriver.cpp</file>
+            <file>$PROJ_DIR$\GpioDriver.h</file>
+            <file>$PROJ_DIR$\Timer.cpp</file>
+            <file>$PROJ_DIR$\BootManager.cpp</file>
+            <file>$PROJ_DIR$\CommandManager.h</file>
+            <file>$PROJ_DIR$\LedController.h</file>
+            <file>$PROJ_DIR$\Rebooter.cpp</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\Crc7.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\ChipReset.pbi</file>
+            <file>$PROJ_DIR$\Debug\Obj\ResetController.pbi</file>
+            <file>$PROJ_DIR$\stm8s.h</file>
+            <file>$PROJ_DIR$\PlatformDefinitions.h</file>
+            <file>$PROJ_DIR$\STM8S003F3.h</file>
             <file>$PROJ_DIR$\Eeprom.c</file>
+            <file>$PROJ_DIR$\Debug\Obj\LedController.pbi</file>
+            <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\Rebooter.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\GpioDriver.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\BootManager.o</file>
             <file>$PROJ_DIR$\Debug\Obj\Rebooter.__cstat.et</file>
             <file>$PROJ_DIR$\Debug\Obj\Timer.o</file>
-            <file>$PROJ_DIR$\GpioDriver.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\CommandManager.pbi</file>
-            <file>$PROJ_DIR$\Clock.cpp</file>
-            <file>$PROJ_DIR$\Rebooter.cpp</file>
-            <file>$PROJ_DIR$\SettingsManager.h</file>
-            <file>$PROJ_DIR$\ChipReset.h</file>
-            <file>$PROJ_DIR$\PlatformDefinitions.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\Crc.pbi</file>
-            <file>$PROJ_DIR$\Rebooter.h</file>
-            <file>$PROJ_DIR$\IExtiInterruptable.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\ResetController.o</file>
-            <file>$TOOLKIT_DIR$\lib\dbgstm8smd.a</file>
-            <file>$TOOLKIT_DIR$\lib\dlstm8smn.h</file>
-            <file>$PROJ_DIR$\Crc7.cpp</file>
             <file>$PROJ_DIR$\Debug\Obj\ResetController.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\Crc7.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\BootManager.pbi</file>
-            <file>$PROJ_DIR$\Debug\Obj\Crc.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\ResetController.o</file>
+            <file>$TOOLKIT_DIR$\lib\dlstm8smn.h</file>
             <file>$PROJ_DIR$\Debug\Obj\Clock.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\Timer.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\ChipReset.pbi</file>
-            <file>$PROJ_DIR$\Debug\Obj\Exti.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\ResetController.pbi</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\main.__cstat.et</file>
-            <file>$PROJ_DIR$\Exti.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\SettingsManager.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\Clock.pbi</file>
+            <file>$PROJ_DIR$\Debug\List\Wdg.map</file>
+            <file>$TOOLKIT_DIR$\lib\dlstm8smn.a</file>
+            <file>$PROJ_DIR$\Uart.cpp</file>
+            <file>$PROJ_DIR$\stm8s_flash.c</file>
+            <file>$PROJ_DIR$\main.cpp</file>
+            <file>$PROJ_DIR$\Debug\Obj\SettingsManager.pbi</file>
+            <file>$PROJ_DIR$\Debug\Obj\CommandManager.pbi</file>
+            <file>$PROJ_DIR$\Debug\Obj\Crc7.pbi</file>
+            <file>$PROJ_DIR$\Debug\Obj\Eeprom.pbi</file>
+            <file>$PROJ_DIR$\IExtiInterruptable.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\Crc.pbi</file>
+            <file>$PROJ_DIR$\Uart.h</file>
             <file>$PROJ_DIR$\Debug\Obj\CommandManager.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Obj\Uart.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\GpioDriver.pbi</file>
-            <file>$PROJ_DIR$\Response.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\Eeprom.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\Clock.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\Exti.pbi</file>
-            <file>$PROJ_DIR$\Debug\Obj\main.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\CommandManager.o</file>
             <file>$PROJ_DIR$\Exti.cpp</file>
-            <file>$PROJ_DIR$\Debug\Obj\Timer.pbi</file>
-            <file>$TOOLKIT_DIR$\config\lnkstm8s003f3.icf</file>
-            <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\eeprom.__cstat.et</file>
-            <file>$PROJ_DIR$\Debug\Exe\Wdg.out</file>
-            <file>$PROJ_DIR$\Debug\Obj\ChipReset.o</file>
             <file>$PROJ_DIR$\Debug\Obj\GpioDriver.o</file>
-            <file>$TOOLKIT_DIR$\inc\c\xencoding_limits.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\stm8s_flash.pbi</file>
-            <file>$PROJ_DIR$\Debug\Obj\Rebooter.pbi</file>
             <file>$PROJ_DIR$\Debug\Obj\LedController.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\Rebooter.pbi</file>
+            <file>$PROJ_DIR$\stm8s_flash.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\eeprom.__cstat.et</file>
+            <file>$PROJ_DIR$\Debug\Obj\ChipReset.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\main.o</file>
+            <file>$TOOLKIT_DIR$\config\lnkstm8s003f3.icf</file>
+            <file>$PROJ_DIR$\Debug\Exe\Wdg.out</file>
+            <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\stm8s_flash.pbi</file>
+            <file>$PROJ_DIR$\Debug\Obj\Timer.pbi</file>
+            <file>$PROJ_DIR$\Debug\Obj\Uart.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\Clock.pbi</file>
+            <file>$PROJ_DIR$\Debug\Obj\Clock.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\GpioDriver.pbi</file>
+            <file>$TOOLKIT_DIR$\inc\c\xencoding_limits.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\CommandManager.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\Eeprom.o</file>
             <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
+            <file>$PROJ_DIR$\Debug\Obj\SettingsManager.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\Exti.pbi</file>
+            <file>$PROJ_DIR$\Response.h</file>
         </outputs>
-        <file>
-            <name>$PROJ_DIR$\stm8s_flash.c</name>
-            <outputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 91</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 14 15 41</file>
-                </tool>
-            </inputs>
-        </file>
         <file>
             <name>[ROOT_NODE]</name>
             <outputs>
                 <tool>
                     <name>ILINK</name>
-                    <file> 87 1</file>
+                    <file> 80 58</file>
                 </tool>
             </outputs>
         </file>
         <file>
-            <name>$PROJ_DIR$\Crc.cpp</name>
+            <name>$PROJ_DIR$\Crc7.cpp</name>
             <outputs>
                 <tool>
                     <name>ICCSTM8</name>
-                    <file> 62</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 35</file>
+                    <file> 40</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 52</file>
+                    <file> 65</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Clock.cpp</name>
+            <outputs>
+                <tool>
+                    <name>ICCSTM8</name>
+                    <file> 86</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 85</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 57</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCSTM8</name>
-                    <file> 21 85 11 0 68 57 2 90 12</file>
+                    <file> 31 45</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 12 68 90 0 11 85 21 57 2</file>
+                    <file> 45 31</file>
                 </tool>
             </inputs>
         </file>
@@ -157,48 +155,52 @@
             <outputs>
                 <tool>
                     <name>ICCSTM8</name>
-                    <file> 81</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 73</file>
+                    <file> 89</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 46</file>
+                    <file> 64</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 70</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCSTM8</name>
-                    <file> 24 36 23 45 51 76 37 19 85 11 0 68 57 2 90 12 53 28 49 21 50</file>
+                    <file> 36 26 37 33 44 94 18 19 81 5 48 3 56 39 88 14 23 69 29 27 16</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 57 53 45 36 19 11 85 50 37 68 12 2 21 49 23 28 76 51 0 90 24</file>
+                    <file> 56 23 33 26 19 5 81 16 18 3 14 39 27 29 37 69 94 44 48 88 36</file>
                 </tool>
             </inputs>
         </file>
         <file>
-            <name>$PROJ_DIR$\BootManager.cpp</name>
+            <name>$PROJ_DIR$\Crc.cpp</name>
             <outputs>
                 <tool>
                     <name>ICCSTM8</name>
-                    <file> 4</file>
+                    <file> 11</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 61</file>
+                    <file> 68</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 1</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCSTM8</name>
-                    <file> 20 36 23 45 51 76 37 19 85 11 0 68 57 2 90 12 53 28 49</file>
+                    <file> 27 81 5 48 3 56 39 88 14</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 76 85 23 51 11 36 45 37 19 0 68 90 20 49 53 12 57 2 28</file>
+                    <file> 14 3 88 48 5 81 27 56 39</file>
                 </tool>
             </inputs>
         </file>
@@ -207,179 +209,25 @@
             <outputs>
                 <tool>
                     <name>ICCSTM8</name>
-                    <file> 93</file>
+                    <file> 73</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 47</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 38</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 8</file>
+                    <file> 7</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCSTM8</name>
-                    <file> 23 45 51 76 37 19 85 11 0 68 57 2 90 12</file>
+                    <file> 37 33 44 94 18 19 81 5 48 3 56 39 88 14</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 51 11 76 85 45 37 19 0 68 90 23 12 57 2</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\Uart.cpp</name>
-            <outputs>
-                <tool>
-                    <name>ICCSTM8</name>
-                    <file> 74</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 40</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 13</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCSTM8</name>
-                    <file> 28 85 11 0 68 57 2 90 12 51 19 39 29</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 0 85 39 19 29 51 11 68 90 12 57 2 28</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\main.cpp</name>
-            <outputs>
-                <tool>
-                    <name>ICCSTM8</name>
-                    <file> 80</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 69</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 94</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCSTM8</name>
-                    <file> 28 85 11 0 68 57 2 90 12 51 19 39 53 45 76 37 36 23 24 49 20</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 11 53 36 39 51 85 76 28 19 0 24 68 90 12 57 2 45 37 23 20 49</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\GpioDriver.cpp</name>
-            <outputs>
-                <tool>
-                    <name>ICCSTM8</name>
-                    <file> 89</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 34</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 75</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCSTM8</name>
-                    <file> 45 51 29</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 29 51 45</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\ChipReset.cpp</name>
-            <outputs>
-                <tool>
-                    <name>ICCSTM8</name>
-                    <file> 88</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 65</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCSTM8</name>
-                    <file> 50 29</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 29 50</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\SettingsManager.cpp</name>
-            <outputs>
-                <tool>
-                    <name>ICCSTM8</name>
-                    <file> 71</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 5</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCSTM8</name>
-                    <file> 49 51 76 85 11 0 68 57 2 90 12 29</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 57 11 51 68 90 12 85 2 29 76 0 49</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\Timer.cpp</name>
-            <outputs>
-                <tool>
-                    <name>ICCSTM8</name>
-                    <file> 44</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 64</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 83</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCSTM8</name>
-                    <file> 37 51 19 85 11 0 68 57 2 90 12 29 39</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 51 39 85 0 29 19 11 68 90 12 57 2 37</file>
+                    <file> 44 5 94 81 33 18 19 48 3 88 37 14 56 39</file>
                 </tool>
             </inputs>
         </file>
@@ -391,287 +239,122 @@
                     <file> 55</file>
                 </tool>
                 <tool>
-                    <name>__cstat</name>
-                    <file> 59</file>
+                    <name>BICOMP</name>
+                    <file> 42</file>
                 </tool>
                 <tool>
-                    <name>BICOMP</name>
-                    <file> 67</file>
+                    <name>__cstat</name>
+                    <file> 54</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCSTM8</name>
-                    <file> 36 23 45 51 76 37 19 85 11 0 68 57 2 90 12 53 28</file>
+                    <file> 26 37 33 44 94 18 19 81 5 48 3 56 39 88 14 23 69</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 11 76 57 51 37 19 68 90 12 53 45 2 36 23 28 85 0</file>
+                    <file> 5 94 56 44 18 19 3 88 14 23 33 39 26 37 69 81 48</file>
                 </tool>
             </inputs>
         </file>
         <file>
-            <name>$PROJ_DIR$\Eeprom.c</name>
+            <name>$PROJ_DIR$\SettingsManager.cpp</name>
+            <outputs>
+                <tool>
+                    <name>ICCSTM8</name>
+                    <file> 92</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 63</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCSTM8</name>
+                    <file> 29 44 94 81 5 48 3 56 39 88 14 45</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 56 5 44 3 88 14 81 39 45 94 48 29</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\ChipReset.cpp</name>
             <outputs>
                 <tool>
                     <name>ICCSTM8</name>
                     <file> 77</file>
                 </tool>
                 <tool>
-                    <name>__cstat</name>
-                    <file> 86</file>
-                </tool>
-                <tool>
                     <name>BICOMP</name>
-                    <file> 7</file>
+                    <file> 41</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCSTM8</name>
-                    <file> 85 11 0 68 57 2 90 12 29 51</file>
+                    <file> 16 45</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 11 0 29 90 12 85 68 57 2 51</file>
+                    <file> 45 16</file>
                 </tool>
             </inputs>
         </file>
         <file>
-            <name>$PROJ_DIR$\Clock.cpp</name>
+            <name>$PROJ_DIR$\GpioDriver.cpp</name>
             <outputs>
                 <tool>
                     <name>ICCSTM8</name>
-                    <file> 78</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 63</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
                     <file> 72</file>
                 </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 87</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 50</file>
+                </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCSTM8</name>
-                    <file> 39 29</file>
+                    <file> 33 44 45</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 29 39</file>
+                    <file> 45 44 33</file>
                 </tool>
             </inputs>
         </file>
         <file>
-            <name>$PROJ_DIR$\Rebooter.cpp</name>
+            <name>$PROJ_DIR$\Timer.cpp</name>
             <outputs>
                 <tool>
                     <name>ICCSTM8</name>
+                    <file> 53</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 83</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
                     <file> 6</file>
                 </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 43</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 92</file>
-                </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCSTM8</name>
-                    <file> 53 45 51 76 37 19 85 11 0 68 57 2 90 12</file>
+                    <file> 18 44 19 81 5 48 3 56 39 88 14 45 31</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 51 11 76 85 45 37 19 0 68 90 53 12 57 2</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\Crc7.cpp</name>
-            <outputs>
-                <tool>
-                    <name>ICCSTM8</name>
-                    <file> 60</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 9</file>
-                </tool>
-            </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\Exti.cpp</name>
-            <outputs>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 66</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 79</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 0 11 54 68 90 12 85 29 70 57 2</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\Debug\Exe\Wdg.out</name>
-            <outputs>
-                <tool>
-                    <name>ILINK</name>
-                    <file> 1</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ILINK</name>
-                    <file> 84 4 88 78 81 62 77 89 93 80 6 55 71 44 74 10 56</file>
-                </tool>
-            </inputs>
-        </file>
-    </configuration>
-    <configuration>
-        <name>Release</name>
-        <outputs>
-            <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
-            <file>$TOOLKIT_DIR$\lib\dlstm8smn.a</file>
-            <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Threads.h</file>
-            <file>$PROJ_DIR$\Crc.cpp</file>
-            <file>$PROJ_DIR$\CommandManager.cpp</file>
-            <file>$PROJ_DIR$\BootManager.cpp</file>
-            <file>$PROJ_DIR$\ISubscriber.h</file>
-            <file>$PROJ_DIR$\BootManager.h</file>
-            <file>$PROJ_DIR$\Crc.h</file>
-            <file>$PROJ_DIR$\LedController.cpp</file>
-            <file>$PROJ_DIR$\LedController.h</file>
-            <file>$PROJ_DIR$\CommandManager.h</file>
-            <file>$PROJ_DIR$\Uart.cpp</file>
-            <file>$PROJ_DIR$\main.cpp</file>
-            <file>$PROJ_DIR$\GpioDriver.cpp</file>
-            <file>$PROJ_DIR$\Uart.h</file>
-            <file>$PROJ_DIR$\STM8S003F3.h</file>
-            <file>$PROJ_DIR$\ChipReset.cpp</file>
-            <file>$PROJ_DIR$\SettingsManager.cpp</file>
-            <file>$PROJ_DIR$\Timer.cpp</file>
-            <file>$PROJ_DIR$\ResetController.cpp</file>
-            <file>$PROJ_DIR$\ResetController.h</file>
-            <file>$PROJ_DIR$\Timer.h</file>
-            <file>$PROJ_DIR$\Clock.h</file>
-            <file>$PROJ_DIR$\Eeprom.c</file>
-            <file>$PROJ_DIR$\GpioDriver.h</file>
-            <file>$PROJ_DIR$\Clock.cpp</file>
-            <file>$PROJ_DIR$\Rebooter.cpp</file>
-            <file>$PROJ_DIR$\SettingsManager.h</file>
-            <file>$PROJ_DIR$\ChipReset.h</file>
-            <file>$PROJ_DIR$\PlatformDefinitions.h</file>
-            <file>$PROJ_DIR$\Rebooter.h</file>
-            <file>$PROJ_DIR$\IExtiInterruptable.h</file>
-            <file>$TOOLKIT_DIR$\lib\dlstm8smn.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
-            <file>$PROJ_DIR$\Exti.h</file>
-            <file>$PROJ_DIR$\Response.h</file>
-            <file>$PROJ_DIR$\Exti.cpp</file>
-            <file>$TOOLKIT_DIR$\config\lnkstm8s003f3.icf</file>
-            <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
-            <file>$PROJ_DIR$\Release\Obj\Eeprom.pbi</file>
-            <file>$PROJ_DIR$\Release\Obj\Timer.o</file>
-            <file>$PROJ_DIR$\Release\Obj\Clock.pbi</file>
-            <file>$TOOLKIT_DIR$\inc\c\xencoding_limits.h</file>
-            <file>$PROJ_DIR$\Release\Obj\Exti.o</file>
-            <file>$PROJ_DIR$\Release\Obj\Wdg.pbd</file>
-            <file>$PROJ_DIR$\Release\Obj\Uart.o</file>
-            <file>$TOOLKIT_DIR$\lib\dbgstm8smn.a</file>
-            <file>$PROJ_DIR$\Release\Exe\Wdg.out</file>
-            <file>$PROJ_DIR$\Release\Obj\CommandManager.o</file>
-            <file>$PROJ_DIR$\Release\Obj\GpioDriver.pbi</file>
-            <file>$PROJ_DIR$\Release\Obj\main.pbi</file>
-            <file>$PROJ_DIR$\Release\Obj\Rebooter.pbi</file>
-            <file>$PROJ_DIR$\Release\Obj\LedController.pbi</file>
-            <file>$PROJ_DIR$\Release\Obj\CommandManager.pbi</file>
-            <file>$PROJ_DIR$\Release\Obj\Rebooter.o</file>
-            <file>$PROJ_DIR$\Release\Obj\SettingsManager.pbi</file>
-            <file>$PROJ_DIR$\Release\Obj\main.o</file>
-            <file>$PROJ_DIR$\Release\Obj\LedController.o</file>
-            <file>$PROJ_DIR$\Release\Obj\SettingsManager.o</file>
-            <file>$PROJ_DIR$\Release\Obj\ChipReset.pbi</file>
-            <file>$PROJ_DIR$\Release\List\Wdg.map</file>
-            <file>$PROJ_DIR$\Release\Obj\Clock.o</file>
-            <file>$PROJ_DIR$\Release\Obj\GpioDriver.o</file>
-            <file>$PROJ_DIR$\Release\Obj\BootManager.o</file>
-            <file>$PROJ_DIR$\Release\Obj\Crc.pbi</file>
-            <file>$PROJ_DIR$\Release\Obj\Eeprom.o</file>
-            <file>$PROJ_DIR$\Release\Obj\ChipReset.o</file>
-            <file>$PROJ_DIR$\Release\Obj\BootManager.pbi</file>
-            <file>$PROJ_DIR$\Release\Obj\Uart.pbi</file>
-            <file>$PROJ_DIR$\Release\Obj\Crc.o</file>
-            <file>$PROJ_DIR$\Release\Obj\Timer.pbi</file>
-            <file>$PROJ_DIR$\Release\Obj\ResetController.pbi</file>
-            <file>$PROJ_DIR$\Release\Obj\Exti.pbi</file>
-            <file>$PROJ_DIR$\Release\Obj\ResetController.o</file>
-        </outputs>
-        <file>
-            <name>[ROOT_NODE]</name>
-            <outputs>
-                <tool>
-                    <name>ILINK</name>
-                    <file> 50 63</file>
-                </tool>
-            </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\Crc.cpp</name>
-            <outputs>
-                <tool>
-                    <name>ICCSTM8</name>
-                    <file> 72</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 67</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCSTM8</name>
-                    <file> 10 41 3 0 36 35 1 45 4</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 4 36 45 0 3 41 10 35 1</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\CommandManager.cpp</name>
-            <outputs>
-                <tool>
-                    <name>ICCSTM8</name>
-                    <file> 51</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 56</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCSTM8</name>
-                    <file> 13 23 12 27 32 38 24 8 41 3 0 36 35 1 45 4 33 17 30 10 31</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 35 33 27 23 8 3 41 31 24 36 4 1 10 30 12 17 38 32 0 45 13</file>
+                    <file> 44 31 81 48 45 19 5 3 88 14 56 39 18</file>
                 </tool>
             </inputs>
         </file>
@@ -680,44 +363,75 @@
             <outputs>
                 <tool>
                     <name>ICCSTM8</name>
-                    <file> 66</file>
+                    <file> 51</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 70</file>
+                    <file> 2</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCSTM8</name>
-                    <file> 9 23 12 27 32 38 24 8 41 3 0 36 35 1 45 4 33 17 30</file>
+                    <file> 25 26 37 33 44 94 18 19 81 5 48 3 56 39 88 14 23 69 29</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 38 41 12 32 3 23 27 24 8 0 36 45 9 30 33 4 35 1 17</file>
+                    <file> 94 81 37 44 5 26 33 18 19 48 3 88 25 29 23 14 56 39 69</file>
                 </tool>
             </inputs>
         </file>
         <file>
-            <name>$PROJ_DIR$\LedController.cpp</name>
+            <name>$PROJ_DIR$\Rebooter.cpp</name>
             <outputs>
                 <tool>
                     <name>ICCSTM8</name>
-                    <file> 60</file>
+                    <file> 49</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 55</file>
+                    <file> 74</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 52</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCSTM8</name>
-                    <file> 12 27 32 38 24 8 41 3 0 36 35 1 45 4</file>
+                    <file> 23 33 44 94 18 19 81 5 48 3 56 39 88 14</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 32 3 38 41 27 24 8 0 36 45 12 4 35 1</file>
+                    <file> 44 5 94 81 33 18 19 48 3 88 23 14 56 39</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Eeprom.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCSTM8</name>
+                    <file> 90</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 66</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 76</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCSTM8</name>
+                    <file> 81 5 48 3 56 39 88 14 45 44</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 5 48 45 88 14 81 3 56 39 44</file>
                 </tool>
             </inputs>
         </file>
@@ -726,21 +440,40 @@
             <outputs>
                 <tool>
                     <name>ICCSTM8</name>
-                    <file> 48</file>
+                    <file> 84</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 71</file>
+                    <file> 8</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 12</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCSTM8</name>
-                    <file> 17 41 3 0 36 35 1 45 4 32 8 25 18</file>
+                    <file> 69 81 5 48 3 56 39 88 14 44 19 31 45</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 0 41 25 8 18 32 3 36 45 4 35 1 17</file>
+                    <file> 48 81 31 19 45 44 5 3 88 14 56 39 69</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\stm8s_flash.c</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 82</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 43 75 9</file>
                 </tool>
             </inputs>
         </file>
@@ -749,7 +482,228 @@
             <outputs>
                 <tool>
                     <name>ICCSTM8</name>
-                    <file> 59</file>
+                    <file> 78</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 91</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 0</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCSTM8</name>
+                    <file> 69 81 5 48 3 56 39 88 14 44 19 31 23 33 94 18 26 37 36 29 25</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 5 23 26 31 44 81 94 69 19 48 36 3 88 14 56 39 33 18 37 25 29</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Exti.cpp</name>
+            <outputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 93</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 10</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 48 5 67 3 88 14 81 45 13 56 39</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Debug\Exe\Wdg.out</name>
+            <outputs>
+                <tool>
+                    <name>ILINK</name>
+                    <file> 58</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ILINK</name>
+                    <file> 79 51 77 86 89 11 90 72 73 78 49 55 92 53 84 59 4</file>
+                </tool>
+            </inputs>
+        </file>
+    </configuration>
+    <configuration>
+        <name>Release</name>
+        <outputs>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
+            <file>$PROJ_DIR$\Exti.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Threads.h</file>
+            <file>$PROJ_DIR$\ChipReset.h</file>
+            <file>$PROJ_DIR$\Clock.cpp</file>
+            <file>$PROJ_DIR$\Timer.h</file>
+            <file>$PROJ_DIR$\ISubscriber.h</file>
+            <file>$PROJ_DIR$\CommandManager.cpp</file>
+            <file>$PROJ_DIR$\Crc.cpp</file>
+            <file>$PROJ_DIR$\LedController.cpp</file>
+            <file>$PROJ_DIR$\Rebooter.h</file>
+            <file>$PROJ_DIR$\ResetController.cpp</file>
+            <file>$PROJ_DIR$\BootManager.h</file>
+            <file>$PROJ_DIR$\ResetController.h</file>
+            <file>$PROJ_DIR$\Crc.h</file>
+            <file>$PROJ_DIR$\SettingsManager.cpp</file>
+            <file>$PROJ_DIR$\SettingsManager.h</file>
+            <file>$PROJ_DIR$\ChipReset.cpp</file>
+            <file>$PROJ_DIR$\Clock.h</file>
+            <file>$PROJ_DIR$\GpioDriver.cpp</file>
+            <file>$PROJ_DIR$\GpioDriver.h</file>
+            <file>$PROJ_DIR$\Timer.cpp</file>
+            <file>$PROJ_DIR$\BootManager.cpp</file>
+            <file>$PROJ_DIR$\CommandManager.h</file>
+            <file>$PROJ_DIR$\LedController.h</file>
+            <file>$PROJ_DIR$\Rebooter.cpp</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
+            <file>$PROJ_DIR$\PlatformDefinitions.h</file>
+            <file>$PROJ_DIR$\STM8S003F3.h</file>
+            <file>$PROJ_DIR$\Eeprom.c</file>
+            <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
+            <file>$TOOLKIT_DIR$\lib\dlstm8smn.h</file>
+            <file>$TOOLKIT_DIR$\lib\dlstm8smn.a</file>
+            <file>$PROJ_DIR$\Uart.cpp</file>
+            <file>$PROJ_DIR$\main.cpp</file>
+            <file>$PROJ_DIR$\IExtiInterruptable.h</file>
+            <file>$PROJ_DIR$\Uart.h</file>
+            <file>$PROJ_DIR$\Release\Obj\LedController.o</file>
+            <file>$PROJ_DIR$\Release\Obj\Exti.pbi</file>
+            <file>$PROJ_DIR$\Release\Obj\GpioDriver.pbi</file>
+            <file>$PROJ_DIR$\Release\Obj\ResetController.pbi</file>
+            <file>$PROJ_DIR$\Release\Obj\main.pbi</file>
+            <file>$PROJ_DIR$\Release\Obj\ChipReset.pbi</file>
+            <file>$PROJ_DIR$\Release\Obj\Eeprom.pbi</file>
+            <file>$PROJ_DIR$\Release\Obj\Rebooter.pbi</file>
+            <file>$PROJ_DIR$\Release\Obj\Exti.o</file>
+            <file>$PROJ_DIR$\Release\Obj\ChipReset.o</file>
+            <file>$PROJ_DIR$\Release\Obj\SettingsManager.o</file>
+            <file>$PROJ_DIR$\Release\Obj\Wdg.pbd</file>
+            <file>$PROJ_DIR$\Release\Obj\Clock.pbi</file>
+            <file>$PROJ_DIR$\Release\Obj\Uart.o</file>
+            <file>$PROJ_DIR$\Release\Obj\Timer.o</file>
+            <file>$PROJ_DIR$\Release\Obj\LedController.pbi</file>
+            <file>$PROJ_DIR$\Release\Obj\Clock.o</file>
+            <file>$PROJ_DIR$\Release\Obj\Eeprom.o</file>
+            <file>$PROJ_DIR$\Release\Obj\BootManager.pbi</file>
+            <file>$PROJ_DIR$\Release\Obj\Uart.pbi</file>
+            <file>$TOOLKIT_DIR$\lib\dbgstm8smn.a</file>
+            <file>$PROJ_DIR$\Release\Obj\Rebooter.o</file>
+            <file>$PROJ_DIR$\Release\List\Wdg.map</file>
+            <file>$PROJ_DIR$\Release\Obj\CommandManager.pbi</file>
+            <file>$PROJ_DIR$\Release\Obj\GpioDriver.o</file>
+            <file>$PROJ_DIR$\Release\Obj\Crc.pbi</file>
+            <file>$PROJ_DIR$\Release\Obj\CommandManager.o</file>
+            <file>$PROJ_DIR$\Release\Obj\Crc.o</file>
+            <file>$PROJ_DIR$\Release\Obj\main.o</file>
+            <file>$PROJ_DIR$\Release\Obj\BootManager.o</file>
+            <file>$PROJ_DIR$\Exti.cpp</file>
+            <file>$PROJ_DIR$\Release\Exe\Wdg.out</file>
+            <file>$TOOLKIT_DIR$\config\lnkstm8s003f3.icf</file>
+            <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\xencoding_limits.h</file>
+            <file>$PROJ_DIR$\Response.h</file>
+            <file>$PROJ_DIR$\Release\Obj\SettingsManager.pbi</file>
+            <file>$PROJ_DIR$\Release\Obj\Timer.pbi</file>
+            <file>$PROJ_DIR$\Release\Obj\ResetController.o</file>
+        </outputs>
+        <file>
+            <name>[ROOT_NODE]</name>
+            <outputs>
+                <tool>
+                    <name>ILINK</name>
+                    <file> 69 60</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Clock.cpp</name>
+            <outputs>
+                <tool>
+                    <name>ICCSTM8</name>
+                    <file> 54</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 50</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCSTM8</name>
+                    <file> 19 29</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 29 19</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\CommandManager.cpp</name>
+            <outputs>
+                <tool>
+                    <name>ICCSTM8</name>
+                    <file> 64</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 61</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCSTM8</name>
+                    <file> 24 14 25 21 28 73 6 7 71 1 31 0 32 27 72 3 11 37 17 15 4</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 32 11 21 14 7 1 71 4 6 0 3 27 15 17 25 37 73 28 31 72 24</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Crc.cpp</name>
+            <outputs>
+                <tool>
+                    <name>ICCSTM8</name>
+                    <file> 65</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 63</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCSTM8</name>
+                    <file> 15 71 1 31 0 32 27 72 3</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 3 0 72 31 1 71 15 32 27</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\LedController.cpp</name>
+            <outputs>
+                <tool>
+                    <name>ICCSTM8</name>
+                    <file> 38</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
@@ -759,103 +713,11 @@
             <inputs>
                 <tool>
                     <name>ICCSTM8</name>
-                    <file> 17 41 3 0 36 35 1 45 4 32 8 25 33 27 38 24 23 12 13 30 9</file>
+                    <file> 25 21 28 73 6 7 71 1 31 0 32 27 72 3</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 3 33 23 25 32 41 38 17 8 0 13 36 45 4 35 1 27 24 12 9 30</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\GpioDriver.cpp</name>
-            <outputs>
-                <tool>
-                    <name>ICCSTM8</name>
-                    <file> 65</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 52</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCSTM8</name>
-                    <file> 27 32 18</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 18 32 27</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\ChipReset.cpp</name>
-            <outputs>
-                <tool>
-                    <name>ICCSTM8</name>
-                    <file> 69</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 62</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCSTM8</name>
-                    <file> 31 18</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 18 31</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\SettingsManager.cpp</name>
-            <outputs>
-                <tool>
-                    <name>ICCSTM8</name>
-                    <file> 61</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 58</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCSTM8</name>
-                    <file> 30 32 38 41 3 0 36 35 1 45 4 18</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 35 3 32 36 45 4 41 1 18 38 0 30</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\Timer.cpp</name>
-            <outputs>
-                <tool>
-                    <name>ICCSTM8</name>
-                    <file> 43</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 73</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCSTM8</name>
-                    <file> 24 32 8 41 3 0 36 35 1 45 4 18 25</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 32 25 41 0 18 8 3 36 45 4 35 1 24</file>
+                    <file> 28 1 73 71 21 6 7 31 0 72 25 3 32 27</file>
                 </tool>
             </inputs>
         </file>
@@ -868,17 +730,155 @@
                 </tool>
                 <tool>
                     <name>BICOMP</name>
+                    <file> 41</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCSTM8</name>
+                    <file> 14 25 21 28 73 6 7 71 1 31 0 32 27 72 3 11 37</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 1 73 32 28 6 7 0 72 3 11 21 27 14 25 37 71 31</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\SettingsManager.cpp</name>
+            <outputs>
+                <tool>
+                    <name>ICCSTM8</name>
+                    <file> 48</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
                     <file> 74</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCSTM8</name>
-                    <file> 23 12 27 32 38 24 8 41 3 0 36 35 1 45 4 33 17</file>
+                    <file> 17 28 73 71 1 31 0 32 27 72 3 29</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 3 38 35 32 24 8 36 45 4 33 27 1 23 12 17 41 0</file>
+                    <file> 32 1 28 0 72 3 71 27 29 73 31 17</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\ChipReset.cpp</name>
+            <outputs>
+                <tool>
+                    <name>ICCSTM8</name>
+                    <file> 47</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 43</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCSTM8</name>
+                    <file> 4 29</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 29 4</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\GpioDriver.cpp</name>
+            <outputs>
+                <tool>
+                    <name>ICCSTM8</name>
+                    <file> 62</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 40</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCSTM8</name>
+                    <file> 21 28 29</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 29 28 21</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Timer.cpp</name>
+            <outputs>
+                <tool>
+                    <name>ICCSTM8</name>
+                    <file> 52</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 75</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCSTM8</name>
+                    <file> 6 28 7 71 1 31 0 32 27 72 3 29 19</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 28 19 71 31 29 7 1 0 72 3 32 27 6</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\BootManager.cpp</name>
+            <outputs>
+                <tool>
+                    <name>ICCSTM8</name>
+                    <file> 67</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 56</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCSTM8</name>
+                    <file> 13 14 25 21 28 73 6 7 71 1 31 0 32 27 72 3 11 37 17</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 73 71 25 28 1 14 21 6 7 31 0 72 13 17 11 3 32 27 37</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\Rebooter.cpp</name>
+            <outputs>
+                <tool>
+                    <name>ICCSTM8</name>
+                    <file> 59</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 45</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCSTM8</name>
+                    <file> 11 21 28 73 6 7 71 1 31 0 32 27 72 3</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 28 1 73 71 21 6 7 31 0 72 11 3 32 27</file>
                 </tool>
             </inputs>
         </file>
@@ -887,30 +887,7 @@
             <outputs>
                 <tool>
                     <name>ICCSTM8</name>
-                    <file> 68</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 42</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCSTM8</name>
-                    <file> 41 3 0 36 35 1 45 4 18 32</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 3 0 18 45 4 41 36 35 1 32</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\Clock.cpp</name>
-            <outputs>
-                <tool>
-                    <name>ICCSTM8</name>
-                    <file> 64</file>
+                    <file> 55</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
@@ -920,34 +897,57 @@
             <inputs>
                 <tool>
                     <name>ICCSTM8</name>
-                    <file> 25 18</file>
+                    <file> 71 1 31 0 32 27 72 3 29 28</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 18 25</file>
+                    <file> 1 31 29 72 3 71 0 32 27 28</file>
                 </tool>
             </inputs>
         </file>
         <file>
-            <name>$PROJ_DIR$\Rebooter.cpp</name>
+            <name>$PROJ_DIR$\Uart.cpp</name>
             <outputs>
                 <tool>
                     <name>ICCSTM8</name>
-                    <file> 57</file>
+                    <file> 51</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 54</file>
+                    <file> 57</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCSTM8</name>
-                    <file> 33 27 32 38 24 8 41 3 0 36 35 1 45 4</file>
+                    <file> 37 71 1 31 0 32 27 72 3 28 7 19 29</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 32 3 38 41 27 24 8 0 36 45 33 4 35 1</file>
+                    <file> 31 71 19 7 29 28 1 0 72 3 32 27 37</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\main.cpp</name>
+            <outputs>
+                <tool>
+                    <name>ICCSTM8</name>
+                    <file> 66</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 42</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCSTM8</name>
+                    <file> 37 71 1 31 0 32 27 72 3 28 7 19 11 21 73 6 14 25 24 17 13</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 1 11 14 19 28 71 73 37 7 31 24 0 72 3 32 27 21 6 25 13 17</file>
                 </tool>
             </inputs>
         </file>
@@ -960,17 +960,17 @@
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 75</file>
+                    <file> 39</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCSTM8</name>
-                    <file> 37 34 18 41 3 0 36 35 1 45 4</file>
+                    <file> 2 36 29 71 1 31 0 32 27 72 3</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 0 3 34 36 45 4 41 18 37 35 1</file>
+                    <file> 31 1 36 0 72 3 71 29 2 32 27</file>
                 </tool>
             </inputs>
         </file>
@@ -979,13 +979,13 @@
             <outputs>
                 <tool>
                     <name>ILINK</name>
-                    <file> 63</file>
+                    <file> 60</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ILINK</name>
-                    <file> 40 66 69 64 51 72 68 65 60 59 57 76 61 43 48 2 49</file>
+                    <file> 70 67 47 54 64 65 55 62 38 66 59 76 48 52 51 33 58</file>
                 </tool>
             </inputs>
         </file>

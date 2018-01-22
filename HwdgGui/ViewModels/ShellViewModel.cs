@@ -41,6 +41,8 @@ namespace HwdgGui.ViewModels
             // If auto monitoring enabled, start it immediately.
             if (settings.Automonitor)
             {
+                if(settings.CheckUrl) hwdg.EnableUrlCheck(settings.Url);
+                else hwdg.DisableUrlCheck();
                 hwdg.Start();
             }
 
@@ -50,8 +52,11 @@ namespace HwdgGui.ViewModels
         private void OnConnected(Status status)
         {
             hwdg.Stop();
+            hwdg.DisableUrlCheck();
             if (settings.Automonitor)
             {
+                if (settings.CheckUrl)
+                    hwdg.EnableUrlCheck(settings.Url);
                 hwdg.Start();
             }
         }
@@ -62,6 +67,7 @@ namespace HwdgGui.ViewModels
         public void OnClose()
         {
             hwdg.Stop();
+            hwdg.DisableUrlCheck();
         }
     }
 }

@@ -14,6 +14,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Timer = System.Timers.Timer;
@@ -23,6 +24,8 @@ namespace HwdgWrapper
     public class SerialHwdg : IHwdg, IDisposable
     {
         private Boolean disposed;
+        private Boolean checkUrl;
+        private String url= "https://google.com";
         private readonly IWrapper wrapper;
         private const Int32 OnElapseTimeout = 4000;
         private readonly Timer timer = new Timer(OnElapseTimeout);
@@ -45,8 +48,39 @@ namespace HwdgWrapper
         private void OnDisconnected() => Disconnected?.Invoke();
         private void OnConnected(Status status) => Connected?.Invoke(status);
         private void OnUpdated(Status status) => Updated?.Invoke(status);
-        private void OnElapse(Object sender, System.Timers.ElapsedEventArgs e) => wrapper.SendCommand(0xFB);
 
+        private async void OnElapse(Object sender, System.Timers.ElapsedEventArgs e)
+        {
+            if (checkUrl)
+            {
+                if (await RemoteFileExists(url))
+                {
+                    wrapper.SendCommand(0xFB);
+                }
+            }
+            else
+            {
+                wrapper.SendCommand(0xFB);
+            }
+        }
+
+        private static async Task<Boolean> RemoteFileExists(String url)
+        {
+            try
+            {
+                var request = WebRequest.Create(url);
+                var requestTimeout = 2000;
+                request.Method = "HEAD";
+                request.Timeout = requestTimeout;
+                var response = await request.GetResponseAsync() as HttpWebResponse;
+                response?.Close();
+                return response?.StatusCode == HttpStatusCode.OK;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
         private Byte ConvertRebootTimeout(Int32 ms)
         {
             if (disposed) throw new ObjectDisposedException(nameof(SerialHwdg));
@@ -81,6 +115,17 @@ namespace HwdgWrapper
             if (count < 1) count = 1;
             var nhi = count - 1;
             return (Byte) (nhi | 0x18);
+        }
+
+        public void EnableUrlCheck(String curl)
+        {
+            url = curl;
+            checkUrl = true;
+        }
+
+        public void DisableUrlCheck()
+        {
+            checkUrl = false;
         }
 
         public Status LastStatus { get; private set; }

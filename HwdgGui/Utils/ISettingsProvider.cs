@@ -30,6 +30,16 @@ namespace HwdgGui.Utils
         Boolean Automonitor { get; set; }
 
         /// <summary>
+        /// Is URL check avaliable.
+        /// </summary>
+        Boolean CheckUrl { get; set; }
+
+        /// <summary>
+        /// URL to check.
+        /// </summary>
+        String Url { get; set; }
+
+        /// <summary>
         /// Save or restore hwdg status.
         /// </summary>
         Status HwdgStatus { get; set; }

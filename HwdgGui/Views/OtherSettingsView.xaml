@@ -6,16 +6,20 @@
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:converters="clr-namespace:HwdgGui.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="500">
     <UserControl.Resources>
         <converters:InvertableBooleanToVisibilityConverter x:Key="Converter"/>
     </UserControl.Resources>
+
     <Grid>
         <StackPanel>
             <Label Visibility="{Binding HwdgSettingsVisible, Converter={StaticResource Converter}, ConverterParameter=Inverted}" Margin="0,30,0,0">Изменение настроек HWDG недоступно когда устройство не подключено.</Label>
             <StackPanel Visibility="{Binding HwdgSettingsVisible, Converter={StaticResource Converter}, ConverterParameter=Normal}">
+
                 <CheckBox Name="PwrPulse" Content="Короткий импульс на PWR при подаче питания на материнскую плату" Focusable="False" cal:Message.Attach="[Event Checked] = [Action PwrPulseChecked];[Event Unchecked] = [Action PwrPulseUnchecked]" IsChecked="False" Margin="0,30,0,0"/>
                 <CheckBox Name="RstPulse" Content="Короткий импульс на RST при подаче питания на материнскую плату" Focusable="False" cal:Message.Attach="[Event Checked] = [Action RstPulseChecked];[Event Unchecked] = [Action RstPulseUnchecked]" IsChecked="False" Margin="0,5,0,0"/>
+                <CheckBox Name="CheckUrl" Content="Перезагрузка системы, если URL ниже недоступен" Focusable="False" cal:Message.Attach="[Event Checked] = [Action CheckUrlChecked];[Event Unchecked] = [Action CheckUrlUnchecked]" IsChecked="False" Margin="0,5,0,0"/>
+                <TextBox Name="Url" Margin="20,10,5,0" IsEnabled="{Binding IsChecked, ElementName=CheckUrl}" cal:Message.Attach="[Event TextChanged] = [Action UrlUpdated]" />
                 <Button Name="ResetToFactory" Margin="5,20,5,5" Focusable="False" Content="Вернуть USB Watchdog к заводским настройкам"/>
             </StackPanel>
         </StackPanel>
