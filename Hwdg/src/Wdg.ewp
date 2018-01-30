@@ -1626,6 +1626,9 @@
         <group>
             <name>Common</name>
             <file>
+                <name>$PROJ_DIR$\IExtiInterruptable.h</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\ISubscriber.h</name>
             </file>
         </group>
@@ -1693,6 +1696,15 @@
             </file>
             <file>
                 <name>$PROJ_DIR$\Clock.h</name>
+            </file>
+        </group>
+        <group>
+            <name>Exti</name>
+            <file>
+                <name>$PROJ_DIR$\Exti.cpp</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\Exti.h</name>
             </file>
         </group>
         <group>

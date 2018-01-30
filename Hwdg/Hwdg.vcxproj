@@ -121,6 +121,7 @@
   <ItemGroup>
     <ClCompile Include="src\BootManager.cpp" />
     <ClCompile Include="src\ChipReset.cpp" />
+    <ClCompile Include="src\Exti.cpp" />
     <ClCompile Include="src\SettingsManager.cpp" />
     <ClCompile Include="src\Crc.cpp" />
     <ClCompile Include="src\Eeprom.c" />
@@ -137,6 +138,8 @@
   <ItemGroup>
     <ClInclude Include="src\BootManager.h" />
     <ClInclude Include="src\ChipReset.h" />
+    <ClInclude Include="src\Exti.h" />
+    <ClInclude Include="src\IExtiInterruptable.h" />
     <ClInclude Include="src\SettingsManager.h" />
     <ClInclude Include="src\Crc.h" />
     <ClInclude Include="src\GpioDriver.h" />

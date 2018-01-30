@@ -33,7 +33,9 @@ int main()
 	Rebooter rebooter(timer, drw);
 	LedController ldCtr(timer, drw);
 	Uart uart(9600);
-	ResetController controller(uart, rebooter, ldCtr);
+	Exti exti;
+	ResetController controller(uart, rebooter, ldCtr, exti);
+	controller.EnableHddLedMonitor();
 
 #ifdef __ICCSTM8__
 	asm("RIM");

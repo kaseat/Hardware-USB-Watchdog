@@ -17,23 +17,13 @@
 
 #pragma once
 
-#ifdef __ICCSTM8__
-#define _virtual
-#define _override
-#define nullptr 0
-#endif
+class IExtiInterruptable
+{
+public:
+	virtual void OnExtiInterrupt() = 0;
 
-#ifdef _M_IX86
-#define _virtual virtual
-#define __interrupt
-#define __no_init
-#define __eeprom
-#define __near
-#define _override override
-#endif
-
-#ifdef __AVR__
-#define _virtual
-#define _override
-#define __interrupt
-#endif
+protected:
+	virtual ~IExtiInterruptable()
+	{
+	}
+};

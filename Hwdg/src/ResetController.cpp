@@ -1,16 +1,19 @@
-// Copyright 2017 Oleg Petrochenko
+// Copyright 2018 Oleg Petrochenko
 // 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// This file is part of Hwdg.
 // 
-//     http://www.apache.org/licenses/LICENSE-2.0
+// Hwdg is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or any
+// later version.
 // 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Hwdg is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with Hwdg. If not, see <http://www.gnu.org/licenses/>.
 
 #include "ResetController.h"
 #include "Timer.h"
@@ -56,7 +59,8 @@
 #define HDD_MONITOR            ((uint8_t)(1U << 3U))
 // Response timeout elapsed
 #define LED_STARDED            ((uint8_t)(1U << 4U))
-
+// EXTI occured
+#define EXTI_OCCURRED          ((uint8_t)(1U << 5U))
 
 // Mask applied to extract attempts value
 #define ATTEMPTS_MASK          ((uint8_t)0x07U)
@@ -68,14 +72,17 @@
 #define INITIAL                ((uint8_t)0x00U)
 // hwdg event WatchdogOk elapse timeout
 #define EVENT_HWDGOK_TIMEOUT   ((uint16_t)1000)
+// The period of time we disable EXTI after first interrupt occurred
+#define EXTI_DISABLE_TIMEOUT   ((uint16_t)1000)
 
-
-ResetController::ResetController(Uart& uart, Rebooter& rb, LedController& ledController) :
+ResetController::ResetController(Uart& uart, Rebooter& rb, LedController& ledController, Exti& exti) :
 	eventsEnabled(false),
 	uart(uart),
 	rebooter(rb),
 	ledController(ledController),
+	exti(exti),
 	counter(INITIAL),
+	counterExti(INITIAL),
 	counterms(INITIAL),
 	state(INITIAL),
 	responseTimeout(RESPONSE_DEF_TIMEOUT),
@@ -98,7 +105,7 @@ uint32_t ResetController::GetStatus()
 	uint32_t result = INITIAL;
 	uint8_t* rs = reinterpret_cast<uint8_t*>(&result);
 	rs[0] = (rebootTimeout - REBOOT_MIN_TIMEOUT) / HR_TIMEBASE;
-	rs[1] = (responseTimeout / SR_TIMEBASE - 1) << 2 | state & 0x03;
+	rs[1] = (responseTimeout / SR_TIMEBASE - 1) << 2 | (state & 0x03);
 	rs[2] = (sAttemptCurr - 1) << 5 | (hAttemptCurr - 1) << 2 | (state & 0x0C) >> 2;
 	return result;
 }
@@ -109,9 +116,15 @@ Response ResetController::Start()
 	counter = INITIAL;
 	state &= ~(ENABLED | RESPONSE_ELAPSED | LED_STARDED);
 	state |= ENABLED;
+
 	sAttempt = sAttemptCurr;
 	hAttempt = hAttemptCurr;
 	ledController.BlinkSlow();
+	if (state & HDD_MONITOR)
+	{
+		exti.SubscribeOnExti(*this);
+		state &= ~EXTI_OCCURRED;
+	}
 	return StartOk;
 }
 
@@ -119,6 +132,11 @@ Response ResetController::Stop()
 {
 	ledController.Glow();
 	state &= ~(ENABLED | RESPONSE_ELAPSED | LED_STARDED);
+	if (state & HDD_MONITOR)
+	{
+		exti.UnsubscribeOnExti();
+		state &= ~EXTI_OCCURRED;
+	}
 	return StopOk;
 }
 
@@ -169,6 +187,24 @@ Response ResetController::SetHardResetAttempts(uint8_t attempts)
 	if (state & ENABLED) return Busy;
 	hAttemptCurr = (attempts & ATTEMPTS_MASK) + 1;
 	return SetHardResetAttemptsOk;
+}
+
+Response ResetController::EnableHddLedMonitor()
+{
+	if (state & ENABLED) return Busy;
+	exti.SubscribeOnExti(*this);
+	state |= HDD_MONITOR;
+	state &= ~EXTI_OCCURRED;
+	counter = INITIAL;
+	return EnableHddMonitorOk;
+}
+
+Response ResetController::DisableHddLedMonitor()
+{
+	if (state & ENABLED) return Busy;
+	exti.UnsubscribeOnExti();
+	state &= ~(HDD_MONITOR | EXTI_OCCURRED);
+	return DisableHddMonitorOk;
 }
 
 Response ResetController::TestHardReset()
@@ -222,6 +258,19 @@ void ResetController::Callback(uint8_t data)
 		}
 	}
 
+	// EXTI logic (after EXTI interrupt occurred it would be
+	// better to disable EXTI interrupts for a while in order
+	// prevent multiple EXTI handler call at short period of time.)
+	if (state & EXTI_OCCURRED)
+	{
+		if (++counterExti >= EXTI_DISABLE_TIMEOUT)
+		{
+			state &= ~EXTI_OCCURRED;
+			counterExti = INITIAL;
+			exti.SubscribeOnExti(*this);
+		}
+	}
+
 	// Reset controller FSM logic
 	if (!(state & ENABLED)) return;
 
@@ -234,6 +283,7 @@ void ResetController::Callback(uint8_t data)
 		rebooter.SoftReset();
 		ledController.BlinkMid();
 		state |= RESPONSE_ELAPSED;
+		exti.UnsubscribeOnExti();
 		if (eventsEnabled)
 			uart.SendByte(FirstResetOccurred);
 	}
@@ -267,4 +317,12 @@ void ResetController::Callback(uint8_t data)
 				uart.SendByte(MovedToIdle);
 		}
 	}
+}
+
+void ResetController::OnExtiInterrupt()
+{
+	if (!(state & ENABLED) || state & RESPONSE_ELAPSED) return;
+	counter = INITIAL;
+	state |= EXTI_OCCURRED;
+	exti.UnsubscribeOnExti();
 }

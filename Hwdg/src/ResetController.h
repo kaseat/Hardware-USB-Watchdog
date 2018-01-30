@@ -1,26 +1,30 @@
-// Copyright 2017 Oleg Petrochenko
+// Copyright 2018 Oleg Petrochenko
 // 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
+// This file is part of Hwdg.
 // 
-//     http://www.apache.org/licenses/LICENSE-2.0
+// Hwdg is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or any
+// later version.
 // 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Hwdg is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with Hwdg. If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 #include "LedController.h"
 #include "Rebooter.h"
 #include "Uart.h"
+#include "Exti.h"
 
 /**
  * \brief Reset controller assumes Callback() calls every 1 ms.
  */
-class ResetController : ISubscriber
+class ResetController : ISubscriber, IExtiInterruptable
 {
 public:
 
@@ -28,7 +32,7 @@ public:
 	 * \brief Create istnce of Reset controller.
 	 * \param rb Rebooter reference.
 	 */
-	ResetController(Uart& uart, Rebooter& rb, LedController& ledController);
+	ResetController(Uart& uart, Rebooter& rb, LedController& ledController, Exti& exti);
 
 	/**
 	 * \brief Dispose reset controller.
@@ -100,6 +104,20 @@ public:
 	_virtual Response SetHardResetAttempts(uint8_t attempts);
 
 	/**
+	* \brief Starts Hdd monitoring.
+	* \return Returns command response.
+	* \remarks see https://hwdg.ru/hardware-watchdog-api/enablehddledmonitor/ for more details.
+	*/
+	_virtual Response EnableHddLedMonitor();
+
+	/**
+	* \brief Stops Hdd monitoring.
+	* \return Returns command response.
+	* \remarks see https://hwdg.ru/hardware-watchdog-api/disablehddledmonitor/ for more details.
+	*/
+	_virtual Response DisableHddLedMonitor();
+
+	/**
 	 * \brief Test hard reset.
 	 */
 	_virtual Response TestHardReset();
@@ -135,11 +153,14 @@ public:
 	_virtual LedController& GetLedController();
 private:
 	void Callback(uint8_t data) _override;
+	void OnExtiInterrupt() _override;
 	bool eventsEnabled;
 	Uart& uart;
 	Rebooter& rebooter;
 	LedController& ledController;
+	Exti& exti;
 	uint32_t counter;
+	uint16_t counterExti;
 	uint16_t counterms;
 	uint_least8_t state;
 	uint32_t responseTimeout;

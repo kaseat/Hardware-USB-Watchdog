@@ -31,6 +31,8 @@ enum Response
 	SetResponseTimeoutOk = 0x2D,
 	SetSoftResetAttemptsOk = 0x2E,
 	SetHardResetAttemptsOk = 0x2F,
+	EnableHddMonitorOk = 0x3A,
+	DisableHddMonitorOk = 0x3B,
 
 	SaveCurrentSettingsOk = 0x40,
 	LoadDefaultSettingsAtStartupOk = 0x41,

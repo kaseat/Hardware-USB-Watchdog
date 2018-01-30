@@ -17,23 +17,35 @@
 
 #pragma once
 
-#ifdef __ICCSTM8__
-#define _virtual
-#define _override
-#define nullptr 0
-#endif
+#include "IExtiInterruptable.h"
+#include "PlatformDefinitions.h"
 
-#ifdef _M_IX86
-#define _virtual virtual
-#define __interrupt
-#define __no_init
-#define __eeprom
-#define __near
-#define _override override
-#endif
+class Exti
+{
+public:
+	_virtual ~Exti()
+	{
+	}
 
-#ifdef __AVR__
-#define _virtual
-#define _override
-#define __interrupt
-#endif
+	/**
+	* \brief Initialize EXTI.
+	*/
+	Exti();
+	/**
+	* \brief Add handler on external interrupt occurrence.
+	* \param sbcr Subscriber.
+	*/
+	_virtual void SubscribeOnExti(IExtiInterruptable& sbcr);
+
+	/**
+	* \brief Remove handler on external interrupt occurrence.
+	*/
+	_virtual void UnsubscribeOnExti();
+
+	/**
+	 * \brief Calls when external intterupt occurs.
+	 */
+	__interrupt static void OnExti();
+private:
+	static IExtiInterruptable* subscriber;
+};
