@@ -16,9 +16,11 @@
 
 #ifdef __ICCSTM8__
 #include "STM8S003F3.h"
-#define PWR_PIN (1 << 2)
-#define RST_PIN (1 << 3)
-#define LED_PIN (1 << 6)
+#define PWR_PIN1 (1 << 4)
+#define RST_PIN1 (1 << 4)
+#define PWR_PIN2 (1 << 3)
+#define RST_PIN2 (1 << 5)
+#define LED_PIN (1 << 2)
 #endif
 
 #ifdef __AVR__
@@ -37,10 +39,12 @@
 GpioDriver::GpioDriver()
 {
 #ifdef __ICCSTM8__
-	GPIOD->ODR |= PWR_PIN | RST_PIN;
-	GPIOD->DDR |= PWR_PIN | RST_PIN;
-	GPIOC->DDR |= LED_PIN;
-	GPIOC->CR1 |= LED_PIN;
+	GPIOB->ODR |= PWR_PIN1 | RST_PIN2;
+	GPIOC->ODR |= PWR_PIN2 | RST_PIN1;
+	GPIOB->DDR |= PWR_PIN1 | RST_PIN2;
+	GPIOC->DDR |= PWR_PIN2 | RST_PIN1;
+	GPIOD->DDR |= LED_PIN;
+	GPIOD->CR1 |= LED_PIN;
 #endif
 #ifdef __AVR__
 	pinMode(PWR_PIN, INPUT);
@@ -52,10 +56,12 @@ GpioDriver::GpioDriver()
 GpioDriver::~GpioDriver()
 {
 #ifdef __ICCSTM8__
-	GPIOD->ODR &= ~(PWR_PIN | RST_PIN);
-	GPIOD->DDR &= ~(PWR_PIN | RST_PIN);
-	GPIOC->DDR &= ~LED_PIN;
-	GPIOC->CR1 &= ~LED_PIN;
+	GPIOB->ODR &= ~(PWR_PIN1 | RST_PIN2);
+	GPIOC->ODR &= ~(PWR_PIN2 | RST_PIN1);
+	GPIOB->DDR &= ~(PWR_PIN1 | RST_PIN2);
+	GPIOC->DDR &= ~(PWR_PIN2 | RST_PIN1);
+	GPIOD->DDR &= LED_PIN;
+	GPIOD->CR1 &= LED_PIN;
 #endif
 #ifdef __AVR__
 	pinMode(PWR_PIN, INPUT);
@@ -67,7 +73,8 @@ GpioDriver::~GpioDriver()
 void GpioDriver::DriveResetLow()
 {
 #ifdef __ICCSTM8__
-	GPIOD->ODR &= ~RST_PIN;
+	GPIOC->ODR &= ~RST_PIN1;
+	GPIOB->ODR &= ~RST_PIN2;
 #endif
 #ifdef __AVR__
 	pinMode(RST_PIN, OUTPUT);
@@ -77,7 +84,8 @@ void GpioDriver::DriveResetLow()
 void GpioDriver::ReleaseReset()
 {
 #ifdef __ICCSTM8__
-	GPIOD->ODR |= RST_PIN;
+	GPIOC->ODR |= RST_PIN1;
+	GPIOB->ODR |= RST_PIN2;
 #endif
 #ifdef __AVR__
 	pinMode(RST_PIN, INPUT);
@@ -87,7 +95,8 @@ void GpioDriver::ReleaseReset()
 void GpioDriver::DrivePowerLow()
 {
 #ifdef __ICCSTM8__
-	GPIOD->ODR &= ~PWR_PIN;
+	GPIOC->ODR &= ~PWR_PIN2;
+	GPIOB->ODR &= ~PWR_PIN1;
 #endif
 #ifdef __AVR__
 	pinMode(PWR_PIN, OUTPUT);
@@ -97,7 +106,8 @@ void GpioDriver::DrivePowerLow()
 void GpioDriver::ReleasePower()
 {
 #ifdef __ICCSTM8__
-	GPIOD->ODR |= PWR_PIN;
+	GPIOC->ODR |= PWR_PIN2;
+	GPIOB->ODR |= PWR_PIN1;
 #endif
 #ifdef __AVR__
 	pinMode(PWR_PIN, INPUT);
@@ -107,7 +117,7 @@ void GpioDriver::ReleasePower()
 void GpioDriver::DriveLedLow()
 {
 #ifdef __ICCSTM8__
-	GPIOC->ODR &= ~LED_PIN;
+	GPIOD->ODR &= ~LED_PIN;
 #endif
 #ifdef __AVR__
 	digitalWrite(LED_PIN, LOW);
@@ -117,7 +127,7 @@ void GpioDriver::DriveLedLow()
 void GpioDriver::DriveLedHigh()
 {
 #ifdef __ICCSTM8__
-	GPIOC->ODR |= LED_PIN;
+	GPIOD->ODR |= LED_PIN;
 #endif
 #ifdef __AVR__
 	digitalWrite(LED_PIN, HIGH);
